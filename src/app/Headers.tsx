@@ -1,9 +1,12 @@
-import { FC, useState } from 'react';
 import Link from 'next/link';
+import { FC, useState } from 'react';
+
 import NextImage from '@/components/NextImage';
-import HamburgerMenu from '@/components/navbar/HamburgerMenu';
-import MobileNav from '@/components/navbar/MobileNav';
-import DesktopNav from '@/components/navbar/DesktopNav';
+
+import DesktopNav from '@/app/components/navbar/DesktopNav';
+import HamburgerMenu from '@/app/components/navbar/HamburgerMenu';
+import MobileNav from '@/app/components/navbar/MobileNav';
+
 import logo from '~/images/MonadPedia.png';
 
 const Header: FC = () => {

@@ -1,6 +1,8 @@
 // components/ConcludedEvents.tsx
 import React from 'react';
+
 import EventsList from './EventsList';
+
 import { Event } from '@/types'; // Import the Event interface
 
 interface ConcludedEventsProps {
