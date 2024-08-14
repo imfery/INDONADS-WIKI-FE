@@ -1,11 +1,29 @@
+'use client';
 import Link from 'next/link';
-import React from 'react';
+import React, { FormEvent, useState } from 'react';
 
 import Button from '@/app/components/admin/auth/Button';
 
 import InputField from './InputField';
 
-const LoginForm: React.FC = () => {
+interface LoginFormProps {
+  onLogin: (credentials: { email: string; password: string }) => void;
+}
+
+const LoginForm: React.FC<LoginFormProps> = ({ onLogin }) => {
+  const [email, setEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
+
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+    try {
+      e.preventDefault();
+      onLogin({ email, password });
+    } catch (error) {
+      console.error('Login error:', error);
+    }
+  };
+
   return (
     <div className='flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8'>
       <div className='sm:mx-auto sm:w-full sm:max-w-sm'>
@@ -15,13 +33,15 @@ const LoginForm: React.FC = () => {
       </div>
 
       <div className='mt-10 sm:mx-auto sm:w-full sm:max-w-sm'>
-        <form action='#' method='POST' className='space-y-6'>
+        <form onSubmit={handleSubmit} method='POST' className='space-y-6'>
           <InputField
             id='email'
             name='email'
             type='email'
             label='Email address'
             autoComplete='email'
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             required
           />
 
@@ -32,6 +52,8 @@ const LoginForm: React.FC = () => {
               type='password'
               label='Password'
               autoComplete='current-password'
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               required
             />
             <div className='flex items-center justify-between'>
@@ -41,7 +63,7 @@ const LoginForm: React.FC = () => {
               ></label>
               <div className='text-sm'>
                 <a
-                  href='#'
+                  href='/admin/forgot-password'
                   className='font-semibold text-indigo-600 hover:text-indigo-500'
                 >
                   Forgot password?

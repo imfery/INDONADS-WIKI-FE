@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ChangeEvent } from 'react';
 
 interface InputFieldProps {
   id: string;
@@ -8,6 +8,8 @@ interface InputFieldProps {
   autoComplete?: string;
   required?: boolean;
   placeholder?: string;
+  value: string;
+  onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
 }
 
 const InputField: React.FC<InputFieldProps> = ({
@@ -18,6 +20,8 @@ const InputField: React.FC<InputFieldProps> = ({
   autoComplete,
   required = false,
   placeholder,
+  value,
+  onChange,
 }) => {
   return (
     <div>
@@ -32,6 +36,8 @@ const InputField: React.FC<InputFieldProps> = ({
           id={id}
           name={name}
           type={type}
+          value={value}
+          onChange={onChange}
           required={required}
           autoComplete={autoComplete}
           placeholder={placeholder}

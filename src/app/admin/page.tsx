@@ -1,5 +1,4 @@
 import React from 'react';
-
 import Sidebar from '@/app/components/admin/Sidebar';
 
 const AdminPage: React.FC = () => {
