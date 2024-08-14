@@ -1,12 +1,13 @@
-// app/page.tsx
 'use client';
 
 import * as React from 'react';
-import Header from '@/components/Headers';
-import Footer from '@/components/Footers';
-import UpcomingEvents from '@/components/UpcomingEvents';
-import ConcludedEvents from '@/components/ConcludedEvents';
+
+import ConcludedEvents from '@/app/ConcludedEvents';
+import Footer from '@/app/Footers';
+import Header from '@/app/Headers';
+import UpcomingEvents from '@/app/UpcomingEvents';
 import { fetchEventsSummary } from '@/app/utils/api';
+
 import { EventsData } from '@/types';
 
 export default function HomePage() {
@@ -21,6 +22,7 @@ export default function HomePage() {
           setEvents(data);
         }
       } catch (error) {
+        // eslint-disable-next-line no-console
         console.error('Failed to fetch events:', error);
       }
     }

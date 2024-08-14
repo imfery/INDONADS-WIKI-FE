@@ -9,6 +9,7 @@ const nextConfig = {
 
   // Uncoment to add domain whitelist
   images: {
+    dangerouslyAllowSVG: true,
     remotePatterns: [
       {
         protocol: 'https',
@@ -28,6 +29,12 @@ const nextConfig = {
         port: '',
         pathname: '/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'tailwindui.com',
+        port: '',
+        pathname: '/**',
+      }
     ],
   },
 

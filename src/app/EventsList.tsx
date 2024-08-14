@@ -1,6 +1,7 @@
-import React from 'react';
-import { Event } from '@/types';
 import Image from 'next/image';
+import React from 'react';
+
+import { Event } from '@/types';
 
 interface EventsListProps {
   event: Event[];
