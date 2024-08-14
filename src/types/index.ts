@@ -24,3 +24,19 @@ export interface LatestNews {
 export interface NewsData {
 	latestNews: LatestNews[];
 }
+
+export interface AllEvents {
+	id: number;
+	title: string;
+	description: string;
+	date: string;
+	createdAt: string;
+	updatedAt: string;
+}
+
+export interface AllEventsData {
+	events: AllEvents[];
+	totalPages: number;
+	currentPage: number;
+	totalResults: number;
+}
