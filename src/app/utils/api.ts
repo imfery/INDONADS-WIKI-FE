@@ -1,6 +1,6 @@
 import { EventsData } from '@/types';
 import { NewsData } from '@/types';
-import { RESPONSE_LIMIT_DEFAULT } from 'next/dist/server/api-utils';
+import { AllEventsData } from '@/types';
 
 export async function loginUser({ email, password }: { email: string; password: string }) {
     const response = await fetch('http://localhost:5000/v1/auth/login', {
@@ -50,6 +50,42 @@ export async function logoutUser() {
         throw new Error('Logout failed');
     }
     return response;
+}
+
+export async function fetchAllEvents({
+    sortField = 'createdAt',
+    sortBy = 'desc',
+    limit = 10,
+    page = 1,
+}: {
+    sortField?: string;
+    sortBy?: string;
+    limit?: number;
+    page?: number;
+}): Promise<AllEventsData> {
+    const response = await fetch(
+        `http://localhost:5000/v1/events?sortField=${sortField}&sortBy=${sortBy}&limit=${limit}&page=${page}`,
+        {
+            method: 'GET',
+            headers: {
+                Accept: 'application/json',
+            },
+            credentials: 'include',
+        }
+    );
+
+    if (!response.ok) {
+        throw new Error('Failed to fetch events');
+    }
+
+    const data = await response.json();
+
+    return {
+        events: data.data.events,
+        totalPages: data.data.totalPages,
+        currentPage: data.data.page,
+        totalResults: data.data.totalResults, // Extracting totalResults correctly
+    };
 }
 
 export async function fetchEventsSummary(): Promise<EventsData> {

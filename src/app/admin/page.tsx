@@ -1,12 +1,12 @@
 import React from 'react';
-import Sidebar from '@/app/components/admin/Sidebar';
+
+import AdminLayout from '@/app/layouts/AdminLayouts';
 
 const AdminPage: React.FC = () => {
   return (
-    <div className='relative min-h-screen bg-white-100'>
-      <Sidebar />
-      <main className='sm:ml-64'>{/* <Content /> */}</main>
-    </div>
+    <AdminLayout>
+      <h1 className='mx-10 my-10'>Dashboard Homepage</h1>
+    </AdminLayout>
   );
 };
 
