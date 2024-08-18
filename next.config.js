@@ -6,7 +6,7 @@ const nextConfig = {
   async rewrites() {
     return [
       {
-        source: "/api/v1/:path*",
+        source: '/api/v1/:path*',
         destination: `${process.env.NEXT_PUBLIC_API_URL}/v1/:path*`,
       },
     ];
@@ -19,7 +19,7 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'img-cdn.pixlr.com',
+        hostname: 'play-lh.googleusercontent.com',
         port: '',
         pathname: '/**',
       },
@@ -40,7 +40,13 @@ const nextConfig = {
         hostname: 'tailwindui.com',
         port: '',
         pathname: '/**',
-      }
+      },
+      {
+        protocol: 'https',
+        hostname: 'img-cdn.pixlr.com',
+        port: '',
+        pathname: '/**',
+      },
     ],
   },
 

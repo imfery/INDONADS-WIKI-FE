@@ -1,4 +1,6 @@
+import Link from 'next/link';
 import React from 'react';
+
 import Button from '@/components/buttons/Button';
 
 interface SearchAndCreateProps {
@@ -41,9 +43,11 @@ const SearchAndCreate: React.FC<SearchAndCreateProps> = ({
           />
         </div>
       </div>
-      <Button variant='primary' className='ml-4' onClick={onCreate}>
-        Create Event
-      </Button>
+      <Link href='/admin/events/create'>
+        <Button variant='primary' className='ml-4' onClick={onCreate}>
+          Create Event
+        </Button>
+      </Link>
     </div>
   );
 };
