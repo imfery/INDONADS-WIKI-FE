@@ -1,5 +1,6 @@
 'use client';
 import { useRouter } from 'next/navigation';
+
 import LoginForm from '@/app/components/admin/auth/LoginForm';
 import { loginUser } from '@/app/utils/api';
 
@@ -11,12 +12,11 @@ const LoginPage: React.FC = () => {
     password: string;
   }) => {
     try {
-      const response = await loginUser(credentials);
+      const user = await loginUser(credentials);
+      console.log('Logged in user:', user);
 
-      if (response.ok) {
+      if (user) {
         router.push('/admin');
-      } else {
-        console.error('Login failed:', response.statusText);
       }
     } catch (error) {
       console.error('Login failed:', error);

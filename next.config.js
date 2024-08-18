@@ -3,17 +3,23 @@ const nextConfig = {
   eslint: {
     dirs: ['src'],
   },
-
+  async rewrites() {
+    return [
+      {
+        source: "/api/v1/:path*",
+        destination: `${process.env.NEXT_PUBLIC_API_URL}/v1/:path*`,
+      },
+    ];
+  },
   reactStrictMode: true,
   swcMinify: true,
 
-  // Uncoment to add domain whitelist
   images: {
     dangerouslyAllowSVG: true,
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'play-lh.googleusercontent.com',
+        hostname: 'img-cdn.pixlr.com',
         port: '',
         pathname: '/**',
       },
