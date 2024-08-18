@@ -6,7 +6,7 @@ import { fetchAllEvents } from '@/app/utils/api';
 
 import EventTable from '../../components/admin/events/EventTable';
 import SearchAndCreate from '../../components/admin/events/SearchAndCreate';
-import Pagination from '../../components/admin/Pagination';
+import CustomPagination from '../../components/admin/Pagination';
 
 import { AllEventsData } from '@/types/index';
 
@@ -58,7 +58,7 @@ const EventsDashboardList: React.FC = () => {
         <div className='relative overflow-x-auto'>
           <div className='pb-8 bg-white'>
             <div className='p-5'>
-              <h2 className='text-xl-2 font-semibold text-gray-900'>Events</h2>
+              <h2 className='text-3xl font-semibold text-gray-900'>Events</h2>
               <p className='mt-1 text-sm font-normal text-gray-500'>
                 Manage the list of events shown to the user here.
               </p>
@@ -71,7 +71,7 @@ const EventsDashboardList: React.FC = () => {
                   currentPage={currentPage}
                   resultsPerPage={resultsPerPage}
                 />
-                <Pagination
+                <CustomPagination
                   currentPage={currentPage}
                   totalPages={eventsData.totalPages}
                   totalResults={eventsData.totalResults}

@@ -3,7 +3,7 @@ import React from 'react';
 
 import Sidebar from '@/app/components/admin/Sidebar';
 
-const EventsDashboardList: React.FC = () => {
+const EventsCreateForm: React.FC = () => {
   return (
     <div className='relative min-h-screen bg-white'>
       <Sidebar />
@@ -11,7 +11,7 @@ const EventsDashboardList: React.FC = () => {
         <div className='relative overflow-x-auto'>
           <div className='pb-8 bg-white'>
             <div className='p-5'>
-              <h2 className='text-xl-2 font-semibold text-gray-900'>Events</h2>
+              <h2 className='text-3xl font-semibold text-gray-900'>Events</h2>
               <p className='mt-1 text-sm font-normal text-gray-500'>
                 Create an event by filling the form.
               </p>
@@ -23,4 +23,4 @@ const EventsDashboardList: React.FC = () => {
   );
 };
 
-export default EventsDashboardList;
+export default EventsCreateForm;

@@ -2,13 +2,15 @@
 
 import React from 'react';
 
+import { cn } from '@/lib/utils'; // Utility to merge class names
+
 import Sidebar from '@/app/components/admin/Sidebar';
 
 const AdminLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   return (
-    <div className='relative min-h-screen bg-white-100'>
+    <div className={cn('relative min-h-screen flex bg-background')}>
       <Sidebar />
-      <main className='sm:ml-64'>{children}</main>
+      <main className={cn('flex-1 ml-64 p-6')}>{children}</main>
     </div>
   );
 };

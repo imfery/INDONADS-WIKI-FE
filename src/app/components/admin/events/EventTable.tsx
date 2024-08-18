@@ -1,6 +1,14 @@
 import React from 'react';
 
-import Button from '@/components/buttons/Button';
+import { Button } from '@/components/ui/button';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table';
 
 interface EventTableProps {
   events: Array<{
@@ -13,57 +21,45 @@ interface EventTableProps {
   resultsPerPage: number;
 }
 
-const EventTable: React.FC<EventTableProps> = ({
+export default function EventTable({
   events,
   currentPage,
   resultsPerPage,
-}) => {
+}: EventTableProps) {
   return (
-    <table className='w-full text-sm text-left text-gray-500'>
-      <thead className='text-xs text-gray-700 uppercase bg-gray-50'>
-        <tr>
-          <th scope='col' className='px-4 py-3 w-12'>
-            No
-          </th>
-          <th scope='col' className='px-4 py-3'>
-            Events Title
-          </th>
-          <th scope='col' className='px-4 py-3'>
-            Date
-          </th>
-          <th scope='col' className='px-4 py-3'>
-            Created At
-          </th>
-          <th scope='col' className='px-4 py-3 text-right'>
-            Actions
-          </th>
-        </tr>
-      </thead>
-      <tbody>
+    <Table>
+      <TableHeader>
+        <TableRow>
+          <TableHead className='w-[50px]'>No</TableHead>
+          <TableHead>Event Title</TableHead>
+          <TableHead>Date</TableHead>
+          <TableHead>Created At</TableHead>
+          <TableHead className='text-right'>Actions</TableHead>
+        </TableRow>
+      </TableHeader>
+      <TableBody>
         {events.map((event, index) => (
-          <tr key={event.id} className='bg-white border-b'>
-            <td className='px-4 py-4 font-medium text-gray-900'>
+          <TableRow key={event.id}>
+            <TableCell className='font-medium'>
               {(currentPage - 1) * resultsPerPage + index + 1}
-            </td>
-            <td className='px-4 py-4'>{event.title}</td>
-            <td className='px-4 py-4'>{event.date}</td>
-            <td className='px-4 py-4'>{event.createdAt}</td>
-            <td className='px-4 py-4 text-right'>
+            </TableCell>
+            <TableCell>{event.title}</TableCell>
+            <TableCell>{event.date}</TableCell>
+            <TableCell>{event.createdAt}</TableCell>
+            <TableCell className='text-right'>
               <div className='flex justify-end space-x-2'>
                 <Button variant='outline'>Edit</Button>
                 <Button
                   variant='outline'
-                  className='text-red-600 border-red-600 hover:bg-red-50 active:bg-red-100 disabled:bg-red-100'
+                  className='text-red-600 border-red-600 hover:bg-red-50'
                 >
                   Delete
                 </Button>
               </div>
-            </td>
-          </tr>
+            </TableCell>
+          </TableRow>
         ))}
-      </tbody>
-    </table>
+      </TableBody>
+    </Table>
   );
-};
-
-export default EventTable;
+}
