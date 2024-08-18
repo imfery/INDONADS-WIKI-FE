@@ -62,7 +62,7 @@ const Sidebar: React.FC = () => {
         <div className='border-t border-gray-300 pt-2 pb-14'>
           <SidebarItem
             onClick={handleLogout} // This triggers the logout functionality
-            href='/admin/logout'
+            href=''
             label='Logout'
           />
         </div>
