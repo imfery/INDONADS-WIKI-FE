@@ -33,12 +33,23 @@ const AdminPage: React.FC = () => {
   }, [router]);
 
   if (isLoading) {
-    return <div>Loading...</div>; // Show a loading indicator while validation is in progress
+    return <div>Loading...</div>;
   }
 
   return (
     <AdminLayout>
-      <h1 className='mx-10 my-10'>Dashboard Homepage</h1>
+      <div className='relative overflow-x-auto'>
+        <div className='pb-8 bg-white'>
+          <div className='p-5'>
+            <h2 className='text-3xl font-semibold text-gray-900'>
+              Dashboard Homeppage
+            </h2>
+            <p className='mt-1 text-sm font-normal text-gray-500'>
+              This is the homepage
+            </p>
+          </div>
+        </div>
+      </div>
     </AdminLayout>
   );
 };

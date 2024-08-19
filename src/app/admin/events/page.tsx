@@ -1,12 +1,13 @@
 'use client';
 import React, { useEffect, useState } from 'react';
+import { useToast } from '@/providers/ToastProvider';
 
-import Sidebar from '@/app/components/admin/Sidebar';
+import AdminLayout from '@/app/layouts/AdminLayouts';
 import { fetchAllEvents } from '@/app/utils/api';
 
 import EventTable from '../../components/admin/events/EventTable';
 import SearchAndCreate from '../../components/admin/events/SearchAndCreate';
-import Pagination from '../../components/admin/Pagination';
+import CustomPagination from '../../components/admin/Pagination';
 
 import { AllEventsData } from '@/types/index';
 
@@ -14,6 +15,25 @@ const EventsDashboardList: React.FC = () => {
   const [eventsData, setEventsData] = useState<AllEventsData | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
   const resultsPerPage = 10;
+  const { success, error } = useToast();
+
+  const loadEvents = async () => {
+    try {
+      const data = await fetchAllEvents({
+        sortField: 'updatedAt',
+        sortBy: 'desc',
+        limit: resultsPerPage,
+        page: currentPage,
+      });
+      setEventsData(data); // Set the correct type
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error('Error fetching events:', error.message);
+      } else {
+        console.error('Unexpected error:', error);
+      }
+    }
+  };
 
   const handleSearch = (query: string) => {
     console.log('Search query:', query);
@@ -29,40 +49,25 @@ const EventsDashboardList: React.FC = () => {
     setCurrentPage(page);
   };
 
-  useEffect(() => {
-    const loadEvents = async () => {
-      try {
-        const data = await fetchAllEvents({
-          sortField: 'createdAt',
-          sortBy: 'desc',
-          limit: resultsPerPage,
-          page: currentPage,
-        });
-        setEventsData(data); // Set the correct type
-      } catch (error) {
-        if (error instanceof Error) {
-          console.error('Error fetching events:', error.message);
-        } else {
-          console.error('Unexpected error:', error);
-        }
-      }
-    };
+  const handleDeleteSuccess = () => {
+    loadEvents(); // Refresh the event list after deletion
+    success('Event has been successfully deleted', 3000);
+  };
 
+  useEffect(() => {
     loadEvents();
   }, [currentPage]);
 
   return (
-    <div className='relative min-h-screen bg-white'>
-      <Sidebar />
-      <main className='sm:ml-64 px-4 sm:px-6 lg:px-8'>
-        <div className='relative overflow-x-auto'>
-          <div className='pb-8 bg-white'>
-            <div className='p-5'>
-              <h2 className='text-xl-2 font-semibold text-gray-900'>Events</h2>
-              <p className='mt-1 text-sm font-normal text-gray-500'>
-                Manage the list of events shown to the user here.
-              </p>
-            </div>
+    <AdminLayout>
+      <div className='relative overflow-x-auto'>
+        <div className='pb-8 bg-white'>
+          <div className='p-5'>
+            <h2 className='text-3xl font-semibold text-gray-900'>Events</h2>
+            <p className='mt-1 text-sm font-normal text-gray-500'>
+              Manage the list of events shown to the user here.
+            </p>
+
             <SearchAndCreate onSearch={handleSearch} onCreate={handleCreate} />
             {eventsData ? (
               <>
@@ -70,8 +75,9 @@ const EventsDashboardList: React.FC = () => {
                   events={eventsData.events}
                   currentPage={currentPage}
                   resultsPerPage={resultsPerPage}
+                  onDeleteSuccess={handleDeleteSuccess} // Pass the delete success callback
                 />
-                <Pagination
+                <CustomPagination
                   currentPage={currentPage}
                   totalPages={eventsData.totalPages}
                   totalResults={eventsData.totalResults}
@@ -83,8 +89,8 @@ const EventsDashboardList: React.FC = () => {
             )}
           </div>
         </div>
-      </main>
-    </div>
+      </div>{' '}
+    </AdminLayout>
   );
 };
 
