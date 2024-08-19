@@ -1,5 +1,7 @@
-import React from 'react';
 import Link from 'next/link';
+import React from 'react';
+
+import { cn } from '@/lib/utils';
 
 interface SidebarItemProps {
   href?: string;
@@ -15,20 +17,19 @@ const SidebarItem: React.FC<SidebarItemProps> = ({
   isActive,
 }) => {
   const baseClasses =
-    'flex items-center p-2 rounded-lg transition-colors duration-200 group';
-
+    'flex items-center px-4 py-2 rounded-md text-sm font-medium transition-colors';
   const activeClasses = isActive
-    ? 'bg-gray-300 text-black'
-    : 'text-gray-500 hover:bg-gray-100 hover:text-black';
+    ? 'bg-gray-400 text-white'
+    : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900';
 
   return (
     <li>
       <Link
         href={href || '#'}
         onClick={onClick}
-        className={`${baseClasses} ${activeClasses}`}
+        className={cn(baseClasses, activeClasses)}
       >
-        <span className='ml-8'>{label}</span>
+        <span>{label}</span>
       </Link>
     </li>
   );

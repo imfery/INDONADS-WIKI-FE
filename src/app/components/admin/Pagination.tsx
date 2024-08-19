@@ -1,5 +1,15 @@
 import React from 'react';
 
+import {
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from '@/components/ui/pagination';
+
 interface PaginationProps {
   currentPage: number;
   totalPages: number;
@@ -7,7 +17,7 @@ interface PaginationProps {
   onPageChange: (page: number) => void;
 }
 
-const Pagination: React.FC<PaginationProps> = ({
+const CustomPagination: React.FC<PaginationProps> = ({
   currentPage,
   totalPages,
   totalResults,
@@ -17,57 +27,114 @@ const Pagination: React.FC<PaginationProps> = ({
   const start = (currentPage - 1) * resultsPerPage + 1;
   const end = Math.min(currentPage * resultsPerPage, totalResults);
 
-  console.log('currentPage * resultsPerPage = ' + currentPage * resultsPerPage);
-  console.log('totalResults = ' + totalResults);
-  console.log('start: ' + start + ' end: ' + end);
+  const createPageItems = () => {
+    const items = [];
+
+    if (totalPages <= 5) {
+      for (let i = 1; i <= totalPages; i++) {
+        items.push(
+          <PaginationItem key={i}>
+            <PaginationLink
+              isActive={currentPage === i}
+              onClick={() => onPageChange(i)}
+            >
+              {i}
+            </PaginationLink>
+          </PaginationItem>
+        );
+      }
+    } else {
+      items.push(
+        <PaginationItem key={1}>
+          <PaginationLink
+            isActive={currentPage === 1}
+            onClick={() => onPageChange(1)}
+          >
+            1
+          </PaginationLink>
+        </PaginationItem>
+      );
+
+      if (currentPage > 3) {
+        items.push(<PaginationEllipsis key='start-ellipsis' />);
+      }
+
+      if (currentPage > 2 && currentPage < totalPages - 1) {
+        items.push(
+          <PaginationItem key={currentPage - 1}>
+            <PaginationLink onClick={() => onPageChange(currentPage - 1)}>
+              {currentPage - 1}
+            </PaginationLink>
+          </PaginationItem>
+        );
+      }
+
+      if (currentPage !== 1 && currentPage !== totalPages) {
+        items.push(
+          <PaginationItem key={currentPage}>
+            <PaginationLink isActive onClick={() => onPageChange(currentPage)}>
+              {currentPage}
+            </PaginationLink>
+          </PaginationItem>
+        );
+      }
+
+      if (currentPage < totalPages - 1) {
+        items.push(
+          <PaginationItem key={currentPage + 1}>
+            <PaginationLink onClick={() => onPageChange(currentPage + 1)}>
+              {currentPage + 1}
+            </PaginationLink>
+          </PaginationItem>
+        );
+      }
+
+      if (currentPage < totalPages - 2) {
+        items.push(<PaginationEllipsis key='end-ellipsis' />);
+      }
+
+      items.push(
+        <PaginationItem key={totalPages}>
+          <PaginationLink
+            isActive={currentPage === totalPages}
+            onClick={() => onPageChange(totalPages)}
+          >
+            {totalPages}
+          </PaginationLink>
+        </PaginationItem>
+      );
+    }
+
+    return items;
+  };
 
   return (
     <nav
-      className='flex items-center justify-center flex-col pt-4'
+      className='flex flex-col items-center justify-center pt-4'
       aria-label='Table navigation'
     >
-      <ul className='inline-flex -space-x-px rtl:space-x-reverse text-sm h-8 mb-4'>
-        <li>
-          <button
-            onClick={() => onPageChange(currentPage > 1 ? currentPage - 1 : 1)}
-            className={`flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 ${
-              currentPage === 1 ? 'cursor-not-allowed opacity-50' : ''
-            }`}
-            disabled={currentPage === 1}
-          >
-            Previous
-          </button>
-        </li>
-        {[...Array(totalPages)].map((_, i) => (
-          <li key={i}>
-            <button
-              onClick={() => onPageChange(i + 1)}
-              className={`flex items-center justify-center px-3 h-8 leading-tight ${
-                currentPage === i + 1
-                  ? 'text-blue-600 border border-gray-300 bg-blue-50 hover:bg-blue-100 hover:text-blue-700'
-                  : 'text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700'
-              }`}
-            >
-              {i + 1}
-            </button>
-          </li>
-        ))}
-        <li>
-          <button
-            onClick={() =>
-              onPageChange(
-                currentPage < totalPages ? currentPage + 1 : totalPages
-              )
-            }
-            className={`flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 ${
-              currentPage === totalPages ? 'cursor-not-allowed opacity-50' : ''
-            }`}
-            disabled={currentPage === totalPages}
-          >
-            Next
-          </button>
-        </li>
-      </ul>
+      <Pagination>
+        <PaginationPrevious
+          onClick={() => onPageChange(currentPage > 1 ? currentPage - 1 : 1)}
+          disabled={currentPage === 1}
+        >
+          Previous
+        </PaginationPrevious>
+
+        <PaginationContent>{createPageItems()}</PaginationContent>
+
+        <PaginationNext
+          onClick={() =>
+            onPageChange(
+              currentPage < totalPages ? currentPage + 1 : totalPages
+            )
+          }
+          disabled={currentPage === totalPages}
+        >
+          Next
+        </PaginationNext>
+      </Pagination>
+
       <span className='text-sm font-normal text-gray-500'>
         {`Showing ${start}-${end} of ${totalResults} results`}
       </span>
@@ -75,4 +142,4 @@ const Pagination: React.FC<PaginationProps> = ({
   );
 };
 
-export default Pagination;
+export default CustomPagination;
