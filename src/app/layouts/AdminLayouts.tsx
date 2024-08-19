@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import { ToastProvider } from '@/providers/ToastProvider'; // Adjust the path as needed
 
 import { cn } from '@/lib/utils'; // Utility to merge class names
 
@@ -8,10 +9,12 @@ import Sidebar from '@/app/components/admin/Sidebar';
 
 const AdminLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   return (
-    <div className={cn('relative min-h-screen flex bg-background')}>
-      <Sidebar />
-      <main className={cn('flex-1 ml-64 p-6')}>{children}</main>
-    </div>
+    <ToastProvider>
+      <div className={cn('relative min-h-screen bg-white')}>
+        <Sidebar />
+        <main className={cn('sm:ml-64 px-4 sm:px-6 lg:px-8')}>{children}</main>
+      </div>
+    </ToastProvider>
   );
 };
 

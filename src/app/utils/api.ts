@@ -91,37 +91,37 @@ export async function fetchWithAuth(
     url: string,
     options: RequestInit = {},
     onUnauthorized?: () => void
-  ) {
+) {
     try {
-      console.log('Fetching access token from cookies');
-      const accessToken = Cookies.get('accessToken');
-      console.log('Access token:', accessToken);
-  
-      options.headers = {
-        ...options.headers,
-        'Authorization': `Bearer ${accessToken}`,
-      };
-  
-      console.log('Sending request to:', url, 'with options:', options);
-  
-      const response = await fetch(url, options);
-  
-      if (response.status === 401) {
-        const data = await response.json();
-        console.log('Unauthorized response:', data);
-        if (data.message === 'Invalid or expired access token') {
-          if (onUnauthorized) {
-            onUnauthorized();
-          }
+        console.log('Fetching access token from cookies');
+        const accessToken = Cookies.get('accessToken');
+        console.log('Access token:', accessToken);
+
+        options.headers = {
+            ...options.headers,
+            'Authorization': `Bearer ${accessToken}`,
+        };
+
+        console.log('Sending request to:', url, 'with options:', options);
+
+        const response = await fetch(url, options);
+
+        if (response.status === 401) {
+            const data = await response.json();
+            console.log('Unauthorized response:', data);
+            if (data.message === 'Invalid or expired access token') {
+                if (onUnauthorized) {
+                    onUnauthorized();
+                }
+            }
         }
-      }
-  
-      return response;
+
+        return response;
     } catch (error) {
-      console.error('API call failed:', error);
-      throw error;
+        console.error('API call failed:', error);
+        throw error;
     }
-  }
+}
 
 export async function fetchAllEvents({
     sortField = 'createdAt',
@@ -196,4 +196,98 @@ export async function fetchLatestNews(): Promise<NewsData> {
     return {
         latestNews: data.data.latestNews,
     };
+}
+
+export async function createEvent(data: {
+    title: string;
+    description: string;
+    date: string;
+    location: string;
+    category: string;
+}) {
+    const token = Cookies.get('accessToken');
+
+    if (!token) {
+        throw new Error('No access token found');
+    }
+
+    const response = await fetch('http://localhost:5000/v1/events', {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(data),
+    });
+
+    if (!response.ok) {
+        const errorData = await response.json();
+        if (response.status === 400) {
+            throw new Error(errorData.message || 'Bad request');
+        }
+        throw new Error('An unexpected error occurred');
+    }
+
+    return response.json();
+}
+
+export async function getEventById(eventId: string) {
+    const response = await fetch(`http://localhost:5000/v1/events/detail/${eventId}`, {
+        method: 'GET',
+        headers: {
+            'Accept': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
+        },
+    });
+
+    if (!response.ok) {
+        throw new Error('Failed to fetch event details');
+    }
+
+    const result = await response.json();
+    return result.data;
+}
+
+export async function updateEvent(eventId: string, data: any) {
+    const token = Cookies.get('accessToken');
+    const response = await fetch(`http://localhost:5000/v1/events/detail/${eventId}`, {
+        method: 'PATCH',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify(data),
+    });
+
+    if (!response.ok) {
+        const errorData = await response.json();
+        if (response.status === 400) {
+            throw new Error(errorData.message || 'Bad request');
+        }
+        throw new Error('An unexpected error occurred');
+    }
+
+    return response.json();
+}
+
+export async function deleteEventById(eventId: string) {
+    const token = Cookies.get('accessToken');
+    const response = await fetch(`http://localhost:5000/v1/events/detail/${eventId}`, {
+        method: 'DELETE',
+        headers: {
+            'Accept': 'application/json',
+            'Authorization': `Bearer ${token}`,
+        },
+    });
+
+    if (!response.ok) {
+        throw new Error('Failed to delete event');
+    }
+
+    if (response.status === 204) {
+        return null;
+    }
+
+    return response.json();
 }

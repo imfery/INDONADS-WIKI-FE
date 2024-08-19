@@ -38,9 +38,18 @@ const AdminPage: React.FC = () => {
 
   return (
     <AdminLayout>
-      <h2 className='text-3xl font-semibold text-gray-900'>
-        Dashboard Homepage
-      </h2>
+      <div className='relative overflow-x-auto'>
+        <div className='pb-8 bg-white'>
+          <div className='p-5'>
+            <h2 className='text-3xl font-semibold text-gray-900'>
+              Dashboard Homeppage
+            </h2>
+            <p className='mt-1 text-sm font-normal text-gray-500'>
+              This is the homepage
+            </p>
+          </div>
+        </div>
+      </div>
     </AdminLayout>
   );
 };

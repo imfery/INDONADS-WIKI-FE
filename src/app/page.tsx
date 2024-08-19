@@ -6,6 +6,9 @@ import ConcludedEvents from '@/app/ConcludedEvents';
 import Footer from '@/app/Footers';
 import Header from '@/app/Headers';
 import UpcomingEvents from '@/app/UpcomingEvents';
+import { ToastProvider } from '@/providers/ToastProvider';
+import { Toaster } from 'sonner';
+
 import { fetchEventsSummary } from '@/app/utils/api';
 
 import { EventsData } from '@/types';
@@ -35,34 +38,38 @@ export default function HomePage() {
   }, []);
 
   return (
-    <main>
-      <Header />
-      <section className="bg-white mt-16 mb-64">
-        <div className="container mx-auto px-4">
-          <div className="mb-8 text-left">
-            <h1 className="text-3xl font-bold text-gray-900">Welcome to MonadPedia</h1>
-            <p className="mt-2 text-lg text-gray-600">
-              Your go-to resource for all things related to MonadPedia.
-            </p>
-          </div>
-          <div className="flex flex-col md:flex-row">
-            <div className="md:w-4/6 bg-gray-200 p-4 mb-4 md:mb-0">
-              <p>Lorem Ipsum</p>
+    <ToastProvider>
+      <main>
+        <Header />
+        <section className='bg-white mt-16 mb-64'>
+          <div className='container mx-auto px-4'>
+            <div className='mb-8 text-left'>
+              <h1 className='text-3xl font-bold text-gray-900'>
+                Welcome to MonadPedia
+              </h1>
+              <p className='mt-2 text-lg text-gray-600'>
+                Your go-to resource for all things related to MonadPedia.
+              </p>
             </div>
-            <div className="md:w-2/6 p-4">
-              {events ? (
-                <>
-                  <UpcomingEvents events={events.upcomingEvents} />
-                  <ConcludedEvents events={events.concludedEvents} />
-                </>
-              ) : (
-                <p>Loading events...</p>
-              )}
+            <div className='flex flex-col md:flex-row'>
+              <div className='md:w-4/6 bg-gray-200 p-4 mb-4 md:mb-0'>
+                <p>Lorem Ipsum</p>
+              </div>
+              <div className='md:w-2/6 p-4'>
+                {events ? (
+                  <>
+                    <UpcomingEvents events={events.upcomingEvents} />
+                    <ConcludedEvents events={events.concludedEvents} />
+                  </>
+                ) : (
+                  <p>Loading events...</p>
+                )}
+              </div>
             </div>
           </div>
-        </div>
-      </section>
-      <Footer />
-    </main>
+        </section>
+        <Footer />
+      </main>
+    </ToastProvider>
   );
 }
