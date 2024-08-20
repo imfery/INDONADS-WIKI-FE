@@ -1,9 +1,9 @@
 'use client';
 import React, { useEffect, useState } from 'react';
-import { useToast } from '@/providers/ToastProvider';
 
 import AdminLayout from '@/app/layouts/AdminLayouts';
 import { fetchAllEvents } from '@/app/utils/api';
+import { useToast } from '@/providers/ToastProvider';
 
 import EventTable from '../../components/admin/events/EventTable';
 import SearchAndCreate from '../../components/admin/events/SearchAndCreate';
