@@ -5,7 +5,6 @@ import { Calendar as CalendarIcon } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
-import { useToast } from '@/providers/ToastProvider';
 
 import { cn } from '@/lib/utils';
 
@@ -37,6 +36,7 @@ import { TimePicker } from '@/components/ui/timepicker';
 
 import AdminLayout from '@/app/layouts/AdminLayouts';
 import { createEvent } from '@/app/utils/api';
+import { useToast } from '@/providers/ToastProvider';
 
 const EventsCreateForm: React.FC = () => {
   const methods = useForm();
