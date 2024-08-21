@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
+const path = require('path');
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   eslint: {
@@ -50,8 +53,8 @@ const nextConfig = {
     ],
   },
 
-  webpack(config) {
-    // Grab the existing rule that handles SVG imports
+  webpack(config, { isServer }) {
+    // Your existing SVG loader configuration
     const fileLoaderRule = config.module.rules.find((rule) =>
       rule.test?.test?.('.svg')
     );
@@ -78,6 +81,11 @@ const nextConfig = {
 
     // Modify the file loader rule to ignore *.svg, since we have it handled now.
     fileLoaderRule.exclude = /\.svg$/i;
+
+    // Ensure that all imports of 'yjs' resolve to the same instance
+    if (!isServer) {
+      config.resolve.alias['yjs'] = path.resolve(__dirname, 'node_modules/yjs');
+    }
 
     return config;
   },
