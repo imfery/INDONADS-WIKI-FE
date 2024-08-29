@@ -93,16 +93,12 @@ export async function fetchWithAuth(
     onUnauthorized?: () => void
 ) {
     try {
-        console.log('Fetching access token from cookies');
         const accessToken = Cookies.get('accessToken');
-        console.log('Access token:', accessToken);
 
         options.headers = {
             ...options.headers,
             'Authorization': `Bearer ${accessToken}`,
         };
-
-        console.log('Sending request to:', url, 'with options:', options);
 
         const response = await fetch(url, options);
 

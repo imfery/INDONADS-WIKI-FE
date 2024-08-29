@@ -1,75 +1,48 @@
+// Editor.tsx
 'use client';
-import EditorJS, { ToolConstructable } from '@editorjs/editorjs';
-import React, { useEffect, useRef } from 'react';
+import React, { forwardRef, useImperativeHandle, useRef } from 'react';
 
-const Editor: React.FC = () => {
-  const editorRef = useRef<HTMLDivElement>(null);
-  const editorInstanceRef = useRef<EditorJS | null>(null);
+import '@/styles/editor.css';
 
-  useEffect(() => {
-    const initializeEditor = async () => {
-      if (
-        typeof window !== 'undefined' &&
-        editorRef.current &&
-        !editorInstanceRef.current
-      ) {
-        const EditorJS = (await import('@editorjs/editorjs')).default;
-        const Header = (await import('@editorjs/header')).default;
-        const Paragraph = (await import('@editorjs/paragraph')).default;
+import { useEditor } from '@/app/utils/hooks/useEditor';
 
-        console.log('Initializing Editor.js');
+const Editor = forwardRef((props, ref) => {
+    const editorRef = useRef<HTMLDivElement>(null);
+    const editorInstanceRef = useEditor({ holderId: 'editorjs' });
 
-        editorInstanceRef.current = new EditorJS({
-          holder: editorRef.current,
-          tools: {
-            header: {
-              class: Header as unknown as ToolConstructable,
-              inlineToolbar: ['link'],
-              config: {
-                placeholder: 'Enter a header',
-              },
-            },
-            paragraph: {
-              class: Paragraph as unknown as ToolConstructable,
-              inlineToolbar: true,
-            },
-          },
-          autofocus: true,
-          placeholder: 'Start typing your content here...',
-        });
+    // Expose saveContent function to parent component via ref
+    useImperativeHandle(ref, () => ({
+        saveContent: async () => {
+            if (editorInstanceRef.current) {
+                try {
+                    const outputData = await editorInstanceRef.current.save();
+                    console.log('Editor.js JSON Output:', outputData);
+                    return outputData;
+                } catch (error) {
+                    console.error('Error saving editor content:', error);
+                    return null;
+                }
+            }
+            return null;
+        },
+    }));
 
-        editorInstanceRef.current.isReady
-          .then(() => {
-            console.log('Editor.js is ready');
-          })
-          .catch((error) => {
-            console.error('Editor.js initialization failed:', error);
-          });
-      }
-    };
+    return (
+        <div>
+            <div
+                id='editorjs'
+                ref={editorRef}
+                className='editor-container mt-10'
+                style={{
+                    minHeight: '300px',
+                    border: '1px solid #ddd',
+                    padding: '10px',
+                }}
+            ></div>
+        </div>
+    );
+});
 
-    initializeEditor();
-
-    return () => {
-      if (editorInstanceRef.current) {
-        editorInstanceRef.current.isReady
-          .then(() => {
-            editorInstanceRef.current?.destroy(); // Destroy the instance safely
-            editorInstanceRef.current = null; // Reset the instance ref after destroying
-            console.log('Editor.js instance destroyed');
-          })
-          .catch((e) => console.error('Error during Editor.js cleanup', e));
-      }
-    };
-  }, []);
-
-  return (
-    <div
-      ref={editorRef}
-      className='editor-container'
-      style={{ minHeight: '300px', border: '1px solid #ddd', padding: '10px' }}
-    ></div>
-  );
-};
+Editor.displayName = 'Editor'; // Adding displayName for debugging purposes
 
 export default Editor;
