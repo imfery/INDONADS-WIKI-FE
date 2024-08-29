@@ -68,7 +68,13 @@ const EventsDashboardList: React.FC = () => {
               Manage the list of events shown to the user here.
             </p>
 
-            <SearchAndCreate onSearch={handleSearch} onCreate={handleCreate} />
+            <SearchAndCreate
+              onSearch={handleSearch}
+              onCreate={handleCreate}
+              createLabel='Create Events'
+              placeholder='Search for events'
+              href='/admin/events/create'
+            />
             {eventsData ? (
               <>
                 <EventTable

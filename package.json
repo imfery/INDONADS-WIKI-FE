@@ -17,6 +17,10 @@
     "postbuild": "next-sitemap --config next-sitemap.config.js"
   },
   "dependencies": {
+    "@editorjs/editorjs": "^2.30.5",
+    "@editorjs/header": "^2.8.7",
+    "@editorjs/list": "^1.10.0",
+    "@editorjs/paragraph": "^2.11.6",
     "@heroicons/react": "^2.1.5",
     "@hookform/resolvers": "^3.9.0",
     "@radix-ui/react-alert-dialog": "^1.1.1",

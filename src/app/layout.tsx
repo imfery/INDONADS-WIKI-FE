@@ -1,12 +1,12 @@
 import { Metadata } from 'next';
 import * as React from 'react';
-import { ToastProvider } from '@/providers/ToastProvider';
 import { Toaster } from 'sonner';
 
 import '@/styles/globals.css';
 import '@/styles/colors.css';
 
 import { siteConfig } from '@/constant/config';
+import { ToastProvider } from '@/providers/ToastProvider';
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),

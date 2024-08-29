@@ -54,13 +54,11 @@ const EditEventForm: React.FC = () => {
       try {
         const event = await getEventById(eventId as string);
 
-        // Parse the date string (e.g., "19 Aug 2024")
         const eventDate = parse(event.date, 'dd MMM yyyy', new Date());
         if (!isValid(eventDate)) {
           throw new Error('Invalid date format');
         }
 
-        // Set default time to "00:00" if time is not provided
         const defaultTime = '00:00';
         setSelectedDate(eventDate);
         setSelectedTime(defaultTime);
