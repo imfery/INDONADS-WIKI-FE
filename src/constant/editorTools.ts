@@ -1,6 +1,17 @@
-import type { BlockToolConstructable, BlockTuneConstructable, InlineToolConstructable, ToolConstructable } from '@editorjs/editorjs';
+import type {
+  BlockToolConstructable,
+  BlockTuneConstructable,
+  InlineToolConstructable,
+  ToolConstructable,
+} from '@editorjs/editorjs';
+
+import { uploadImage } from '@/app/utils/api';
 
 export const loadEditorTools = async () => {
+  if (typeof window === 'undefined') {
+    return {};
+  }
+
   const Header = (await import('@editorjs/header')).default;
   const Quote = (await import('@editorjs/quote')).default;
   const Delimiter = (await import('@editorjs/delimiter')).default;
@@ -33,7 +44,7 @@ export const loadEditorTools = async () => {
     paragraph: {
       class: Paragraph as unknown as ToolConstructable,
       inlineToolbar: true,
-      tunes: ['textVariant']
+      tunes: ['textVariant'],
     },
     underline: {
       class: Underline as unknown as InlineToolConstructable,
@@ -44,7 +55,7 @@ export const loadEditorTools = async () => {
       inlineToolbar: true,
       config: {
         quotePlaceholder: 'Enter a quote',
-        captionPlaceholder: 'Quote\'s author',
+        captionPlaceholder: "Quote's author",
       },
     },
     delimiter: Delimiter as unknown as ToolConstructable,
@@ -56,7 +67,27 @@ export const loadEditorTools = async () => {
         defaultStyle: 'unordered',
       },
     },
-    image: Image as unknown as ToolConstructable,
+    image: {
+      class: Image as unknown as ToolConstructable,
+      config: {
+        uploader: {
+          /**
+           * @param {File} file
+           * @returns {Promise<{ success: number, file: { url: string } }>}
+           */
+          uploadByFile: async (file: File) => {
+            try {
+              const response = await uploadImage(file);
+              return response;
+            } catch (error) {
+              console.error('Image upload failed:', error);
+              throw error;
+            }
+          },
+        },
+        tunes: ['resize'],
+      },
+    },
     table: Table as unknown as ToolConstructable,
     codebox: {
       class: CodeBox as unknown as BlockToolConstructable,

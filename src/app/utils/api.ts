@@ -287,3 +287,34 @@ export async function deleteEventById(eventId: string) {
 
     return response.json();
 }
+
+/**
+ * Upload an image to the server
+ * @param {File} file - The image file to upload
+ * @returns {Promise<{ success: number, file: { url: string } }>} - The response from the server
+ */
+export async function uploadImage(file: File): Promise<{ success: number; file: { url: string } }> {
+    const token = Cookies.get('accessToken');
+
+    if (!token) {
+        throw new Error('No access token found');
+    }
+
+    const formData = new FormData();
+    formData.append('file', file);
+
+    const response = await fetch('http://localhost:5000/v1/upload', {
+        method: 'POST',
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+        body: formData,
+    });
+
+    if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Failed to upload image');
+    }
+
+    return response.json();
+}

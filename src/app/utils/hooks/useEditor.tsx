@@ -1,6 +1,4 @@
 import EditorJS from '@editorjs/editorjs';
-import DragDrop from 'editorjs-drag-drop';
-import Undo from 'editorjs-undo';
 import { useEffect, useRef } from 'react';
 
 import { loadEditorTools } from '@/constant/editorTools';
@@ -18,8 +16,8 @@ export const useEditor = ({ holderId }: UseEditorProps) => {
         const initializeEditor = async () => {
             if (
                 typeof window !== 'undefined' &&
-                !editorInstanceRef.current &&
-                isMounted
+                isMounted &&
+                !editorInstanceRef.current
             ) {
                 try {
                     const tools = await loadEditorTools();
@@ -31,6 +29,15 @@ export const useEditor = ({ holderId }: UseEditorProps) => {
                         );
                         return;
                     }
+
+                    // Use dynamic imports inside useEffect to load EditorJS and plugins only on the client side
+                    const { default: EditorJS } = await import(
+                        '@editorjs/editorjs'
+                    );
+                    const { default: DragDrop } = await import(
+                        'editorjs-drag-drop'
+                    );
+                    const { default: Undo } = await import('editorjs-undo');
 
                     editorInstanceRef.current = new EditorJS({
                         holder: holderId,
@@ -44,8 +51,10 @@ export const useEditor = ({ holderId }: UseEditorProps) => {
                             if (!editorInstanceRef.current) return;
 
                             setTimeout(() => {
-                                new DragDrop(editorInstanceRef.current);
-                                new Undo({ editor: editorInstanceRef.current });
+                                new DragDrop(editorInstanceRef.current!);
+                                new Undo({
+                                    editor: editorInstanceRef.current!,
+                                });
                             }, 100);
                         })
                         .catch((error) => {
