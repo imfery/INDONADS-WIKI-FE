@@ -1,6 +1,5 @@
 'use client';
 
-import dynamic from 'next/dynamic';
 import { useRouter } from 'next/navigation';
 import React, { Suspense, useEffect, useRef, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
@@ -23,15 +22,12 @@ import {
     SelectValue,
 } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
+
+import Editor from '@/app/components/admin/editor/Editor';
 import AdminLayout from '@/app/layouts/AdminLayouts';
 import { fetchNewsById, updateNews } from '@/app/utils/api';
 import { useToast } from '@/providers/ToastProvider';
-import SearchParamsLoader from '@/app/components/admin/SearchParamsLoader'; // Import the SearchParamsLoader
-
-// Dynamically import the Editor component and disable SSR
-const Editor = dynamic(() => import('@/app/components/admin/editor/Editor'), {
-    ssr: false,
-});
+import SearchParamsLoader from '@/app/components/admin/SearchParamsLoader';
 
 const EditNewsForm: React.FC = () => {
     const methods = useForm({
@@ -97,6 +93,7 @@ const EditNewsForm: React.FC = () => {
             }
         } catch (err: any) {
             if (err.response && err.response.status === 400) {
+                // Check if error is a 400 response
                 setErrorMessage(
                     err.response.data.message || 'Invalid input data'
                 );
@@ -148,9 +145,7 @@ const EditNewsForm: React.FC = () => {
                                 <FormField
                                     name='title'
                                     control={methods.control}
-                                    rules={{
-                                        required: 'Title is required',
-                                    }}
+                                    rules={{ required: 'Title is required' }}
                                     render={({ field, fieldState }) => (
                                         <FormItem>
                                             <FormLabel>Title</FormLabel>
@@ -175,9 +170,7 @@ const EditNewsForm: React.FC = () => {
                                 <FormField
                                     name='summary'
                                     control={methods.control}
-                                    rules={{
-                                        required: 'Summary is required',
-                                    }}
+                                    rules={{ required: 'Summary is required' }}
                                     render={({ field, fieldState }) => (
                                         <FormItem>
                                             <FormLabel>Summary</FormLabel>
@@ -202,9 +195,7 @@ const EditNewsForm: React.FC = () => {
                                 <FormField
                                     name='category'
                                     control={methods.control}
-                                    rules={{
-                                        required: 'Category is required',
-                                    }}
+                                    rules={{ required: 'Category is required' }}
                                     render={({ field, fieldState }) => (
                                         <FormItem>
                                             <FormLabel>Category</FormLabel>
@@ -241,16 +232,16 @@ const EditNewsForm: React.FC = () => {
                                         </FormItem>
                                     )}
                                 />
-
-                                {/* Editor Component */}
-                                {initialData && (
-                                    <Editor
-                                        ref={editorInstanceRef}
-                                        initialData={initialData}
-                                    />
-                                )}
                             </form>
                         </FormProvider>
+
+                        {/* Editor Component */}
+                        {initialData && (
+                            <Editor
+                                ref={editorInstanceRef}
+                                initialData={initialData}
+                            />
+                        )}
 
                         {/* Save Button for Form Submission */}
                         <Button

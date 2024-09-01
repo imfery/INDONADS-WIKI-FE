@@ -41,7 +41,7 @@ import SearchParamsLoader from '@/app/components/admin/SearchParamsLoader'; // I
 const EditEventForm: React.FC = () => {
     const methods = useForm();
     const router = useRouter();
-    const { success, error } = useToast();
+    const { success, error: errorToast } = useToast();
     const [params, setParams] = useState<URLSearchParams | null>(null);
     const eventId = params?.get('id');
     const [selectedDate, setSelectedDate] = useState<Date | undefined>();
@@ -103,7 +103,7 @@ const EditEventForm: React.FC = () => {
             success('Event has been successfully edited', 3000);
             router.push('/admin/events');
         } catch (error: any) {
-            error('Event failed to be edited', 3000);
+            errorToast('Event failed to be edited', 3000);
             setErrorMessage(error.message);
             setShowAlert(true);
         }

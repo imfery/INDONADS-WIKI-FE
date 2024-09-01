@@ -1,5 +1,5 @@
 'use client';
-import dynamic from 'next/dynamic';
+import EditorJS from '@editorjs/editorjs';
 import React, {
     forwardRef,
     useEffect,
@@ -9,12 +9,6 @@ import React, {
 } from 'react';
 
 import '@/styles/editor.css';
-
-// Dynamically import EditorWrapper with SSR disabled
-const EditorWrapper = dynamic(
-    () => import('@/app/components/admin/editor/EditorWrapper'),
-    { ssr: false }
-);
 
 import { useEditor } from '@/app/utils/hooks/useEditor';
 
@@ -98,8 +92,16 @@ const Editor = forwardRef<EditorRef, EditorProps>(({ initialData }, ref) => {
 
     return (
         <div>
-            {/* Use the dynamically imported component here */}
-            <EditorWrapper holderId='editorjs' initialData={initialData} />
+            <div
+                id='editorjs'
+                ref={editorRef}
+                className='editor-container mt-10'
+                style={{
+                    minHeight: '300px',
+                    border: '1px solid #ddd',
+                    padding: '10px',
+                }}
+            ></div>
         </div>
     );
 });

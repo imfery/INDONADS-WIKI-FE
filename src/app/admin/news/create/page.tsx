@@ -1,7 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import React, { Suspense, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
@@ -23,13 +23,10 @@ import {
 } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 
-const Editor = dynamic(() => import('@/app/components/admin/editor/Editor'), {
-    ssr: false,
-});
+import Editor from '@/app/components/admin/editor/Editor';
 import AdminLayout from '@/app/layouts/AdminLayouts';
 import { createNews } from '@/app/utils/api';
 import { useToast } from '@/providers/ToastProvider';
-import dynamic from 'next/dynamic';
 
 const NewsDashboardForm: React.FC = () => {
     const methods = useForm({
@@ -114,118 +111,104 @@ const NewsDashboardForm: React.FC = () => {
                             </Alert>
                         )}
 
-                        <Suspense fallback={<div>Loading...</div>}>
-                            <FormProvider {...methods}>
-                                <form className='space-y-6 w-3/4 mt-10'>
-                                    {/* Title Field */}
-                                    <FormField
-                                        name='title'
-                                        control={methods.control}
-                                        rules={{
-                                            required: 'Title is required',
-                                        }}
-                                        render={({ field, fieldState }) => (
-                                            <FormItem>
-                                                <FormLabel>Title</FormLabel>
-                                                <FormControl>
-                                                    <Input
-                                                        placeholder='Enter news title'
-                                                        {...field}
-                                                        value={
-                                                            field.value || ''
-                                                        }
+                        <FormProvider {...methods}>
+                            <form className='space-y-6 w-3/4 mt-10'>
+                                {/* Title Field */}
+                                <FormField
+                                    name='title'
+                                    control={methods.control}
+                                    rules={{ required: 'Title is required' }}
+                                    render={({ field, fieldState }) => (
+                                        <FormItem>
+                                            <FormLabel>Title</FormLabel>
+                                            <FormControl>
+                                                <Input
+                                                    placeholder='Enter news title'
+                                                    {...field}
+                                                    value={field.value || ''}
+                                                    className={
+                                                        fieldState.invalid
+                                                            ? 'border-red-500'
+                                                            : ''
+                                                    }
+                                                />
+                                            </FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+
+                                {/* Summary Field */}
+                                <FormField
+                                    name='summary'
+                                    control={methods.control}
+                                    rules={{ required: 'Summary is required' }}
+                                    render={({ field, fieldState }) => (
+                                        <FormItem>
+                                            <FormLabel>Summary</FormLabel>
+                                            <FormControl>
+                                                <Textarea
+                                                    placeholder='Enter news summary'
+                                                    {...field}
+                                                    value={field.value || ''}
+                                                    className={
+                                                        fieldState.invalid
+                                                            ? 'border-red-500'
+                                                            : ''
+                                                    }
+                                                />
+                                            </FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+
+                                {/* Category Field */}
+                                <FormField
+                                    name='category'
+                                    control={methods.control}
+                                    rules={{ required: 'Category is required' }}
+                                    render={({ field, fieldState }) => (
+                                        <FormItem>
+                                            <FormLabel>Category</FormLabel>
+                                            <FormControl>
+                                                <Select
+                                                    onValueChange={
+                                                        field.onChange
+                                                    }
+                                                    value={field.value || ''}
+                                                >
+                                                    <SelectTrigger
                                                         className={
                                                             fieldState.invalid
                                                                 ? 'border-red-500'
                                                                 : ''
-                                                        }
-                                                    />
-                                                </FormControl>
-                                                <FormMessage />
-                                            </FormItem>
-                                        )}
-                                    />
-
-                                    {/* Summary Field */}
-                                    <FormField
-                                        name='summary'
-                                        control={methods.control}
-                                        rules={{
-                                            required: 'Summary is required',
-                                        }}
-                                        render={({ field, fieldState }) => (
-                                            <FormItem>
-                                                <FormLabel>Summary</FormLabel>
-                                                <FormControl>
-                                                    <Textarea
-                                                        placeholder='Enter news summary'
-                                                        {...field}
-                                                        value={
-                                                            field.value || ''
-                                                        }
-                                                        className={
-                                                            fieldState.invalid
-                                                                ? 'border-red-500'
-                                                                : ''
-                                                        }
-                                                    />
-                                                </FormControl>
-                                                <FormMessage />
-                                            </FormItem>
-                                        )}
-                                    />
-
-                                    {/* Category Field */}
-                                    <FormField
-                                        name='category'
-                                        control={methods.control}
-                                        rules={{
-                                            required: 'Category is required',
-                                        }}
-                                        render={({ field, fieldState }) => (
-                                            <FormItem>
-                                                <FormLabel>Category</FormLabel>
-                                                <FormControl>
-                                                    <Select
-                                                        onValueChange={
-                                                            field.onChange
-                                                        }
-                                                        value={
-                                                            field.value || ''
                                                         }
                                                     >
-                                                        <SelectTrigger
-                                                            className={
-                                                                fieldState.invalid
-                                                                    ? 'border-red-500'
-                                                                    : ''
-                                                            }
-                                                        >
-                                                            <SelectValue placeholder='Select a category' />
-                                                        </SelectTrigger>
-                                                        <SelectContent>
-                                                            <SelectItem value='News'>
-                                                                News
-                                                            </SelectItem>
-                                                            <SelectItem value='Technology'>
-                                                                Technology
-                                                            </SelectItem>
-                                                            <SelectItem value='Health'>
-                                                                Health
-                                                            </SelectItem>
-                                                        </SelectContent>
-                                                    </Select>
-                                                </FormControl>
-                                                <FormMessage />
-                                            </FormItem>
-                                        )}
-                                    />
-                                </form>
-                            </FormProvider>
+                                                        <SelectValue placeholder='Select a category' />
+                                                    </SelectTrigger>
+                                                    <SelectContent>
+                                                        <SelectItem value='News'>
+                                                            News
+                                                        </SelectItem>
+                                                        <SelectItem value='Technology'>
+                                                            Technology
+                                                        </SelectItem>
+                                                        <SelectItem value='Health'>
+                                                            Health
+                                                        </SelectItem>
+                                                    </SelectContent>
+                                                </Select>
+                                            </FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                            </form>
+                        </FormProvider>
 
-                            {/* Editor Component */}
-                            <Editor ref={editorInstanceRef} />
-                        </Suspense>
+                        {/* Editor Component */}
+                        <Editor ref={editorInstanceRef} />
 
                         {/* Save Button for Form Submission */}
                         <Button
