@@ -4,14 +4,14 @@ import * as React from 'react';
 import '@/styles/colors.css';
 
 export const metadata: Metadata = {
-  title: 'Components',
-  description: 'Pre-built components with awesome default',
+    title: 'Components',
+    description: 'Pre-built components with awesome default',
 };
 
 export default function ComponentsLayout({
-  children,
+    children,
 }: {
-  children: React.ReactNode;
+    children: React.ReactNode;
 }) {
-  return <>{children}</>;
+    return <>{children}</>;
 }

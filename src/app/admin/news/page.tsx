@@ -1,45 +1,59 @@
 'use client';
-import React from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 
-import SearchAndCreate from '@/app/components/admin/events/SearchAndCreate';
+import NewsTable from '@/app/components/admin/news/NewsTable';
+import CustomPagination from '@/app/components/admin/Pagination';
+import SearchAndCreate from '@/app/components/admin/SearchAndCreate';
 import AdminLayout from '@/app/layouts/AdminLayouts';
+import { fetchAllNews } from '@/app/utils/api';
+import { useToast } from '@/providers/ToastProvider';
+
+import { AllNewsData } from '@/types';
 
 const NewsDashboardList: React.FC = () => {
-    // const [newsData, setNewsData] = useState<AllNewsData | null>(null);
-    // const [currentPage, setCurrentPage] = useState(1);
-    // const resultsPerPage = 10;
-    // const { success, error } = useToast();
+    const [newsData, setNewsData] = useState<AllNewsData | null>(null);
+    const [currentPage, setCurrentPage] = useState(1);
+    const resultsPerPage = 10;
+    const { success, error } = useToast();
 
-    // const loadNews = async () => {
-    //   try {
-    //     const data = await fetchAllNews({
-    //       sortField: 'updatedAt',
-    //       sortBy: 'desc',
-    //       limit: resultsPerPage,
-    //       page: currentPage,
-    //     });
-    //     setNewsData(data); // Set the correct type
-    //   } catch (error) {
-    //     if (error instanceof Error) {
-    //       console.error('Error fetching news:', error.message);
-    //     } else {
-    //       console.error('Unexpected error:', error);
-    //     }
-    //   }
-    // };
+    const loadNews = useCallback(async () => {
+        try {
+            const data = await fetchAllNews({
+                sortBy: 'desc',
+                limit: resultsPerPage,
+                page: currentPage,
+            });
+            setNewsData(data);
+        } catch (err) {
+            if (err instanceof Error) {
+                console.error('Error fetching news:', err.message);
+                error('Error fetching news');
+            } else {
+                console.error('Unexpected error:', err);
+            }
+        }
+    }, [currentPage, error, resultsPerPage]);
 
     const handleSearch = (query: string) => {
         console.log('Search query:', query);
-        // Implement search logic here
     };
 
     const handleCreate = () => {
-        // Implement create news logic here
+        console.log('Create news clicked');
     };
 
-    // useEffect(() => {
-    //   loadNews();
-    // }, [currentPage]);
+    const handlePageChange = (page: number) => {
+        setCurrentPage(page);
+    };
+
+    const handleDeleteSuccess = () => {
+        loadNews();
+        success('News has been successfully deleted', 3000);
+    };
+
+    useEffect(() => {
+        loadNews();
+    }, [loadNews]);
 
     return (
         <AdminLayout>
@@ -53,6 +67,7 @@ const NewsDashboardList: React.FC = () => {
                             Manage the list of news articles shown to the user
                             here.
                         </p>
+
                         <SearchAndCreate
                             onSearch={handleSearch}
                             onCreate={handleCreate}
@@ -60,7 +75,26 @@ const NewsDashboardList: React.FC = () => {
                             placeholder='Search for news'
                             href='/admin/news/create'
                         />
-                        {/* Additional components and logic would go here */}
+                        {newsData ? (
+                            <>
+                                <NewsTable
+                                    news={newsData.news}
+                                    currentPage={currentPage}
+                                    resultsPerPage={resultsPerPage}
+                                    onDeleteSuccess={handleDeleteSuccess}
+                                />
+                                <CustomPagination
+                                    currentPage={currentPage}
+                                    totalPages={newsData.totalPages}
+                                    totalResults={newsData.totalResults}
+                                    onPageChange={handlePageChange}
+                                />
+                            </>
+                        ) : (
+                            <p className='text-center text-gray-500'>
+                                Loading news...
+                            </p>
+                        )}
                     </div>
                 </div>
             </div>
