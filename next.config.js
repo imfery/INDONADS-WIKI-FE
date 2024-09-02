@@ -11,7 +11,7 @@ const nextConfig = {
             },
         ];
     },
-    reactStrictMode: false,
+    reactStrictMode: true,
     swcMinify: true,
 
     images: {
