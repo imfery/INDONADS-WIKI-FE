@@ -2,16 +2,22 @@ import Cookies from 'js-cookie';
 
 import { EventsData } from '@/types';
 import { NewsData } from '@/types';
-import { AllEventsData } from '@/types';
+import { AllEventsData, AllNewsData, LatestNewsData } from '@/types';
 
-export async function loginUser({ email, password }: { email: string; password: string }) {
+export async function loginUser({
+    email,
+    password,
+}: {
+    email: string;
+    password: string;
+}) {
     Cookies.remove('accessToken', { path: '/' });
     Cookies.remove('accessToken', { path: '/admin' });
 
     const response = await fetch('http://localhost:3000/api/v1/auth/login', {
         method: 'POST',
         headers: {
-            'Accept': 'application/json',
+            Accept: 'application/json',
             'Content-Type': 'application/json',
         },
         body: JSON.stringify({ email, password }),
@@ -43,12 +49,19 @@ export async function loginUser({ email, password }: { email: string; password: 
     return data;
 }
 
-
-export async function registerUser({ name, email, password }: { name: string; email: string; password: string }) {
+export async function registerUser({
+    name,
+    email,
+    password,
+}: {
+    name: string;
+    email: string;
+    password: string;
+}) {
     const response = await fetch('http://localhost:3000/api/v1/auth/register', {
         method: 'POST',
         headers: {
-            'Accept': 'application/json',
+            Accept: 'application/json',
             'Content-Type': 'application/json',
         },
         body: JSON.stringify({ name, email, password }),
@@ -71,7 +84,7 @@ export async function logoutUser() {
     const response = await fetch('http://localhost:3000/api/v1/auth/logout', {
         method: 'POST',
         headers: {
-            'Accept': 'application/json',
+            Accept: 'application/json',
             'Content-Type': 'application/json',
         },
         body: JSON.stringify({ refreshToken }),
@@ -93,16 +106,12 @@ export async function fetchWithAuth(
     onUnauthorized?: () => void
 ) {
     try {
-        console.log('Fetching access token from cookies');
         const accessToken = Cookies.get('accessToken');
-        console.log('Access token:', accessToken);
 
         options.headers = {
             ...options.headers,
-            'Authorization': `Bearer ${accessToken}`,
+            Authorization: `Bearer ${accessToken}`,
         };
-
-        console.log('Sending request to:', url, 'with options:', options);
 
         const response = await fetch(url, options);
 
@@ -160,12 +169,15 @@ export async function fetchAllEvents({
 }
 
 export async function fetchEventsSummary(): Promise<EventsData> {
-    const response = await fetch('http://localhost:3000/api/v1/events/summary', {
-        method: 'GET',
-        headers: {
-            'Accept': 'application/json',
-        },
-    });
+    const response = await fetch(
+        'http://localhost:3000/api/v1/events/summary',
+        {
+            method: 'GET',
+            headers: {
+                Accept: 'application/json',
+            },
+        }
+    );
 
     if (!response.ok) {
         throw new Error('Failed to fetch events');
@@ -179,12 +191,12 @@ export async function fetchEventsSummary(): Promise<EventsData> {
     };
 }
 
-export async function fetchLatestNews(): Promise<NewsData> {
+export async function fetchLatestNews(): Promise<LatestNewsData> {
     const response = await fetch('http://localhost:3000/api/v1/news/latest', {
         method: 'GET',
         headers: {
-            'Accept': 'application/json',
-        }
+            Accept: 'application/json',
+        },
     });
 
     if (!response.ok) {
@@ -214,7 +226,7 @@ export async function createEvent(data: {
     const response = await fetch('http://localhost:5000/v1/events', {
         method: 'POST',
         headers: {
-            'Accept': 'application/json',
+            Accept: 'application/json',
             'Content-Type': 'application/json',
             Authorization: `Bearer ${token}`,
         },
@@ -233,13 +245,23 @@ export async function createEvent(data: {
 }
 
 export async function getEventById(eventId: string) {
-    const response = await fetch(`http://localhost:5000/v1/events/detail/${eventId}`, {
-        method: 'GET',
-        headers: {
-            'Accept': 'application/json',
-            'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
-        },
-    });
+
+    const token = Cookies.get('accessToken');
+
+    if (!token) {
+        throw new Error('No access token found');
+    }
+
+    const response = await fetch(
+        `http://localhost:5000/v1/events/detail/${eventId}`,
+        {
+            method: 'GET',
+            headers: {
+                Accept: 'application/json',
+                Authorization: `Bearer ${token}`,
+            },
+        }
+    );
 
     if (!response.ok) {
         throw new Error('Failed to fetch event details');
@@ -249,16 +271,19 @@ export async function getEventById(eventId: string) {
     return result.data;
 }
 
-export async function updateEvent(eventId: string, data: any) {
+export async function updateEvent(eventId: string, data: object) {
     const token = Cookies.get('accessToken');
-    const response = await fetch(`http://localhost:5000/v1/events/detail/${eventId}`, {
-        method: 'PATCH',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`,
-        },
-        body: JSON.stringify(data),
-    });
+    const response = await fetch(
+        `http://localhost:5000/v1/events/detail/${eventId}`,
+        {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify(data),
+        }
+    );
 
     if (!response.ok) {
         const errorData = await response.json();
@@ -273,13 +298,16 @@ export async function updateEvent(eventId: string, data: any) {
 
 export async function deleteEventById(eventId: string) {
     const token = Cookies.get('accessToken');
-    const response = await fetch(`http://localhost:5000/v1/events/detail/${eventId}`, {
-        method: 'DELETE',
-        headers: {
-            'Accept': 'application/json',
-            'Authorization': `Bearer ${token}`,
-        },
-    });
+    const response = await fetch(
+        `http://localhost:5000/v1/events/detail/${eventId}`,
+        {
+            method: 'DELETE',
+            headers: {
+                Accept: 'application/json',
+                Authorization: `Bearer ${token}`,
+            },
+        }
+    );
 
     if (!response.ok) {
         throw new Error('Failed to delete event');
@@ -290,4 +318,177 @@ export async function deleteEventById(eventId: string) {
     }
 
     return response.json();
+}
+
+/**
+ * Upload an image to the server
+ * @param {File} file - The image file to upload
+ * @returns {Promise<{ success: number, file: { url: string } }>} - The response from the server
+ */
+export async function uploadImage(
+    file: File
+): Promise<{ success: number; file: { url: string } }> {
+    const token = Cookies.get('accessToken');
+
+    if (!token) {
+        throw new Error('No access token found');
+    }
+
+    const formData = new FormData();
+    formData.append('file', file);
+
+    const response = await fetch('http://localhost:5000/v1/upload', {
+        method: 'POST',
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+        body: formData,
+    });
+
+    if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Failed to upload image');
+    }
+
+    return response.json();
+}
+
+/**
+ * Create a news item.
+ * @param {Object} newsData - The news data including title, summary, category, and editor content blocks.
+ * @returns {Promise<any>} The server response.
+ */
+export async function createNews(newsData: {
+    title: string;
+    summary: string;
+    category: string;
+    content: string; // This will hold the editor.js content blocks
+}) {
+    const token = Cookies.get('accessToken'); // Get the access token from cookies
+
+    if (!token) {
+        throw new Error('No access token found'); // Handle the case where there is no token
+    }
+
+    // Convert content blocks to a string
+    const contentString = newsData.content;
+
+    // Add createdBy and updatedBy to the news data
+    const newsDataWithContent = {
+        ...newsData,
+        content: contentString, // Convert content blocks to a string
+    };
+
+    try {
+        const response = await fetch('http://localhost:5000/v1/news', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`, // Include the access token in the Authorization header
+            },
+            body: JSON.stringify(newsDataWithContent), // Send the news data with user info in the request body
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.message || 'Failed to create news');
+        }
+
+        const result = await response.json();
+        return result;
+    } catch (error) {
+        console.error('Error creating news:', error);
+        throw error;
+    }
+}
+
+export async function fetchAllNews({
+    sortBy = 'desc',
+    limit = 10,
+    page = 1,
+}: {
+    sortBy?: string;
+    limit?: number;
+    page?: number;
+}): Promise<AllNewsData> {
+    const response = await fetch(
+        `http://localhost:5000/v1/news?sortField=updatedAt&sortBy=${sortBy}&limit=${limit}&page=${page}`,
+        {
+            method: 'GET',
+            headers: {
+                Accept: 'application/json',
+            },
+        }
+    );
+
+    if (!response.ok) {
+        throw new Error('Failed to fetch news');
+    }
+
+    const data = await response.json();
+
+    // Map the response to match the AllNewsData interface
+    return {
+        news: data.data.news, // Assuming your response structure is data.data.news
+        totalPages: data.data.totalPages,
+        currentPage: data.data.page,
+        totalResults: data.data.totalResults,
+    };
+}
+
+// Fetch news by ID
+export async function fetchNewsById(id: string): Promise<NewsData> {
+    const response = await fetch(`http://localhost:5000/v1/news/${id}`, {
+        method: 'GET',
+        headers: {
+            Accept: 'application/json',
+        },
+    });
+
+    if (!response.ok) {
+        throw new Error('Failed to fetch news');
+    }
+
+    const result = await response.json();
+    return result.data;
+}
+
+// Delete news by ID
+export async function deleteNewsById(id: string): Promise<void> {
+    const token = Cookies.get('accessToken');
+    if (!token) throw new Error('No access token found');
+
+    const response = await fetch(`http://localhost:5000/v1/news/${id}`, {
+        method: 'DELETE',
+        headers: {
+            Accept: 'application/json',
+            Authorization: `Bearer ${token}`,
+        },
+    });
+
+    if (!response.ok) {
+        throw new Error('Failed to delete news');
+    }
+}
+
+// Update news
+export async function updateNews(
+    id: string,
+    data: Partial<NewsData>
+): Promise<void> {
+    const token = Cookies.get('accessToken');
+    if (!token) throw new Error('No access token found');
+
+    const response = await fetch(`http://localhost:5000/v1/news/${id}`, {
+        method: 'PATCH',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(data),
+    });
+
+    if (!response.ok) {
+        throw new Error('Failed to update news');
+    }
 }
