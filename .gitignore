@@ -41,3 +41,6 @@ robots.txt
 sitemap.xml
 sitemap-*.xml
 certificates
+
+# vscode
+.vscode/launch.json

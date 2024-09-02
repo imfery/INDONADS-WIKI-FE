@@ -1,7 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
@@ -26,11 +26,6 @@ import { Textarea } from '@/components/ui/textarea';
 import AdminLayout from '@/app/layouts/AdminLayouts';
 import { createNews } from '@/app/utils/api';
 import { useToast } from '@/providers/ToastProvider';
-import dynamic from 'next/dynamic';
-
-const Editor = dynamic(() => import('@/app/components/admin/editor/Editor'), {
-    ssr: false,
-});
 
 const NewsDashboardForm: React.FC = () => {
     const methods = useForm({
@@ -46,6 +41,21 @@ const NewsDashboardForm: React.FC = () => {
     const { success, error } = useToast();
     const [showAlert, setShowAlert] = useState(false);
     const [errorMessage, setErrorMessage] = useState<string | undefined>();
+    const [EditorComponent, setEditorComponent] =
+        useState<React.ComponentType<any> | null>(null);
+    const [isEditorLoaded, setIsEditorLoaded] = useState(false); // Track if Editor has loaded
+
+    useEffect(() => {
+        // Dynamically import the Editor component and handle it with `.then`
+        import('@/app/components/admin/editor/Editor')
+            .then((EditorModule) => {
+                setEditorComponent(() => EditorModule.default);
+                setIsEditorLoaded(true); // Set as loaded once component is imported
+            })
+            .catch((error) =>
+                console.error('Failed to load the editor component:', error)
+            );
+    }, []);
 
     const onSubmit = async (data: any) => {
         setShowAlert(false); // Reset alert visibility
@@ -211,13 +221,16 @@ const NewsDashboardForm: React.FC = () => {
                             </form>
                         </FormProvider>
 
-                        {/* Editor Component */}
-                        <Editor ref={editorInstanceRef} />
+                        {/* Editor Component Dynamically Loaded */}
+                        {EditorComponent && (
+                            <EditorComponent ref={editorInstanceRef} />
+                        )}
 
                         {/* Save Button for Form Submission */}
                         <Button
                             className='mt-4'
                             onClick={handleSaveButtonClick}
+                            disabled={!isEditorLoaded} // Disable button until editor is ready
                         >
                             Save News
                         </Button>

@@ -1,9 +1,9 @@
 'use client';
 
-import dynamic from 'next/dynamic';
 import { useRouter } from 'next/navigation';
 import React, { Suspense, useEffect, useRef, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
+import dynamic from 'next/dynamic';
 
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
@@ -23,14 +23,11 @@ import {
     SelectValue,
 } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
+
 import AdminLayout from '@/app/layouts/AdminLayouts';
 import { fetchNewsById, updateNews } from '@/app/utils/api';
 import { useToast } from '@/providers/ToastProvider';
 import SearchParamsLoader from '@/app/components/admin/SearchParamsLoader';
-
-const Editor = dynamic(() => import('@/app/components/admin/editor/Editor'), {
-    ssr: false,
-});
 
 const EditNewsForm: React.FC = () => {
     const methods = useForm({
@@ -46,11 +43,23 @@ const EditNewsForm: React.FC = () => {
     const [params, setParams] = useState<URLSearchParams | null>(null);
     const newsId = params?.get('id');
     const editorInstanceRef = useRef<any>(null);
+    const [EditorComponent, setEditorComponent] =
+        useState<React.ComponentType<any> | null>(null);
     const [showAlert, setShowAlert] = useState(false);
     const [errorMessage, setErrorMessage] = useState<string | undefined>();
-    const [initialData, setInitialData] = useState<any>(null); // State for initial editor data
+    const [initialData, setInitialData] = useState<any>(null);
+    const [isEditorLoaded, setIsEditorLoaded] = useState(false); // Track if Editor has loaded
 
     useEffect(() => {
+        import('@/app/components/admin/editor/Editor')
+            .then((EditorModule) => {
+                setEditorComponent(() => EditorModule.default);
+                setIsEditorLoaded(true);
+            })
+            .catch((error) =>
+                console.error('Failed to load the editor component:', error)
+            );
+
         const fetchNews = async () => {
             try {
                 if (newsId) {
@@ -237,9 +246,9 @@ const EditNewsForm: React.FC = () => {
                             </form>
                         </FormProvider>
 
-                        {/* Editor Component */}
-                        {initialData && (
-                            <Editor
+                        {/* Render Editor Component Dynamically */}
+                        {EditorComponent && initialData && (
+                            <EditorComponent
                                 ref={editorInstanceRef}
                                 initialData={initialData}
                             />
@@ -249,6 +258,7 @@ const EditNewsForm: React.FC = () => {
                         <Button
                             className='mt-4'
                             onClick={methods.handleSubmit(onSubmit, onError)}
+                            disabled={!isEditorLoaded} // Disable button until editor is ready
                         >
                             Update News
                         </Button>
