@@ -1,5 +1,6 @@
 'use client';
 
+import dynamic from 'next/dynamic';
 import { useRouter } from 'next/navigation';
 import React, { Suspense, useEffect, useRef, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
@@ -22,12 +23,14 @@ import {
     SelectValue,
 } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
-
-import Editor from '@/app/components/admin/editor/Editor';
 import AdminLayout from '@/app/layouts/AdminLayouts';
 import { fetchNewsById, updateNews } from '@/app/utils/api';
 import { useToast } from '@/providers/ToastProvider';
 import SearchParamsLoader from '@/app/components/admin/SearchParamsLoader';
+
+const Editor = dynamic(() => import('@/app/components/admin/editor/Editor'), {
+    ssr: false,
+});
 
 const EditNewsForm: React.FC = () => {
     const methods = useForm({
@@ -93,7 +96,6 @@ const EditNewsForm: React.FC = () => {
             }
         } catch (err: any) {
             if (err.response && err.response.status === 400) {
-                // Check if error is a 400 response
                 setErrorMessage(
                     err.response.data.message || 'Invalid input data'
                 );

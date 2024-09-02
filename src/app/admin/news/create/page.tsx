@@ -23,10 +23,14 @@ import {
 } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 
-import Editor from '@/app/components/admin/editor/Editor';
 import AdminLayout from '@/app/layouts/AdminLayouts';
 import { createNews } from '@/app/utils/api';
 import { useToast } from '@/providers/ToastProvider';
+import dynamic from 'next/dynamic';
+
+const Editor = dynamic(() => import('@/app/components/admin/editor/Editor'), {
+    ssr: false,
+});
 
 const NewsDashboardForm: React.FC = () => {
     const methods = useForm({

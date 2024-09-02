@@ -245,13 +245,20 @@ export async function createEvent(data: {
 }
 
 export async function getEventById(eventId: string) {
+
+    const token = Cookies.get('accessToken');
+
+    if (!token) {
+        throw new Error('No access token found');
+    }
+
     const response = await fetch(
         `http://localhost:5000/v1/events/detail/${eventId}`,
         {
             method: 'GET',
             headers: {
                 Accept: 'application/json',
-                Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+                Authorization: `Bearer ${token}`,
             },
         }
     );
