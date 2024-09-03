@@ -24,6 +24,7 @@ const ArticlesDashboardList: React.FC = () => {
                 sortBy: 'desc',
                 limit: resultsPerPage,
                 page: currentPage,
+                sortField: 'updatedAt',
             });
             setArticlesData(data);
         } catch (err) {
@@ -87,6 +88,7 @@ const ArticlesDashboardList: React.FC = () => {
                                 />
                                 <CustomPagination
                                     currentPage={currentPage}
+                                    resultsPerPage={articlesData.limit}
                                     totalPages={articlesData.totalPages}
                                     totalResults={articlesData.totalResults}
                                     onPageChange={handlePageChange}

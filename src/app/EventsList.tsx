@@ -41,7 +41,7 @@ const EventsList: React.FC<EventsListProps> = ({ event = [] }) => (
                                 {e.date}
                             </p>
                             {e.location ? (
-                                <Badge className='mt-1 text-xs sm:text-sm text-gray-500 line-clamp-3 text-right bg-gray-100 rounded-full px-2 py-1'>
+                                <Badge className='mt-1 text-xs sm:text-sm text-gray-500 line-clamp-3 text-right bg-gray-100 rounded-full px-2 py-1 hover:text-gray-500 hover:bg-gray-100'>
                                     {e.location}
                                 </Badge>
                             ) : (

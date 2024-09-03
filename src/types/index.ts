@@ -11,20 +11,6 @@ export interface EventsData {
     concludedEvents: Event[];
 }
 
-export interface LatestArticles {
-    tags: string[];
-    title: string;
-    summary: string;
-    content: string;
-    coverImageUrl: string;
-    category: string;
-    url: string;
-}
-
-export interface LatestArticlesData {
-    latestArticles: LatestArticles[];
-}
-
 export interface AllEvents {
     id: number;
     title: string;
@@ -36,6 +22,7 @@ export interface AllEvents {
 
 export interface AllEventsData {
     events: AllEvents[];
+    limit: number,
     totalPages: number;
     currentPage: number;
     totalResults: number;
@@ -53,6 +40,7 @@ export interface ArticlesData {
 
 export interface AllArticlesData {
     articles: ArticlesData[];
+    limit: number;
     totalPages: number;
     currentPage: number;
     totalResults: number;

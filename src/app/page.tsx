@@ -6,18 +6,28 @@ import ConcludedEvents from '@/app/ConcludedEvents';
 import Footer from '@/app/Footers';
 import Header from '@/app/Headers';
 import UpcomingEvents from '@/app/UpcomingEvents';
-import { fetchEventsSummary } from '@/app/utils/api';
+import { fetchEventsSummary, fetchActiveArticles } from '@/app/utils/api';
 import { ToastProvider } from '@/providers/ToastProvider';
 import { Separator } from '@/components/ui/separator';
-
-import { EventsData } from '@/types';
 import { Skeleton } from '@/components/ui/skeleton';
+import ActiveArticlesList from './ActiveArticlesList';
+import CustomPagination from '@/app/components/admin/Pagination'; // Import the pagination component
+
+import { EventsData, AllArticlesData } from '@/types';
 
 export default function HomePage() {
     const [events, setEvents] = React.useState<EventsData | null>(null);
+    const [articles, setArticles] = React.useState<AllArticlesData | null>(
+        null
+    );
+    const [loadingEvents, setLoadingEvents] = React.useState(true);
+    const [loadingArticles, setLoadingArticles] = React.useState(true);
+    const [error, setError] = React.useState<string | null>(null);
+    const [currentPage, setCurrentPage] = React.useState(1);
 
     React.useEffect(() => {
-        let isMounted = true; // flag to prevent state update if component unmounts
+        let isMounted = true; // Flag to prevent state update if component unmounts
+
         async function loadEvents() {
             try {
                 const data = await fetchEventsSummary();
@@ -25,17 +35,38 @@ export default function HomePage() {
                     setEvents(data);
                 }
             } catch (error) {
-                // eslint-disable-next-line no-console
                 console.error('Failed to fetch events:', error);
+            } finally {
+                setLoadingEvents(false);
+            }
+        }
+
+        async function loadArticles(page = 1) {
+            try {
+                setLoadingArticles(true);
+                const data = await fetchActiveArticles({ page });
+                if (isMounted) {
+                    setArticles(data);
+                }
+            } catch (error) {
+                console.error('Failed to fetch articles:', error);
+                setError('Failed to fetch articles');
+            } finally {
+                setLoadingArticles(false);
             }
         }
 
         loadEvents();
+        loadArticles(currentPage);
 
         return () => {
-            isMounted = false; // cleanup to avoid setting state after unmount
+            isMounted = false; // Cleanup to avoid setting state after unmount
         };
-    }, []);
+    }, [currentPage]);
+
+    const handlePageChange = (page: number) => {
+        setCurrentPage(page);
+    };
 
     return (
         <ToastProvider>
@@ -53,11 +84,36 @@ export default function HomePage() {
                             </p>
                         </div>
                         <div className='flex flex-col md:flex-row'>
-                            <div className='md:w-4/6 bg-gray-200 p-4 mb-4 md:mb-0'>
-                                <p>Lorem Ipsum</p>
+                            {/* Replacing Lorem Ipsum with the Active Articles section */}
+                            <div className='md:w-4/6 p-4 mb-4 md:mb-0'>
+                                {loadingArticles ? (
+                                    <Skeleton className='h-10 w-full bg-gray-200' />
+                                ) : articles ? (
+                                    <>
+                                        <ActiveArticlesList
+                                            articles={articles.articles}
+                                        />
+                                        <CustomPagination
+                                            currentPage={currentPage}
+                                            totalPages={articles.totalPages}
+                                            totalResults={articles.totalResults}
+                                            resultsPerPage={articles.limit}
+                                            onPageChange={handlePageChange}
+                                        />
+                                    </>
+                                ) : (
+                                    <p className='text-center text-red-500'>
+                                        {error}
+                                    </p>
+                                )}
                             </div>
                             <div className='md:w-2/6 p-4'>
-                                {events ? (
+                                {loadingEvents ? (
+                                    <div className='space-y-4'>
+                                        <Skeleton className='h-10 w-full bg-gray-200' />
+                                        <Skeleton className='h-10 w-full bg-gray-200' />
+                                    </div>
+                                ) : events ? (
                                     <>
                                         <UpcomingEvents
                                             events={events.upcomingEvents}
@@ -68,10 +124,9 @@ export default function HomePage() {
                                         />
                                     </>
                                 ) : (
-                                    <div className='space-y-4'>
-                                        <Skeleton className='h-10 w-full bg-gray-200' />
-                                        <Skeleton className='h-10 w-full bg-gray-200' />
-                                    </div>
+                                    <p className='text-center text-gray-500'>
+                                        No events to display.
+                                    </p>
                                 )}
                             </div>
                         </div>

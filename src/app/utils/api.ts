@@ -2,7 +2,7 @@ import Cookies from 'js-cookie';
 
 import { EventsData } from '@/types';
 import { ArticlesData } from '@/types';
-import { AllEventsData, AllArticlesData, LatestArticlesData } from '@/types';
+import { AllEventsData, AllArticlesData } from '@/types';
 
 export async function loginUser({
     email,
@@ -162,6 +162,7 @@ export async function fetchAllEvents({
 
     return {
         events: data.data.events,
+        limit: limit,
         totalPages: data.data.totalPages,
         currentPage: data.data.page,
         totalResults: data.data.totalResults, // Extracting totalResults correctly
@@ -188,25 +189,6 @@ export async function fetchEventsSummary(): Promise<EventsData> {
     return {
         upcomingEvents: data.data.upcomingEvents,
         concludedEvents: data.data.concludedEvents,
-    };
-}
-
-export async function fetchLatestArticles(): Promise<LatestArticlesData> {
-    const response = await fetch('http://localhost:3000/api/v1/articles/latest', {
-        method: 'GET',
-        headers: {
-            Accept: 'application/json',
-        },
-    });
-
-    if (!response.ok) {
-        throw new Error('Failed to fetch latest articles');
-    }
-
-    const data = await response.json();
-
-    return {
-        latestArticles: data.data.latestArticles,
     };
 }
 
@@ -406,13 +388,15 @@ export async function fetchAllArticles({
     sortBy = 'desc',
     limit = 10,
     page = 1,
+    sortField = 'createdAt',
 }: {
     sortBy?: string;
     limit?: number;
     page?: number;
+    sortField?: string;
 }): Promise<AllArticlesData> {
     const response = await fetch(
-        `http://localhost:5000/v1/articles?sortField=updatedAt&sortBy=${sortBy}&limit=${limit}&page=${page}`,
+        `http://localhost:5000/v1/articles?sortField=${sortField}&sortBy=${sortBy}&limit=${limit}&page=${page}`,
         {
             method: 'GET',
             headers: {
@@ -430,6 +414,7 @@ export async function fetchAllArticles({
     // Map the response to match the AllArticlesData interface
     return {
         articles: data.data.articles, // Assuming your response structure is data.data.articles
+        limit: limit,
         totalPages: data.data.totalPages,
         currentPage: data.data.page,
         totalResults: data.data.totalResults,
@@ -490,5 +475,61 @@ export async function updateArticles(
 
     if (!response.ok) {
         throw new Error('Failed to update articles');
+    }
+}
+
+/**
+ * Fetch active articles with pagination and sorting.
+ * @param {Object} params - The query parameters.
+ * @param {string} params.sortField - Field to sort by (default is 'createdAt').
+ * @param {string} params.sortBy - Sort order (either 'asc' or 'desc', default is 'desc').
+ * @param {number} params.limit - Maximum number of results per page (default is 5).
+ * @param {number} params.page - Current page number (default is 1).
+ * @returns {Promise<AllArticlesData>} - The fetched articles data.
+ */
+export async function fetchActiveArticles({
+    sortField = 'createdAt',
+    sortBy = 'desc',
+    limit = 5,
+    page = 1,
+}: {
+    sortField?: string;
+    sortBy?: string;
+    limit?: number;
+    page?: number;
+}): Promise<AllArticlesData> {
+    try {
+        const response = await fetch(
+            `http://localhost:5000/v1/articles/fetchActiveArticles?sortField=${sortField}&sortBy=${sortBy}&limit=${limit}&page=${page}`,
+            {
+                method: 'GET',
+                headers: {
+                    Accept: 'application/json',
+                },
+            }
+        );
+
+        if (!response.ok) {
+            throw new Error('Failed to fetch active articles');
+        }
+
+        const data = await response.json();
+
+        return {
+            articles: data.data.articles || [],
+            limit: limit,
+            totalPages: data.data.totalPages || 0,
+            currentPage: data.data.currentPage || 1,
+            totalResults: data.data.totalResults || 0,
+        };
+    } catch (error) {
+        console.error('Error fetching articles:', error);
+        return {
+            articles: [],
+            limit: limit,
+            totalPages: 0,
+            currentPage: 1,
+            totalResults: 0,
+        }; // Return empty data structure on error
     }
 }
