@@ -29,18 +29,11 @@ const MobileNav: FC<MobileNavProps> = ({ isOpen, onClose }) => {
                     className='text-white text-lg py-2'
                     onClick={onClose}
                 >
-                    Contribute
+                    About
                 </Link>
-                <Link
-                    href='/contact'
-                    className='text-white text-lg py-2'
-                    onClick={onClose}
-                >
-                    Follow Us
-                </Link>
-                <div className='py-2 px-4 w-full'>
+                {/* <div className='py-2 px-4 w-full'>
                     <SearchInput placeholder='Search (WIP)' />
-                </div>
+                </div> */}
             </nav>
         </div>
     );
