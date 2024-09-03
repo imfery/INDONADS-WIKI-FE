@@ -1,8 +1,9 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import React, { useRef, useState, useEffect } from 'react';
+import React, { Suspense, useEffect, useRef, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
+import dynamic from 'next/dynamic';
 
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
@@ -24,10 +25,11 @@ import {
 import { Textarea } from '@/components/ui/textarea';
 
 import AdminLayout from '@/app/layouts/AdminLayouts';
-import { createNews } from '@/app/utils/api';
+import { fetchArticlesById, updateArticles } from '@/app/utils/api';
 import { useToast } from '@/providers/ToastProvider';
+import SearchParamsLoader from '@/app/components/admin/SearchParamsLoader';
 
-const NewsDashboardForm: React.FC = () => {
+const EditArticlesForm: React.FC = () => {
     const methods = useForm({
         defaultValues: {
             title: '',
@@ -37,96 +39,119 @@ const NewsDashboardForm: React.FC = () => {
     });
 
     const router = useRouter();
-    const editorInstanceRef = useRef<any>(null);
     const { success, error } = useToast();
-    const [showAlert, setShowAlert] = useState(false);
-    const [errorMessage, setErrorMessage] = useState<string | undefined>();
+    const [params, setParams] = useState<URLSearchParams | null>(null);
+    const articlesId = params?.get('id');
+    const editorInstanceRef = useRef<any>(null);
     const [EditorComponent, setEditorComponent] =
         useState<React.ComponentType<any> | null>(null);
+    const [showAlert, setShowAlert] = useState(false);
+    const [errorMessage, setErrorMessage] = useState<string | undefined>();
+    const [initialData, setInitialData] = useState<any>(null);
     const [isEditorLoaded, setIsEditorLoaded] = useState(false); // Track if Editor has loaded
 
     useEffect(() => {
-        // Dynamically import the Editor component and handle it with `.then`
         import('@/app/components/admin/editor/Editor')
             .then((EditorModule) => {
                 setEditorComponent(() => EditorModule.default);
-                setIsEditorLoaded(true); // Set as loaded once component is imported
+                setIsEditorLoaded(true);
             })
             .catch((error) =>
                 console.error('Failed to load the editor component:', error)
             );
-    }, []);
+
+        const fetchArticles = async () => {
+            try {
+                if (articlesId) {
+                    const articles = await fetchArticlesById(articlesId);
+                    methods.reset({
+                        title: articles.title,
+                        summary: articles.summary,
+                        category: articles.category,
+                    });
+
+                    setInitialData(JSON.parse(articles.content)); // Set initial data for editor
+                }
+            } catch (err) {
+                console.log('Error -> ', err);
+                setErrorMessage('Failed to load articles details.');
+                setShowAlert(true);
+            }
+        };
+
+        if (articlesId) {
+            fetchArticles();
+        }
+    }, [articlesId, methods]);
 
     const onSubmit = async (data: any) => {
-        setShowAlert(false); // Reset alert visibility
-        setErrorMessage(undefined); // Reset error message
+        setShowAlert(false);
+        setErrorMessage(undefined);
 
         try {
             const editorContent =
                 await editorInstanceRef.current?.saveContent();
-
             if (editorContent) {
                 const requestBody = {
                     ...data,
                     content: JSON.stringify(editorContent), // Convert editor blocks to JSON string
                 };
 
-                try {
-                    await createNews(requestBody); // Call the API function to create news
-                    success('News created successfully', 3000); // Show success toast message
-                    router.push('/admin/news'); // Redirect to the news list page after successful creation
-                } catch (err: any) {
-                    if (err.response && err.response.status === 400) {
-                        // Check if error is a 400 response
-                        setErrorMessage(
-                            err.response.data.message || 'Invalid input data'
-                        );
-                    } else {
-                        error(err.message, 3000);
-                        setErrorMessage(err.message);
-                    }
-                    setShowAlert(true); // Show the alert with error message
-                }
+                await updateArticles(articlesId as string, requestBody);
+                success('Articles has been successfully edited', 3000);
+                router.push('/admin/articles');
             } else {
-                console.error('Failed to save editor content.');
-                setErrorMessage('Failed to save editor content.');
-                setShowAlert(true); // Show the alert if editor content is not saved
+                throw new Error('Failed to save editor content.');
             }
-        } catch (error) {
-            console.error('Error saving editor content:', error);
-            setErrorMessage('An unexpected error occurred.');
-            setShowAlert(true); // Show the alert for unexpected errors
+        } catch (err: any) {
+            if (err.response && err.response.status === 400) {
+                setErrorMessage(
+                    err.response.data.message || 'Invalid input data'
+                );
+                error(err.response.data.message || 'Invalid input data', 3000);
+            } else {
+                error(err.message, 3000);
+                setErrorMessage(err.message);
+            }
+            setShowAlert(true);
         }
     };
 
-    const handleSaveButtonClick = () => {
-        methods.handleSubmit(onSubmit)();
+    const onError = () => {
+        setShowAlert(true);
     };
 
     return (
         <AdminLayout>
+            <Suspense fallback={<div>Loading...</div>}>
+                <SearchParamsLoader onLoad={setParams} />
+            </Suspense>
             <div className='relative overflow-x-auto'>
                 <div className='pb-8 bg-white'>
                     <div className='p-5'>
                         <h2 className='text-3xl font-semibold text-gray-900'>
-                            News
+                            Edit Articles
                         </h2>
                         <p className='mt-1 text-sm font-normal text-gray-500'>
-                            Create a news article from scratch here!
+                            Edit the articles article below.
                         </p>
-
-                        {/* Show alert if there's an error */}
                         {showAlert && (
                             <Alert variant='destructive' className='mb-4'>
                                 <AlertTitle>Error</AlertTitle>
                                 <AlertDescription>
-                                    {errorMessage}
+                                    {errorMessage ||
+                                        'Please fill out all required fields before submitting.'}
                                 </AlertDescription>
                             </Alert>
                         )}
-
                         <FormProvider {...methods}>
-                            <form className='space-y-6 w-3/4 mt-10'>
+                            <form
+                                onSubmit={methods.handleSubmit(
+                                    onSubmit,
+                                    onError
+                                )}
+                                className='space-y-6 w-3/4 mt-10'
+                            >
                                 {/* Title Field */}
                                 <FormField
                                     name='title'
@@ -137,7 +162,7 @@ const NewsDashboardForm: React.FC = () => {
                                             <FormLabel>Title</FormLabel>
                                             <FormControl>
                                                 <Input
-                                                    placeholder='Enter news title'
+                                                    placeholder='Enter articles title'
                                                     {...field}
                                                     value={field.value || ''}
                                                     className={
@@ -162,7 +187,7 @@ const NewsDashboardForm: React.FC = () => {
                                             <FormLabel>Summary</FormLabel>
                                             <FormControl>
                                                 <Textarea
-                                                    placeholder='Enter news summary'
+                                                    placeholder='Enter articles summary'
                                                     {...field}
                                                     value={field.value || ''}
                                                     className={
@@ -202,8 +227,8 @@ const NewsDashboardForm: React.FC = () => {
                                                         <SelectValue placeholder='Select a category' />
                                                     </SelectTrigger>
                                                     <SelectContent>
-                                                        <SelectItem value='News'>
-                                                            News
+                                                        <SelectItem value='Articles'>
+                                                            Articles
                                                         </SelectItem>
                                                         <SelectItem value='Technology'>
                                                             Technology
@@ -221,18 +246,21 @@ const NewsDashboardForm: React.FC = () => {
                             </form>
                         </FormProvider>
 
-                        {/* Editor Component Dynamically Loaded */}
-                        {EditorComponent && (
-                            <EditorComponent ref={editorInstanceRef} />
+                        {/* Render Editor Component Dynamically */}
+                        {EditorComponent && initialData && (
+                            <EditorComponent
+                                ref={editorInstanceRef}
+                                initialData={initialData}
+                            />
                         )}
 
                         {/* Save Button for Form Submission */}
                         <Button
                             className='mt-4'
-                            onClick={handleSaveButtonClick}
+                            onClick={methods.handleSubmit(onSubmit, onError)}
                             disabled={!isEditorLoaded} // Disable button until editor is ready
                         >
-                            Save News
+                            Update Articles
                         </Button>
                     </div>
                 </div>
@@ -241,4 +269,4 @@ const NewsDashboardForm: React.FC = () => {
     );
 };
 
-export default NewsDashboardForm;
+export default EditArticlesForm;

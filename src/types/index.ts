@@ -11,7 +11,7 @@ export interface EventsData {
     concludedEvents: Event[];
 }
 
-export interface LatestNews {
+export interface LatestArticles {
     tags: string[];
     title: string;
     summary: string;
@@ -21,8 +21,8 @@ export interface LatestNews {
     url: string;
 }
 
-export interface LatestNewsData {
-    latestNews: LatestNews[];
+export interface LatestArticlesData {
+    latestArticles: LatestArticles[];
 }
 
 export interface AllEvents {
@@ -41,7 +41,7 @@ export interface AllEventsData {
     totalResults: number;
 }
 
-export interface NewsData {
+export interface ArticlesData {
     id: string;
     title: string;
     summary: string;
@@ -51,8 +51,8 @@ export interface NewsData {
     createdAt: string;
 }
 
-export interface AllNewsData {
-    news: NewsData[];
+export interface AllArticlesData {
+    articles: ArticlesData[];
     totalPages: number;
     currentPage: number;
     totalResults: number;

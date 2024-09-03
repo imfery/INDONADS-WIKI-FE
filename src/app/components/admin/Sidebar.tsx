@@ -44,9 +44,9 @@ const Sidebar: React.FC = () => {
                         isActive={pathname === '/admin/team'}
                     />
                     <SidebarItem
-                        href='/admin/news'
-                        label='News'
-                        isActive={pathname === '/admin/news'}
+                        href='/admin/articles'
+                        label='Articles'
+                        isActive={pathname === '/admin/articles'}
                     />
                 </ul>
                 <div className='mt-auto pt-4'>
