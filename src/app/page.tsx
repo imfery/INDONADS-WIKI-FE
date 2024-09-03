@@ -8,8 +8,10 @@ import Header from '@/app/Headers';
 import UpcomingEvents from '@/app/UpcomingEvents';
 import { fetchEventsSummary } from '@/app/utils/api';
 import { ToastProvider } from '@/providers/ToastProvider';
+import { Separator } from '@/components/ui/separator';
 
 import { EventsData } from '@/types';
+import { Skeleton } from '@/components/ui/skeleton';
 
 export default function HomePage() {
     const [events, setEvents] = React.useState<EventsData | null>(null);
@@ -60,12 +62,16 @@ export default function HomePage() {
                                         <UpcomingEvents
                                             events={events.upcomingEvents}
                                         />
+                                        <Separator className='my-8 border-t border-gray-300' />
                                         <ConcludedEvents
                                             events={events.concludedEvents}
                                         />
                                     </>
                                 ) : (
-                                    <p>Loading events...</p>
+                                    <div className='space-y-4'>
+                                        <Skeleton className='h-10 w-full bg-gray-200' />
+                                        <Skeleton className='h-10 w-full bg-gray-200' />
+                                    </div>
                                 )}
                             </div>
                         </div>
