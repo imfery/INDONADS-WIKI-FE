@@ -63,7 +63,7 @@ declare module '@editorjs/underline' {
     import { InlineToolConstructable, API } from '@editorjs/editorjs';
 
     interface UnderlineConfig {
-        shortcut?: string; // Keyboard shortcut for the tool, e.g., "CMD+U"
+        shortcut?: string;
     }
 
     export default class Underline implements InlineToolConstructable {
@@ -87,7 +87,7 @@ declare module '@editorjs/marker' {
     import { InlineToolConstructable, API } from '@editorjs/editorjs';
 
     interface MarkerConfig {
-        shortcut?: string; // Keyboard shortcut for the tool, e.g., "CMD+M"
+        shortcut?: string;
     }
 
     export default class Marker implements InlineToolConstructable {
@@ -115,14 +115,14 @@ declare module '@bomdi/codebox' {
     } from '@editorjs/editorjs';
 
     interface CodeBoxConfig {
-        placeholder?: string; // Optional: Placeholder text for the code block
-        theme?: 'light' | 'dark'; // Optional: Theme for the code block
-        readOnly?: boolean; // Optional: Read-only mode
+        placeholder?: string;
+        theme?: 'light' | 'dark';
+        readOnly?: boolean;
     }
 
     interface CodeBoxData extends BlockToolData {
-        code: string; // The actual code content stored in the block
-        language: string; // Programming language of the code
+        code: string;
+        language: string;
     }
 
     export default class CodeBox implements BlockToolConstructable {

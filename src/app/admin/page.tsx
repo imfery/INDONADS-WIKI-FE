@@ -3,21 +3,16 @@ import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 
 import AdminLayout from '@/app/layouts/AdminLayouts';
-import { fetchWithAuth } from '@/app/utils/api';
+import { validateToken } from '@/app/utils/api';
 
 const AdminPage: React.FC = () => {
     const router = useRouter();
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
-        const validateToken = async () => {
+        const validateUserToken = async () => {
             try {
-                const response = await fetchWithAuth(
-                    'http://localhost:3000/api/v1/auth/validate',
-                    {
-                        method: 'POST',
-                    }
-                );
+                const response = await validateToken();
 
                 if (response.status === 200) {
                     setIsLoading(false);
@@ -29,7 +24,7 @@ const AdminPage: React.FC = () => {
             }
         };
 
-        validateToken();
+        validateUserToken();
     }, [router]);
 
     if (isLoading) {

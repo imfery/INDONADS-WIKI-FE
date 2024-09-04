@@ -47,7 +47,7 @@ const EditArticlesForm: React.FC = () => {
     const [showAlert, setShowAlert] = useState(false);
     const [errorMessage, setErrorMessage] = useState<string | undefined>();
     const [initialData, setInitialData] = useState<any>(null);
-    const [isEditorLoaded, setIsEditorLoaded] = useState(false); // Track if Editor has loaded
+    const [isEditorLoaded, setIsEditorLoaded] = useState(false);
 
     useEffect(() => {
         import('@/app/components/admin/editor/Editor')
@@ -69,10 +69,9 @@ const EditArticlesForm: React.FC = () => {
                         category: articles.category,
                     });
 
-                    setInitialData(JSON.parse(articles.content)); // Set initial data for editor
+                    setInitialData(JSON.parse(articles.content));
                 }
             } catch (err) {
-                console.log('Error -> ', err);
                 setErrorMessage('Failed to load articles details.');
                 setShowAlert(true);
             }
@@ -93,7 +92,7 @@ const EditArticlesForm: React.FC = () => {
             if (editorContent) {
                 const requestBody = {
                     ...data,
-                    content: JSON.stringify(editorContent), // Convert editor blocks to JSON string
+                    content: JSON.stringify(editorContent),
                 };
 
                 await updateArticles(articlesId as string, requestBody);
@@ -151,7 +150,6 @@ const EditArticlesForm: React.FC = () => {
                                 )}
                                 className='space-y-6 w-3/4 mt-10'
                             >
-                                {/* Title Field */}
                                 <FormField
                                     name='title'
                                     control={methods.control}
@@ -176,7 +174,6 @@ const EditArticlesForm: React.FC = () => {
                                     )}
                                 />
 
-                                {/* Summary Field */}
                                 <FormField
                                     name='summary'
                                     control={methods.control}
@@ -201,7 +198,6 @@ const EditArticlesForm: React.FC = () => {
                                     )}
                                 />
 
-                                {/* Category Field */}
                                 <FormField
                                     name='category'
                                     control={methods.control}
@@ -245,7 +241,6 @@ const EditArticlesForm: React.FC = () => {
                             </form>
                         </FormProvider>
 
-                        {/* Render Editor Component Dynamically */}
                         {EditorComponent && initialData && (
                             <EditorComponent
                                 ref={editorInstanceRef}
@@ -253,11 +248,10 @@ const EditArticlesForm: React.FC = () => {
                             />
                         )}
 
-                        {/* Save Button for Form Submission */}
                         <Button
                             className='mt-4'
                             onClick={methods.handleSubmit(onSubmit, onError)}
-                            disabled={!isEditorLoaded} // Disable button until editor is ready
+                            disabled={!isEditorLoaded}
                         >
                             Update Articles
                         </Button>

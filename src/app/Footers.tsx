@@ -14,7 +14,7 @@ const Footers: React.FC = () => {
                     </p>
                     <div className='flex justify-center my-10'>
                         <div className='flex items-center border w-auto rounded-lg px-4 py-2 mx-2'>
-                            <Link href='https://x.com/supperciouss'>
+                            <Link href='https://x.com/monadpedia'>
                                 <Image
                                     src='https://static.vecteezy.com/system/resources/previews/042/148/611/non_2x/new-twitter-x-logo-twitter-icon-x-social-media-icon-free-png.png'
                                     alt='X'

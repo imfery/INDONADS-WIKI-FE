@@ -80,7 +80,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLogin }) => {
                     </div>
                 </form>
 
-                <p className='mt-10 text-center text-sm text-gray-500'>
+                {/* <p className='mt-10 text-center text-sm text-gray-500'>
                     Not a member?{' '}
                     <Link
                         href='/admin/register'
@@ -88,7 +88,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLogin }) => {
                     >
                         Register here
                     </Link>
-                </p>
+                </p> */}
             </div>
         </div>
     );

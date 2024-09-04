@@ -42,7 +42,6 @@ export default function ArticlesDetails() {
                 <Header />
                 <section className='bg-white mt-16 mb-64 flex justify-center items-center'>
                     <div className='container mx-auto px-4 flex flex-col justify-center items-center'>
-                        {/* Back Button */}
                         <div className='w-full mb-4'>
                             <Button
                                 onClick={() => router.back()}
@@ -51,7 +50,6 @@ export default function ArticlesDetails() {
                                 Back
                             </Button>
                         </div>
-                        {/* Editor and Content */}
                         <div className='p-4 w-full '>
                             {loading ? (
                                 <Skeleton className='h-10 w-full bg-gray-200' />
@@ -66,7 +64,6 @@ export default function ArticlesDetails() {
                                 )
                             )}
                         </div>
-                        {/* Article Metadata */}
                         {!loading && article && (
                             <div className='text-center mt-4'>
                                 <p className='text-sm text-gray-500'>

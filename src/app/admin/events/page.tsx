@@ -25,7 +25,7 @@ const EventsDashboardList: React.FC = () => {
                 limit: resultsPerPage,
                 page: currentPage,
             });
-            setEventsData(data); // Set the correct type
+            setEventsData(data);
         } catch (error) {
             if (error instanceof Error) {
                 console.error('Error fetching events:', error.message);
@@ -33,16 +33,10 @@ const EventsDashboardList: React.FC = () => {
                 console.error('Unexpected error:', error);
             }
         }
-    }, [currentPage, resultsPerPage]); // Dependencies of the useCallback hook
+    }, [currentPage, resultsPerPage]);
 
     const handleSearch = (query: string) => {
         console.log('Search query:', query);
-        // Implement search logic here
-    };
-
-    const handleCreate = () => {
-        console.log('Create event clicked');
-        // Implement create event logic here
     };
 
     const handlePageChange = (page: number) => {
@@ -50,13 +44,13 @@ const EventsDashboardList: React.FC = () => {
     };
 
     const handleDeleteSuccess = () => {
-        loadEvents(); // Refresh the event list after deletion
+        loadEvents();
         success('Event has been successfully deleted', 3000);
     };
 
     useEffect(() => {
         loadEvents();
-    }, [loadEvents]); // Add loadEvents to the dependency array
+    }, [loadEvents]);
 
     return (
         <AdminLayout>
@@ -72,7 +66,6 @@ const EventsDashboardList: React.FC = () => {
 
                         <SearchAndCreate
                             onSearch={handleSearch}
-                            onCreate={handleCreate}
                             createLabel='Create Events'
                             placeholder='Search for events'
                             href='/admin/events/create'
@@ -83,7 +76,7 @@ const EventsDashboardList: React.FC = () => {
                                     events={eventsData.events}
                                     currentPage={currentPage}
                                     resultsPerPage={resultsPerPage}
-                                    onDeleteSuccess={handleDeleteSuccess} // Pass the delete success callback
+                                    onDeleteSuccess={handleDeleteSuccess}
                                 />
                                 <CustomPagination
                                     currentPage={currentPage}

@@ -11,7 +11,7 @@ import { ToastProvider } from '@/providers/ToastProvider';
 import { Separator } from '@/components/ui/separator';
 import { Skeleton } from '@/components/ui/skeleton';
 import ActiveArticlesList from './ActiveArticlesList';
-import CustomPagination from '@/app/components/admin/Pagination'; // Import the pagination component
+import CustomPagination from '@/app/components/admin/Pagination';
 
 import { EventsData, AllArticlesData } from '@/types';
 
@@ -26,7 +26,7 @@ export default function HomePage() {
     const [currentPage, setCurrentPage] = React.useState(1);
 
     React.useEffect(() => {
-        let isMounted = true; // Flag to prevent state update if component unmounts
+        let isMounted = true;
 
         async function loadEvents() {
             try {
@@ -60,7 +60,7 @@ export default function HomePage() {
         loadArticles(currentPage);
 
         return () => {
-            isMounted = false; // Cleanup to avoid setting state after unmount
+            isMounted = false;
         };
     }, [currentPage]);
 
@@ -84,7 +84,6 @@ export default function HomePage() {
                             </p>
                         </div>
                         <div className='flex flex-col md:flex-row'>
-                            {/* Replacing Lorem Ipsum with the Active Articles section */}
                             <div className='md:w-4/6 p-4 mb-4 md:mb-0'>
                                 {loadingArticles ? (
                                     <Skeleton className='h-10 w-full bg-gray-200' />

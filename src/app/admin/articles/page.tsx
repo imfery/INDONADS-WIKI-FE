@@ -41,10 +41,6 @@ const ArticlesDashboardList: React.FC = () => {
         console.log('Search query:', query);
     };
 
-    const handleCreate = () => {
-        console.log('Create articles clicked');
-    };
-
     const handlePageChange = (page: number) => {
         setCurrentPage(page);
     };
@@ -73,7 +69,6 @@ const ArticlesDashboardList: React.FC = () => {
 
                         <SearchAndCreate
                             onSearch={handleSearch}
-                            onCreate={handleCreate}
                             createLabel='Create Articles'
                             placeholder='Search for articles'
                             href='/admin/articles/create'

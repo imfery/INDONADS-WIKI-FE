@@ -22,7 +22,7 @@ import {
     TableRow,
 } from '@/components/ui/table';
 
-import { deleteArticlesById } from '@/app/utils/api'; // Ensure you have a delete function for articles
+import { deleteArticlesById } from '@/app/utils/api';
 
 interface ArticlesTableProps {
     articles: Array<{
@@ -37,7 +37,7 @@ interface ArticlesTableProps {
 }
 
 export default function ArticlesTable({
-    articles = [], // Set default value to an empty array to prevent undefined error
+    articles = [],
     currentPage,
     resultsPerPage,
     onDeleteSuccess,
@@ -55,8 +55,8 @@ export default function ArticlesTable({
         if (deletingArticlesId !== null) {
             try {
                 await deleteArticlesById(deletingArticlesId);
-                onDeleteSuccess(); // Trigger refresh after deletion and show toast
-                setDeletingArticlesId(null); // Reset after deletion
+                onDeleteSuccess();
+                setDeletingArticlesId(null);
             } catch (error) {
                 console.error('Failed to delete articles:', error);
             }
@@ -75,7 +75,6 @@ export default function ArticlesTable({
                 </TableRow>
             </TableHeader>
             <TableBody>
-                {/* Add a check to ensure articles is an array before mapping */}
                 {articles && articles.length > 0 ? (
                     articles.map((item, index) => (
                         <TableRow key={item.id}>

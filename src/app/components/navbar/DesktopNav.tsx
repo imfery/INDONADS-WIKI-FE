@@ -9,7 +9,6 @@ const DesktopNav: FC = () => {
             <Link href='/about' className='text-white hover:text-neutral-300'>
                 About
             </Link>
-            {/* <SearchInput placeholder='Search (WIP)' /> */}
         </nav>
     );
 };

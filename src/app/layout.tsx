@@ -50,7 +50,6 @@ export default function RootLayout({
                 <ToastProvider>
                     {children}
                     <Toaster position='top-right' duration={5000} />{' '}
-                    {/* Add the Toaster component */}
                 </ToastProvider>
             </body>
         </html>

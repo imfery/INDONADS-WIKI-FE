@@ -13,8 +13,6 @@ const LoginPage: React.FC = () => {
     }) => {
         try {
             const user = await loginUser(credentials);
-            console.log('Logged in user:', user);
-
             if (user) {
                 router.push('/admin');
             }

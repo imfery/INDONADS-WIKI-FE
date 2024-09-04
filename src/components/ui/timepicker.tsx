@@ -25,8 +25,8 @@ export function TimePicker({ className, value, onChange }: TimePickerProps) {
 
     const handleTimeSelect = () => {
         const time = `${selectedHour}:${selectedMinute}`;
-        onChange?.(time); // Update the form state with the selected time
-        setIsOpen(false); // Close the popover
+        onChange?.(time);
+        setIsOpen(false);
     };
 
     React.useEffect(() => {
@@ -45,14 +45,13 @@ export function TimePicker({ className, value, onChange }: TimePickerProps) {
                     className={cn(
                         'w-full justify-start text-left font-normal',
                         !value && 'text-muted-foreground',
-                        className // Apply the passed className for styling
+                        className
                     )}
                 >
                     {value || 'Select time'}
                 </Button>
             </PopoverTrigger>
             <PopoverContent className='w-auto p-4 flex space-x-4'>
-                {/* Hour Selection */}
                 <ScrollArea className='h-40 w-20'>
                     <div>
                         <label className='block text-sm font-medium text-gray-700'>
@@ -78,7 +77,6 @@ export function TimePicker({ className, value, onChange }: TimePickerProps) {
                     </div>
                 </ScrollArea>
 
-                {/* Minute Selection */}
                 <ScrollArea className='h-40 w-20'>
                     <div>
                         <label className='block text-sm font-medium text-gray-700'>
@@ -104,7 +102,6 @@ export function TimePicker({ className, value, onChange }: TimePickerProps) {
                     </div>
                 </ScrollArea>
 
-                {/* Confirm Button */}
                 <div className='flex flex-col justify-end'>
                     <Button variant='default' onClick={handleTimeSelect}>
                         Set Time

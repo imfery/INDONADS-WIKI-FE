@@ -8,7 +8,7 @@ import { loadEditorTools } from '@/constant/editorTools';
 type UseEditorProps = {
     holderId: string;
     initialData?: EditorJS.OutputData;
-    readOnly?: boolean; // Add readOnly prop here
+    readOnly?: boolean;
 };
 
 export const useEditor = ({
@@ -33,9 +33,9 @@ export const useEditor = ({
                         holder: holderId,
                         tools,
                         autofocus: true,
-                        data: initialData, // Initialize with optional initial data
+                        data: initialData,
                         placeholder: 'Start typing your content here...',
-                        readOnly, // Set readOnly mode based on prop
+                        readOnly,
                     });
 
                     editorInstanceRef.current.isReady
@@ -68,7 +68,6 @@ export const useEditor = ({
                     .then(() => {
                         editorInstanceRef.current?.destroy();
                         editorInstanceRef.current = null;
-                        console.log('Editor.js instance destroyed');
                     })
                     .catch((e) =>
                         console.error('Error during Editor.js cleanup', e)

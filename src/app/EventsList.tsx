@@ -22,7 +22,7 @@ const EventsList: React.FC<EventsListProps> = ({ event = [] }) => (
                         <div className='flex items-start gap-x-4 sm:items-center'>
                             <Image
                                 alt=''
-                                src={image} // change this to icon based on category
+                                src={image}
                                 width={50}
                                 height={50}
                                 className='h-14 w-14 flex-none rounded-full bg-gray-50'
