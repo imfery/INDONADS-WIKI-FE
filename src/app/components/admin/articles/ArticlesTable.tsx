@@ -21,8 +21,9 @@ import {
     TableHeader,
     TableRow,
 } from '@/components/ui/table';
+import { Switch } from '@/components/ui/switch';
 
-import { deleteArticlesById } from '@/app/utils/api';
+import { deleteArticlesById, updateArticles } from '@/app/utils/api';
 
 interface ArticlesTableProps {
     articles: Array<{
@@ -34,6 +35,7 @@ interface ArticlesTableProps {
     currentPage: number;
     resultsPerPage: number;
     onDeleteSuccess: () => void;
+    onUpdateStatus: (status: string) => void;
 }
 
 export default function ArticlesTable({
@@ -41,11 +43,13 @@ export default function ArticlesTable({
     currentPage,
     resultsPerPage,
     onDeleteSuccess,
+    onUpdateStatus,
 }: ArticlesTableProps) {
     const router = useRouter();
     const [deletingArticlesId, setDeletingArticlesId] = useState<string | null>(
         null
     );
+    const [updatingId, setUpdatingId] = useState<string | null>(null);
 
     const handleEdit = (id: string) => {
         router.push(`/admin/articles/edit?id=${id}`);
@@ -60,6 +64,25 @@ export default function ArticlesTable({
             } catch (error) {
                 console.error('Failed to delete articles:', error);
             }
+        }
+    };
+
+    const handleToggle = async (id: string, currentState: boolean) => {
+        setUpdatingId(id);
+        try {
+            await updateArticles(id, { isActive: !currentState });
+
+            if (currentState) {
+                const toStatus = 'Active';
+                onUpdateStatus(toStatus);
+            } else {
+                const toStatus = 'Inactive';
+                onUpdateStatus(toStatus);
+            }
+        } catch (error) {
+            console.error('Failed to change article status:', error);
+        } finally {
+            setUpdatingId(null);
         }
     };
 
@@ -84,7 +107,13 @@ export default function ArticlesTable({
                             <TableCell>{item.title}</TableCell>
                             <TableCell>{item.createdAt}</TableCell>
                             <TableCell>
-                                {item.isActive ? 'Yes' : 'No'}
+                                <Switch
+                                    checked={item.isActive}
+                                    onCheckedChange={() =>
+                                        handleToggle(item.id, item.isActive)
+                                    }
+                                    disabled={updatingId === item.id}
+                                />
                             </TableCell>
                             <TableCell className='text-right'>
                                 <div className='flex justify-end space-x-2'>

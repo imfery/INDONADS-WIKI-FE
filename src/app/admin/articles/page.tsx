@@ -47,7 +47,12 @@ const ArticlesDashboardList: React.FC = () => {
 
     const handleDeleteSuccess = () => {
         loadArticles();
-        success('Articles has been successfully deleted', 3000);
+        success('Article has been successfully deleted', 3000);
+    };
+
+    const handleStatusUpdate = (status: string) => {
+        loadArticles();
+        success(`Article status updated to ${status}`, 3000);
     };
 
     useEffect(() => {
@@ -80,6 +85,7 @@ const ArticlesDashboardList: React.FC = () => {
                                     currentPage={currentPage}
                                     resultsPerPage={resultsPerPage}
                                     onDeleteSuccess={handleDeleteSuccess}
+                                    onUpdateStatus={handleStatusUpdate}
                                 />
                                 <CustomPagination
                                     currentPage={currentPage}
