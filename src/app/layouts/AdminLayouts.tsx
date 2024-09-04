@@ -2,10 +2,9 @@
 
 import React from 'react';
 
-import { cn } from '@/lib/utils'; // Utility to merge class names
-
+import { cn } from '@/lib/utils';
 import Sidebar from '@/app/components/admin/Sidebar';
-import { ToastProvider } from '@/providers/ToastProvider'; // Adjust the path as needed
+import { ToastProvider } from '@/providers/ToastProvider';
 
 const AdminLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     return (

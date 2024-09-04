@@ -3,12 +3,11 @@ import React from 'react';
 
 import { cn } from '@/lib/utils';
 
-import { Button } from '@/components/ui/button'; // Assuming you have this component
-import { Input } from '@/components/ui/input'; // Assuming you have this component
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 
 interface SearchAndCreateProps {
     onSearch: (query: string) => void;
-    onCreate: () => void;
     createLabel: string;
     placeholder: string;
     href: string;
@@ -16,7 +15,6 @@ interface SearchAndCreateProps {
 
 const SearchAndCreate: React.FC<SearchAndCreateProps> = ({
     onSearch,
-    onCreate,
     createLabel,
     placeholder,
     href,
@@ -32,9 +30,7 @@ const SearchAndCreate: React.FC<SearchAndCreateProps> = ({
                 />
             </div>
             <Link href={href}>
-                <Button className='ml-4' onClick={onCreate}>
-                    {createLabel}
-                </Button>
+                <Button className='ml-4'>{createLabel}</Button>
             </Link>
         </div>
     );

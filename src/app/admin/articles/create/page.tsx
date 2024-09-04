@@ -43,14 +43,13 @@ const ArticlesDashboardForm: React.FC = () => {
     const [errorMessage, setErrorMessage] = useState<string | undefined>();
     const [EditorComponent, setEditorComponent] =
         useState<React.ComponentType<any> | null>(null);
-    const [isEditorLoaded, setIsEditorLoaded] = useState(false); // Track if Editor has loaded
+    const [isEditorLoaded, setIsEditorLoaded] = useState(false);
 
     useEffect(() => {
-        // Dynamically import the Editor component and handle it with `.then`
         import('@/app/components/admin/editor/Editor')
             .then((EditorModule) => {
                 setEditorComponent(() => EditorModule.default);
-                setIsEditorLoaded(true); // Set as loaded once component is imported
+                setIsEditorLoaded(true);
             })
             .catch((error) =>
                 console.error('Failed to load the editor component:', error)
@@ -58,8 +57,8 @@ const ArticlesDashboardForm: React.FC = () => {
     }, []);
 
     const onSubmit = async (data: any) => {
-        setShowAlert(false); // Reset alert visibility
-        setErrorMessage(undefined); // Reset error message
+        setShowAlert(false);
+        setErrorMessage(undefined);
 
         try {
             const editorContent =
@@ -68,16 +67,15 @@ const ArticlesDashboardForm: React.FC = () => {
             if (editorContent) {
                 const requestBody = {
                     ...data,
-                    content: JSON.stringify(editorContent), // Convert editor blocks to JSON string
+                    content: JSON.stringify(editorContent),
                 };
 
                 try {
-                    await createArticles(requestBody); // Call the API function to create articles
-                    success('Articles created successfully', 3000); // Show success toast message
-                    router.push('/admin/articles'); // Redirect to the articles list page after successful creation
+                    await createArticles(requestBody);
+                    success('Articles created successfully', 3000);
+                    router.push('/admin/articles');
                 } catch (err: any) {
                     if (err.response && err.response.status === 400) {
-                        // Check if error is a 400 response
                         setErrorMessage(
                             err.response.data.message || 'Invalid input data'
                         );
@@ -85,17 +83,17 @@ const ArticlesDashboardForm: React.FC = () => {
                         error(err.message, 3000);
                         setErrorMessage(err.message);
                     }
-                    setShowAlert(true); // Show the alert with error message
+                    setShowAlert(true);
                 }
             } else {
                 console.error('Failed to save editor content.');
                 setErrorMessage('Failed to save editor content.');
-                setShowAlert(true); // Show the alert if editor content is not saved
+                setShowAlert(true);
             }
         } catch (error) {
             console.error('Error saving editor content:', error);
             setErrorMessage('An unexpected error occurred.');
-            setShowAlert(true); // Show the alert for unexpected errors
+            setShowAlert(true);
         }
     };
 
@@ -115,7 +113,6 @@ const ArticlesDashboardForm: React.FC = () => {
                             Create a articles article from scratch here!
                         </p>
 
-                        {/* Show alert if there's an error */}
                         {showAlert && (
                             <Alert variant='destructive' className='mb-4'>
                                 <AlertTitle>Error</AlertTitle>
@@ -127,7 +124,6 @@ const ArticlesDashboardForm: React.FC = () => {
 
                         <FormProvider {...methods}>
                             <form className='space-y-6 w-3/4 mt-10'>
-                                {/* Title Field */}
                                 <FormField
                                     name='title'
                                     control={methods.control}
@@ -152,7 +148,6 @@ const ArticlesDashboardForm: React.FC = () => {
                                     )}
                                 />
 
-                                {/* Summary Field */}
                                 <FormField
                                     name='summary'
                                     control={methods.control}
@@ -177,7 +172,6 @@ const ArticlesDashboardForm: React.FC = () => {
                                     )}
                                 />
 
-                                {/* Category Field */}
                                 <FormField
                                     name='category'
                                     control={methods.control}
@@ -221,16 +215,14 @@ const ArticlesDashboardForm: React.FC = () => {
                             </form>
                         </FormProvider>
 
-                        {/* Editor Component Dynamically Loaded */}
                         {EditorComponent && (
                             <EditorComponent ref={editorInstanceRef} />
                         )}
 
-                        {/* Save Button for Form Submission */}
                         <Button
                             className='mt-4'
                             onClick={handleSaveButtonClick}
-                            disabled={!isEditorLoaded} // Disable button until editor is ready
+                            disabled={!isEditorLoaded}
                         >
                             Save Articles
                         </Button>

@@ -17,8 +17,8 @@ interface EditorRef {
 
 interface EditorProps {
     initialData?: EditorJS.OutputData;
-    readOnly?: boolean; // Add readOnly prop
-    onReady?: () => void; // Optional callback when the editor is ready
+    readOnly?: boolean;
+    onReady?: () => void;
 }
 
 const Editor = forwardRef<EditorRef, EditorProps>(
@@ -27,7 +27,7 @@ const Editor = forwardRef<EditorRef, EditorProps>(
         const editorInstanceRef = useEditor({
             holderId: 'editorjs',
             initialData,
-            readOnly, // Pass readOnly prop to useEditor hook
+            readOnly,
         });
         const [isEditorReady, setIsEditorReady] = useState(false);
 
@@ -37,7 +37,6 @@ const Editor = forwardRef<EditorRef, EditorProps>(
                     try {
                         const outputData =
                             await editorInstanceRef.current.save();
-                        console.log('Editor.js JSON Output:', outputData);
                         return outputData;
                     } catch (error) {
                         console.error('Error saving editor content:', error);
@@ -67,7 +66,7 @@ const Editor = forwardRef<EditorRef, EditorProps>(
                 editorInstanceRef.current.isReady
                     .then(() => {
                         setIsEditorReady(true);
-                        onReady && onReady(); // Call onReady if defined
+                        onReady && onReady();
                         if (initialData) {
                             editorInstanceRef
                                 .current!.render({

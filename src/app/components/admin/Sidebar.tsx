@@ -38,11 +38,11 @@ const Sidebar: React.FC = () => {
                         label='Events'
                         isActive={pathname === '/admin/events'}
                     />
-                    <SidebarItem
+                    {/* <SidebarItem
                         href='/admin/team'
                         label='Team'
                         isActive={pathname === '/admin/team'}
-                    />
+                    /> */}
                     <SidebarItem
                         href='/admin/articles'
                         label='Articles'

@@ -54,7 +54,6 @@ const EventsCreateForm: React.FC = () => {
     }, [methods.formState.isSubmitSuccessful]);
 
     const onSubmit = async (data: any) => {
-        // Reset alert state before submitting
         setShowAlert(false);
         setErrorMessage(undefined);
 
@@ -78,7 +77,6 @@ const EventsCreateForm: React.FC = () => {
     };
 
     const onError = () => {
-        // Show the alert if there are validation errors
         setShowAlert(true);
     };
 
@@ -123,7 +121,6 @@ const EventsCreateForm: React.FC = () => {
                                 )}
                                 className='space-y-6 w-3/4 mt-10'
                             >
-                                {/* Title Field */}
                                 <FormField
                                     name='title'
                                     control={methods.control}
@@ -147,7 +144,6 @@ const EventsCreateForm: React.FC = () => {
                                     )}
                                 />
 
-                                {/* Description Field */}
                                 <FormField
                                     name='description'
                                     control={methods.control}
@@ -173,9 +169,7 @@ const EventsCreateForm: React.FC = () => {
                                     )}
                                 />
 
-                                {/* Date and Time Fields Inline */}
                                 <div className='flex space-x-6'>
-                                    {/* Date Field */}
                                     <FormField
                                         name='date'
                                         control={methods.control}
@@ -225,7 +219,7 @@ const EventsCreateForm: React.FC = () => {
                                                                     );
                                                                     field.onChange(
                                                                         date?.toISOString()
-                                                                    ); // Update form state with ISO string
+                                                                    );
                                                                 }}
                                                                 initialFocus
                                                             />
@@ -237,7 +231,6 @@ const EventsCreateForm: React.FC = () => {
                                         )}
                                     />
 
-                                    {/* Time Picker Field */}
                                     <FormField
                                         name='time'
                                         control={methods.control}
@@ -254,7 +247,7 @@ const EventsCreateForm: React.FC = () => {
                                                             );
                                                             field.onChange(
                                                                 time
-                                                            ); // Update form state
+                                                            );
                                                         }}
                                                         className={cn(
                                                             fieldState.invalid
@@ -269,7 +262,6 @@ const EventsCreateForm: React.FC = () => {
                                     />
                                 </div>
 
-                                {/* Location Field */}
                                 <FormField
                                     name='location'
                                     control={methods.control}
@@ -293,7 +285,6 @@ const EventsCreateForm: React.FC = () => {
                                     )}
                                 />
 
-                                {/* Category Field */}
                                 <FormField
                                     name='category'
                                     control={methods.control}
@@ -336,7 +327,6 @@ const EventsCreateForm: React.FC = () => {
                                     )}
                                 />
 
-                                {/* Submit Button */}
                                 <Button type='submit' className='mt-4'>
                                     Create Event
                                 </Button>

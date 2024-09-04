@@ -8,13 +8,17 @@ export function middleware(req: NextRequest) {
     const accessTokenCookie = req.cookies.get('accessToken');
     const accessToken = accessTokenCookie?.value;
 
+    if (pathname === '/admin/register') {
+        return NextResponse.next();
+    }
+
     if (accessToken) {
         if (!isJwtToken(accessToken) || isInvalidOrExpired(accessToken)) {
-            if (pathname !== '/admin/login') {
+            if (pathname !== '/admin/login' && pathname !== '/admin/forgot-password') {
                 return NextResponse.redirect(new URL('/admin/login', req.url));
             }
         } else {
-            if (pathname === '/admin/login' || pathname === '/admin/register') {
+            if (pathname === '/admin/login' || pathname === '/admin/forgot-password') {
                 return NextResponse.redirect(new URL('/admin', req.url));
             }
         }

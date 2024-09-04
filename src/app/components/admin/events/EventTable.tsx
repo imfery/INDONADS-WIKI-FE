@@ -53,8 +53,8 @@ export default function EventTable({
         if (deletingEventId !== null) {
             try {
                 await deleteEventById(deletingEventId.toString());
-                onDeleteSuccess(); // Trigger refresh after deletion and show toast
-                setDeletingEventId(null); // Reset after deletion
+                onDeleteSuccess();
+                setDeletingEventId(null);
             } catch (error) {
                 console.error('Failed to delete event:', error);
             }

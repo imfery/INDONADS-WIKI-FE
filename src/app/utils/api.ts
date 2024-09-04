@@ -58,11 +58,14 @@ export async function registerUser({
     email: string;
     password: string;
 }) {
+    const accessToken = Cookies.get('accessToken');
+
     const response = await fetch('http://localhost:3000/api/v1/auth/register', {
         method: 'POST',
         headers: {
             Accept: 'application/json',
             'Content-Type': 'application/json',
+            Authorization: `Bearer ${accessToken}`,
         },
         body: JSON.stringify({ name, email, password }),
         credentials: 'include',
@@ -117,7 +120,6 @@ export async function fetchWithAuth(
 
         if (response.status === 401) {
             const data = await response.json();
-            console.log('Unauthorized response:', data);
             if (data.message === 'Invalid or expired access token') {
                 if (onUnauthorized) {
                     onUnauthorized();
@@ -131,6 +133,21 @@ export async function fetchWithAuth(
         throw error;
     }
 }
+
+export const validateToken = async () => {
+    try {
+        const response = await fetchWithAuth(
+            'http://localhost:3000/api/v1/auth/validate',
+            {
+                method: 'POST',
+            }
+        );
+        return response;
+    } catch (error) {
+        console.error('Error validating token:', error);
+        throw error;
+    }
+};
 
 export async function fetchAllEvents({
     sortField = 'createdAt',
@@ -165,7 +182,7 @@ export async function fetchAllEvents({
         limit: limit,
         totalPages: data.data.totalPages,
         currentPage: data.data.page,
-        totalResults: data.data.totalResults, // Extracting totalResults correctly
+        totalResults: data.data.totalResults,
     };
 }
 
@@ -344,21 +361,19 @@ export async function createArticles(articlesData: {
     title: string;
     summary: string;
     category: string;
-    content: string; // This will hold the editor.js content blocks
+    content: string;
 }) {
-    const token = Cookies.get('accessToken'); // Get the access token from cookies
+    const token = Cookies.get('accessToken');
 
     if (!token) {
-        throw new Error('No access token found'); // Handle the case where there is no token
+        throw new Error('No access token found');
     }
 
-    // Convert content blocks to a string
     const contentString = articlesData.content;
 
-    // Add createdBy and updatedBy to the articles data
     const articlesDataWithContent = {
         ...articlesData,
-        content: contentString, // Convert content blocks to a string
+        content: contentString,
     };
 
     try {
@@ -366,9 +381,9 @@ export async function createArticles(articlesData: {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                Authorization: `Bearer ${token}`, // Include the access token in the Authorization header
+                Authorization: `Bearer ${token}`,
             },
-            body: JSON.stringify(articlesDataWithContent), // Send the articles data with user info in the request body
+            body: JSON.stringify(articlesDataWithContent),
         });
 
         if (!response.ok) {
@@ -411,9 +426,8 @@ export async function fetchAllArticles({
 
     const data = await response.json();
 
-    // Map the response to match the AllArticlesData interface
     return {
-        articles: data.data.articles, // Assuming your response structure is data.data.articles
+        articles: data.data.articles,
         limit: limit,
         totalPages: data.data.totalPages,
         currentPage: data.data.page,
@@ -421,7 +435,6 @@ export async function fetchAllArticles({
     };
 }
 
-// Fetch articles by ID
 export async function fetchArticlesById(id: string): Promise<ArticlesData> {
     const response = await fetch(`http://localhost:5000/v1/articles/${id}`, {
         method: 'GET',
@@ -438,7 +451,6 @@ export async function fetchArticlesById(id: string): Promise<ArticlesData> {
     return result.data;
 }
 
-// Delete articles by ID
 export async function deleteArticlesById(id: string): Promise<void> {
     const token = Cookies.get('accessToken');
     if (!token) throw new Error('No access token found');
@@ -456,7 +468,6 @@ export async function deleteArticlesById(id: string): Promise<void> {
     }
 }
 
-// Update articles
 export async function updateArticles(
     id: string,
     data: Partial<ArticlesData>
@@ -530,6 +541,6 @@ export async function fetchActiveArticles({
             totalPages: 0,
             currentPage: 1,
             totalResults: 0,
-        }; // Return empty data structure on error
+        };
     }
 }

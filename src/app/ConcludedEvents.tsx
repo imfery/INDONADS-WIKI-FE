@@ -1,13 +1,12 @@
-// components/ConcludedEvents.tsx
 import React from 'react';
 
 import EventsList from './EventsList';
 
-import { Event } from '@/types'; // Import the Event interface
+import { Event } from '@/types';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 interface ConcludedEventsProps {
-    events: Event[]; // Should be an array, not undefined
+    events: Event[];
 }
 
 const ConcludedEvents: React.FC<ConcludedEventsProps> = ({ events = [] }) => (

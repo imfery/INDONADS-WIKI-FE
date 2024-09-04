@@ -24,14 +24,13 @@ const ToastContext = createContext<ToastContextProps | undefined>(undefined);
 
 interface ToastProviderProps {
     children: ReactNode;
-    defaultDuration?: number; // Optional default duration prop
+    defaultDuration?: number;
 }
 
 export const ToastProvider: React.FC<ToastProviderProps> = ({
     children,
     defaultDuration = 5000,
 }) => {
-    // Default duration is 5000ms
     const success = (message: string | React.ReactNode, duration?: number) =>
         sonnerToast.success(message, { duration: duration ?? defaultDuration });
     const error = (message: string | React.ReactNode, duration?: number) =>
@@ -72,7 +71,6 @@ export const ToastProvider: React.FC<ToastProviderProps> = ({
         >
             {children}
             <Toaster position='top-right' />{' '}
-            {/* Position can still be customized here */}
         </ToastContext.Provider>
     );
 };

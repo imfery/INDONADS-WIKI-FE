@@ -36,7 +36,7 @@ import { TimePicker } from '@/components/ui/timepicker';
 import AdminLayout from '@/app/layouts/AdminLayouts';
 import { getEventById, updateEvent } from '@/app/utils/api';
 import { useToast } from '@/providers/ToastProvider';
-import SearchParamsLoader from '@/app/components/admin/SearchParamsLoader'; // Import the SearchParamsLoader
+import SearchParamsLoader from '@/app/components/admin/SearchParamsLoader';
 
 const EditEventForm: React.FC = () => {
     const methods = useForm();
@@ -159,7 +159,6 @@ const EditEventForm: React.FC = () => {
                                 )}
                                 className='space-y-6 w-3/4 mt-10'
                             >
-                                {/* Title Field */}
                                 <FormField
                                     name='title'
                                     control={methods.control}
@@ -185,7 +184,6 @@ const EditEventForm: React.FC = () => {
                                     )}
                                 />
 
-                                {/* Description Field */}
                                 <FormField
                                     name='description'
                                     control={methods.control}
@@ -211,9 +209,7 @@ const EditEventForm: React.FC = () => {
                                     )}
                                 />
 
-                                {/* Date and Time Fields Inline */}
                                 <div className='flex space-x-6'>
-                                    {/* Date Field */}
                                     <FormField
                                         name='date'
                                         control={methods.control}
@@ -277,7 +273,6 @@ const EditEventForm: React.FC = () => {
                                         )}
                                     />
 
-                                    {/* Time Picker Field */}
                                     <FormField
                                         name='time'
                                         control={methods.control}
@@ -311,7 +306,6 @@ const EditEventForm: React.FC = () => {
                                     />
                                 </div>
 
-                                {/* Location Field */}
                                 <FormField
                                     name='location'
                                     control={methods.control}
@@ -337,7 +331,6 @@ const EditEventForm: React.FC = () => {
                                     )}
                                 />
 
-                                {/* Category Field */}
                                 <FormField
                                     name='category'
                                     control={methods.control}
@@ -352,7 +345,7 @@ const EditEventForm: React.FC = () => {
                                                     onValueChange={(value) =>
                                                         field.onChange(value)
                                                     }
-                                                    value={field.value || ''} // Ensures the value is set based on the API data
+                                                    value={field.value || ''}
                                                 >
                                                     <SelectTrigger
                                                         className={cn(
@@ -382,7 +375,6 @@ const EditEventForm: React.FC = () => {
                                     )}
                                 />
 
-                                {/* Submit Button */}
                                 <Button type='submit' className='mt-4'>
                                     Update Event
                                 </Button>
