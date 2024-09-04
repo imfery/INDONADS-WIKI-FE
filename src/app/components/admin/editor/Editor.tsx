@@ -17,15 +17,17 @@ interface EditorRef {
 
 interface EditorProps {
     initialData?: EditorJS.OutputData;
-    onReady?: () => void; // Add onReady prop
+    readOnly?: boolean; // Add readOnly prop
+    onReady?: () => void; // Optional callback when the editor is ready
 }
 
 const Editor = forwardRef<EditorRef, EditorProps>(
-    ({ initialData, onReady }, ref) => {
+    ({ initialData, readOnly = false, onReady }, ref) => {
         const editorRef = useRef<HTMLDivElement>(null);
         const editorInstanceRef = useEditor({
             holderId: 'editorjs',
             initialData,
+            readOnly, // Pass readOnly prop to useEditor hook
         });
         const [isEditorReady, setIsEditorReady] = useState(false);
 
@@ -106,7 +108,8 @@ const Editor = forwardRef<EditorRef, EditorProps>(
                     className='editor-container mt-10'
                     style={{
                         minHeight: '300px',
-                        border: '1px solid #ddd',
+                        border: readOnly ? 'none' : '1px solid #ddd',
+                        cursor: readOnly ? 'default' : 'text',
                         padding: '10px',
                     }}
                 ></div>

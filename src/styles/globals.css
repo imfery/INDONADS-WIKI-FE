@@ -67,10 +67,3 @@
         @apply bg-background text-foreground;
     }
 }
-
-.editor-container {
-    min-height: 300px; /* Ensure minimum height */
-    border: 1px solid #ddd;
-    padding: 10px; /* Add padding for better click area */
-    cursor: text; /* Change cursor to text to indicate focus */
-}

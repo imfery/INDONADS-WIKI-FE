@@ -249,3 +249,15 @@ declare module 'editorjs-undo' {
         constructor(editor: EditorJS, config?: UndoConfig);
     }
 }
+
+declare module 'editorjs-html' {
+    type ParsedHTML = string[];
+
+    interface EditorJSHTML {
+        parse(data: any): ParsedHTML;
+    }
+
+    function EditorJSHTML(): EditorJSHTML;
+
+    export default EditorJSHTML;
+}

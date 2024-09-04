@@ -2,6 +2,7 @@ import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { ArticlesData } from '@/types';
+import Link from 'next/link';
 
 interface ActiveArticlesProps {
     articles: ArticlesData[];
@@ -30,8 +31,15 @@ const ActiveArticlesList: React.FC<ActiveArticlesProps> = ({
                                         {article.category}
                                     </Badge>
                                     <p className='text-xl sm:text-md font-semibold leading-6 text-gray-900 mt-2'>
-                                        {article.title}
+                                        <Link
+                                            href={`/articles/${article.title
+                                                .replace(/\s+/g, '-')
+                                                .toLowerCase()}-${article.id}`}
+                                        >
+                                            {article.title}
+                                        </Link>
                                     </p>
+
                                     <p className='mt-2 text-xs sm:text-sm leading-5 text-gray-500 line-clamp-3'>
                                         {article.summary}
                                     </p>

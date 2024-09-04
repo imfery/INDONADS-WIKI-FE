@@ -2,7 +2,7 @@ import { XMarkIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 import { FC } from 'react';
 
-import SearchInput from '@/components/inputs/SearchInput';
+// import SearchInput from '@/components/inputs/SearchInput';
 
 interface MobileNavProps {
     isOpen: boolean;

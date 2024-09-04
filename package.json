@@ -56,6 +56,7 @@
         "editorjs-alert": "^1.1.4",
         "editorjs-drag-drop": "^1.1.14",
         "editorjs-header-with-alignment": "^1.0.1",
+        "editorjs-html": "^3.4.3",
         "editorjs-inline-spoiler-tool": "^1.0.1",
         "editorjs-paragraph-with-alignment": "3.x",
         "editorjs-text-alignment-blocktune": "^1.0.3",

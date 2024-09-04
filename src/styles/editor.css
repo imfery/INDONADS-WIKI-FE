@@ -8,6 +8,12 @@
   padding: 0.5rem;
 } */
 
+.editor-container {
+    min-height: 300px; /* Ensure minimum height */
+    padding: 10px; /* Add padding for better click area */
+    cursor: text; /* Change cursor to text to indicate focus */
+}
+
 /* Header styles */
 .ce-header {
     font-weight: bold;
