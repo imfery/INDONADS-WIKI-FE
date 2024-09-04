@@ -24,7 +24,7 @@ const ArticlesDashboardList: React.FC = () => {
                 sortBy: 'desc',
                 limit: resultsPerPage,
                 page: currentPage,
-                sortField: 'updatedAt',
+                sortField: 'createdAt',
             });
             setArticlesData(data);
         } catch (err) {
@@ -46,13 +46,13 @@ const ArticlesDashboardList: React.FC = () => {
     };
 
     const handleDeleteSuccess = () => {
-        loadArticles();
         success('Article has been successfully deleted', 3000);
+        loadArticles();
     };
 
     const handleStatusUpdate = (status: string) => {
-        loadArticles();
         success(`Article status updated to ${status}`, 3000);
+        loadArticles();
     };
 
     useEffect(() => {

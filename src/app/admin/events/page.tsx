@@ -20,7 +20,7 @@ const EventsDashboardList: React.FC = () => {
     const loadEvents = useCallback(async () => {
         try {
             const data = await fetchAllEvents({
-                sortField: 'updatedAt',
+                sortField: 'createdAt',
                 sortBy: 'desc',
                 limit: resultsPerPage,
                 page: currentPage,

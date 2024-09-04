@@ -72,7 +72,7 @@ export default function ArticlesTable({
         try {
             await updateArticles(id, { isActive: !currentState });
 
-            if (currentState) {
+            if (!currentState) {
                 const toStatus = 'Active';
                 onUpdateStatus(toStatus);
             } else {
