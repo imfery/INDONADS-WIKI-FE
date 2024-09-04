@@ -2,7 +2,7 @@ import { XMarkIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 import { FC } from 'react';
 
-import SearchInput from '@/components/inputs/SearchInput';
+// import SearchInput from '@/components/inputs/SearchInput';
 
 interface MobileNavProps {
     isOpen: boolean;
@@ -29,18 +29,11 @@ const MobileNav: FC<MobileNavProps> = ({ isOpen, onClose }) => {
                     className='text-white text-lg py-2'
                     onClick={onClose}
                 >
-                    Contribute
+                    About
                 </Link>
-                <Link
-                    href='/contact'
-                    className='text-white text-lg py-2'
-                    onClick={onClose}
-                >
-                    Follow Us
-                </Link>
-                <div className='py-2 px-4 w-full'>
+                {/* <div className='py-2 px-4 w-full'>
                     <SearchInput placeholder='Search (WIP)' />
-                </div>
+                </div> */}
             </nav>
         </div>
     );

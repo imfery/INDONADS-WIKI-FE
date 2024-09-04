@@ -22,7 +22,7 @@ export const loadEditorTools = async (): Promise<{
     const Checklist = (await import('@editorjs/checklist')).default;
     const Image = (await import('@editorjs/image')).default;
     const Table = (await import('@editorjs/table')).default;
-    const CodeBox = (await import('@bomdi/codebox')).default;
+    // const CodeBox = (await import('@bomdi/codebox')).default;
     const Marker = (await import('@editorjs/marker')).default;
     const Underline = (await import('@editorjs/underline')).default;
     const AlignmentTune = (await import('editorjs-text-alignment-blocktune'))
@@ -95,13 +95,13 @@ export const loadEditorTools = async (): Promise<{
             },
         },
         table: Table as unknown as ToolConstructable,
-        codebox: {
-            class: CodeBox as unknown as BlockToolConstructable,
-            config: {
-                placeholder: 'Enter your code here...',
-                theme: 'light',
-            },
-        },
+        // codebox: {
+        //     class: CodeBox as unknown as BlockToolConstructable,
+        //     config: {
+        //         placeholder: 'Enter your code here...',
+        //         theme: 'light',
+        //     },
+        // },
         marker: {
             class: Marker as unknown as InlineToolConstructable,
             shortcut: 'CMD+M',

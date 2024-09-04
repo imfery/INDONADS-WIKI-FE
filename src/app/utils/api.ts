@@ -1,8 +1,8 @@
 import Cookies from 'js-cookie';
 
 import { EventsData } from '@/types';
-import { NewsData } from '@/types';
-import { AllEventsData, AllNewsData, LatestNewsData } from '@/types';
+import { ArticlesData } from '@/types';
+import { AllEventsData, AllArticlesData } from '@/types';
 
 export async function loginUser({
     email,
@@ -162,6 +162,7 @@ export async function fetchAllEvents({
 
     return {
         events: data.data.events,
+        limit: limit,
         totalPages: data.data.totalPages,
         currentPage: data.data.page,
         totalResults: data.data.totalResults, // Extracting totalResults correctly
@@ -188,25 +189,6 @@ export async function fetchEventsSummary(): Promise<EventsData> {
     return {
         upcomingEvents: data.data.upcomingEvents,
         concludedEvents: data.data.concludedEvents,
-    };
-}
-
-export async function fetchLatestNews(): Promise<LatestNewsData> {
-    const response = await fetch('http://localhost:3000/api/v1/news/latest', {
-        method: 'GET',
-        headers: {
-            Accept: 'application/json',
-        },
-    });
-
-    if (!response.ok) {
-        throw new Error('Failed to fetch latest news');
-    }
-
-    const data = await response.json();
-
-    return {
-        latestNews: data.data.latestNews,
     };
 }
 
@@ -354,11 +336,11 @@ export async function uploadImage(
 }
 
 /**
- * Create a news item.
- * @param {Object} newsData - The news data including title, summary, category, and editor content blocks.
+ * Create a articles item.
+ * @param {Object} articlesData - The articles data including title, summary, category, and editor content blocks.
  * @returns {Promise<any>} The server response.
  */
-export async function createNews(newsData: {
+export async function createArticles(articlesData: {
     title: string;
     summary: string;
     category: string;
@@ -371,48 +353,50 @@ export async function createNews(newsData: {
     }
 
     // Convert content blocks to a string
-    const contentString = newsData.content;
+    const contentString = articlesData.content;
 
-    // Add createdBy and updatedBy to the news data
-    const newsDataWithContent = {
-        ...newsData,
+    // Add createdBy and updatedBy to the articles data
+    const articlesDataWithContent = {
+        ...articlesData,
         content: contentString, // Convert content blocks to a string
     };
 
     try {
-        const response = await fetch('http://localhost:5000/v1/news', {
+        const response = await fetch('http://localhost:5000/v1/articles', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 Authorization: `Bearer ${token}`, // Include the access token in the Authorization header
             },
-            body: JSON.stringify(newsDataWithContent), // Send the news data with user info in the request body
+            body: JSON.stringify(articlesDataWithContent), // Send the articles data with user info in the request body
         });
 
         if (!response.ok) {
             const errorData = await response.json();
-            throw new Error(errorData.message || 'Failed to create news');
+            throw new Error(errorData.message || 'Failed to create articles');
         }
 
         const result = await response.json();
         return result;
     } catch (error) {
-        console.error('Error creating news:', error);
+        console.error('Error creating articles:', error);
         throw error;
     }
 }
 
-export async function fetchAllNews({
+export async function fetchAllArticles({
     sortBy = 'desc',
     limit = 10,
     page = 1,
+    sortField = 'createdAt',
 }: {
     sortBy?: string;
     limit?: number;
     page?: number;
-}): Promise<AllNewsData> {
+    sortField?: string;
+}): Promise<AllArticlesData> {
     const response = await fetch(
-        `http://localhost:5000/v1/news?sortField=updatedAt&sortBy=${sortBy}&limit=${limit}&page=${page}`,
+        `http://localhost:5000/v1/articles?sortField=${sortField}&sortBy=${sortBy}&limit=${limit}&page=${page}`,
         {
             method: 'GET',
             headers: {
@@ -422,23 +406,24 @@ export async function fetchAllNews({
     );
 
     if (!response.ok) {
-        throw new Error('Failed to fetch news');
+        throw new Error('Failed to fetch articles');
     }
 
     const data = await response.json();
 
-    // Map the response to match the AllNewsData interface
+    // Map the response to match the AllArticlesData interface
     return {
-        news: data.data.news, // Assuming your response structure is data.data.news
+        articles: data.data.articles, // Assuming your response structure is data.data.articles
+        limit: limit,
         totalPages: data.data.totalPages,
         currentPage: data.data.page,
         totalResults: data.data.totalResults,
     };
 }
 
-// Fetch news by ID
-export async function fetchNewsById(id: string): Promise<NewsData> {
-    const response = await fetch(`http://localhost:5000/v1/news/${id}`, {
+// Fetch articles by ID
+export async function fetchArticlesById(id: string): Promise<ArticlesData> {
+    const response = await fetch(`http://localhost:5000/v1/articles/${id}`, {
         method: 'GET',
         headers: {
             Accept: 'application/json',
@@ -446,19 +431,19 @@ export async function fetchNewsById(id: string): Promise<NewsData> {
     });
 
     if (!response.ok) {
-        throw new Error('Failed to fetch news');
+        throw new Error('Failed to fetch articles');
     }
 
     const result = await response.json();
     return result.data;
 }
 
-// Delete news by ID
-export async function deleteNewsById(id: string): Promise<void> {
+// Delete articles by ID
+export async function deleteArticlesById(id: string): Promise<void> {
     const token = Cookies.get('accessToken');
     if (!token) throw new Error('No access token found');
 
-    const response = await fetch(`http://localhost:5000/v1/news/${id}`, {
+    const response = await fetch(`http://localhost:5000/v1/articles/${id}`, {
         method: 'DELETE',
         headers: {
             Accept: 'application/json',
@@ -467,19 +452,19 @@ export async function deleteNewsById(id: string): Promise<void> {
     });
 
     if (!response.ok) {
-        throw new Error('Failed to delete news');
+        throw new Error('Failed to delete articles');
     }
 }
 
-// Update news
-export async function updateNews(
+// Update articles
+export async function updateArticles(
     id: string,
-    data: Partial<NewsData>
+    data: Partial<ArticlesData>
 ): Promise<void> {
     const token = Cookies.get('accessToken');
     if (!token) throw new Error('No access token found');
 
-    const response = await fetch(`http://localhost:5000/v1/news/${id}`, {
+    const response = await fetch(`http://localhost:5000/v1/articles/${id}`, {
         method: 'PATCH',
         headers: {
             'Content-Type': 'application/json',
@@ -489,6 +474,62 @@ export async function updateNews(
     });
 
     if (!response.ok) {
-        throw new Error('Failed to update news');
+        throw new Error('Failed to update articles');
+    }
+}
+
+/**
+ * Fetch active articles with pagination and sorting.
+ * @param {Object} params - The query parameters.
+ * @param {string} params.sortField - Field to sort by (default is 'createdAt').
+ * @param {string} params.sortBy - Sort order (either 'asc' or 'desc', default is 'desc').
+ * @param {number} params.limit - Maximum number of results per page (default is 5).
+ * @param {number} params.page - Current page number (default is 1).
+ * @returns {Promise<AllArticlesData>} - The fetched articles data.
+ */
+export async function fetchActiveArticles({
+    sortField = 'createdAt',
+    sortBy = 'desc',
+    limit = 5,
+    page = 1,
+}: {
+    sortField?: string;
+    sortBy?: string;
+    limit?: number;
+    page?: number;
+}): Promise<AllArticlesData> {
+    try {
+        const response = await fetch(
+            `http://localhost:5000/v1/articles/fetchActiveArticles?sortField=${sortField}&sortBy=${sortBy}&limit=${limit}&page=${page}`,
+            {
+                method: 'GET',
+                headers: {
+                    Accept: 'application/json',
+                },
+            }
+        );
+
+        if (!response.ok) {
+            throw new Error('Failed to fetch active articles');
+        }
+
+        const data = await response.json();
+
+        return {
+            articles: data.data.articles || [],
+            limit: limit,
+            totalPages: data.data.totalPages || 0,
+            currentPage: data.data.currentPage || 1,
+            totalResults: data.data.totalResults || 0,
+        };
+    } catch (error) {
+        console.error('Error fetching articles:', error);
+        return {
+            articles: [],
+            limit: limit,
+            totalPages: 0,
+            currentPage: 1,
+            totalResults: 0,
+        }; // Return empty data structure on error
     }
 }

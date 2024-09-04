@@ -4,15 +4,14 @@ import React from 'react';
 import image from '../../public/images/MonadPedia.png';
 
 import { Event } from '@/types';
+import { Badge } from '@/components/ui/badge';
 
 interface EventsListProps {
     event: Event[];
-    title: string;
 }
 
-const EventsList: React.FC<EventsListProps> = ({ event = [], title }) => (
+const EventsList: React.FC<EventsListProps> = ({ event = [] }) => (
     <div className='p-4 max-w-screen-lg mx-auto'>
-        <h2 className='text-2xl font-semibold text-gray-900 mb-6'>{title}</h2>
         <ul role='list' className='divide-y divide-gray-200'>
             {event.length > 0 ? (
                 event.map((e, index) => (
@@ -42,9 +41,9 @@ const EventsList: React.FC<EventsListProps> = ({ event = [], title }) => (
                                 {e.date}
                             </p>
                             {e.location ? (
-                                <p className='mt-1 text-xs sm:text-xs leading-4 text-gray-500 line-clamp-3 text-right'>
+                                <Badge className='mt-1 text-xs sm:text-sm text-gray-500 line-clamp-3 text-right bg-gray-100 rounded-full px-2 py-1 hover:text-gray-500 hover:bg-gray-100'>
                                     {e.location}
-                                </p>
+                                </Badge>
                             ) : (
                                 <div className='mt-1 flex items-center gap-x-1.5'>
                                     <div className='flex-none rounded-full bg-emerald-500/20 p-1'>

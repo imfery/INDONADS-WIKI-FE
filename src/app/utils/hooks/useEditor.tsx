@@ -8,9 +8,14 @@ import { loadEditorTools } from '@/constant/editorTools';
 type UseEditorProps = {
     holderId: string;
     initialData?: EditorJS.OutputData;
+    readOnly?: boolean; // Add readOnly prop here
 };
 
-export const useEditor = ({ holderId, initialData }: UseEditorProps) => {
+export const useEditor = ({
+    holderId,
+    initialData,
+    readOnly = false,
+}: UseEditorProps) => {
     const editorInstanceRef = useRef<EditorJS | null>(null);
 
     useEffect(() => {
@@ -30,6 +35,7 @@ export const useEditor = ({ holderId, initialData }: UseEditorProps) => {
                         autofocus: true,
                         data: initialData, // Initialize with optional initial data
                         placeholder: 'Start typing your content here...',
+                        readOnly, // Set readOnly mode based on prop
                     });
 
                     editorInstanceRef.current.isReady
@@ -69,7 +75,7 @@ export const useEditor = ({ holderId, initialData }: UseEditorProps) => {
                     );
             }
         };
-    }, [holderId, initialData]);
+    }, [holderId, initialData, readOnly]);
 
     return editorInstanceRef;
 };

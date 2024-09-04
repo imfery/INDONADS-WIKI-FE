@@ -22,10 +22,10 @@ import {
     TableRow,
 } from '@/components/ui/table';
 
-import { deleteNewsById } from '@/app/utils/api'; // Ensure you have a delete function for news
+import { deleteArticlesById } from '@/app/utils/api'; // Ensure you have a delete function for articles
 
-interface NewsTableProps {
-    news: Array<{
+interface ArticlesTableProps {
+    articles: Array<{
         id: string;
         title: string;
         createdAt: string;
@@ -36,27 +36,29 @@ interface NewsTableProps {
     onDeleteSuccess: () => void;
 }
 
-export default function NewsTable({
-    news = [], // Set default value to an empty array to prevent undefined error
+export default function ArticlesTable({
+    articles = [], // Set default value to an empty array to prevent undefined error
     currentPage,
     resultsPerPage,
     onDeleteSuccess,
-}: NewsTableProps) {
+}: ArticlesTableProps) {
     const router = useRouter();
-    const [deletingNewsId, setDeletingNewsId] = useState<string | null>(null);
+    const [deletingArticlesId, setDeletingArticlesId] = useState<string | null>(
+        null
+    );
 
     const handleEdit = (id: string) => {
-        router.push(`/admin/news/edit?id=${id}`);
+        router.push(`/admin/articles/edit?id=${id}`);
     };
 
     const handleDelete = async () => {
-        if (deletingNewsId !== null) {
+        if (deletingArticlesId !== null) {
             try {
-                await deleteNewsById(deletingNewsId);
+                await deleteArticlesById(deletingArticlesId);
                 onDeleteSuccess(); // Trigger refresh after deletion and show toast
-                setDeletingNewsId(null); // Reset after deletion
+                setDeletingArticlesId(null); // Reset after deletion
             } catch (error) {
-                console.error('Failed to delete news:', error);
+                console.error('Failed to delete articles:', error);
             }
         }
     };
@@ -66,16 +68,16 @@ export default function NewsTable({
             <TableHeader>
                 <TableRow>
                     <TableHead className='w-[50px]'>No</TableHead>
-                    <TableHead>News Title</TableHead>
+                    <TableHead>Articles Title</TableHead>
                     <TableHead>Created At</TableHead>
                     <TableHead>Active</TableHead>
                     <TableHead className='text-right'>Actions</TableHead>
                 </TableRow>
             </TableHeader>
             <TableBody>
-                {/* Add a check to ensure news is an array before mapping */}
-                {news && news.length > 0 ? (
-                    news.map((item, index) => (
+                {/* Add a check to ensure articles is an array before mapping */}
+                {articles && articles.length > 0 ? (
+                    articles.map((item, index) => (
                         <TableRow key={item.id}>
                             <TableCell className='font-medium'>
                                 {(currentPage - 1) * resultsPerPage + index + 1}
@@ -100,7 +102,9 @@ export default function NewsTable({
                                                 variant='outline'
                                                 className='text-red-600 border-red-600 hover:bg-red-50'
                                                 onClick={() =>
-                                                    setDeletingNewsId(item.id)
+                                                    setDeletingArticlesId(
+                                                        item.id
+                                                    )
                                                 }
                                             >
                                                 Delete
@@ -114,14 +118,16 @@ export default function NewsTable({
                                                 <AlertDialogDescription>
                                                     This action cannot be
                                                     undone. This will
-                                                    permanently delete the news
-                                                    item.
+                                                    permanently delete the
+                                                    articles item.
                                                 </AlertDialogDescription>
                                             </AlertDialogHeader>
                                             <AlertDialogFooter>
                                                 <AlertDialogCancel
                                                     onClick={() =>
-                                                        setDeletingNewsId(null)
+                                                        setDeletingArticlesId(
+                                                            null
+                                                        )
                                                     }
                                                 >
                                                     Cancel
@@ -141,7 +147,7 @@ export default function NewsTable({
                 ) : (
                     <TableRow>
                         <TableCell colSpan={5} className='text-center'>
-                            No news available.
+                            No articles available.
                         </TableCell>
                     </TableRow>
                 )}

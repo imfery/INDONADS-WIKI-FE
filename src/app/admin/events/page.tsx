@@ -87,6 +87,7 @@ const EventsDashboardList: React.FC = () => {
                                 />
                                 <CustomPagination
                                     currentPage={currentPage}
+                                    resultsPerPage={eventsData.limit}
                                     totalPages={eventsData.totalPages}
                                     totalResults={eventsData.totalResults}
                                     onPageChange={handlePageChange}

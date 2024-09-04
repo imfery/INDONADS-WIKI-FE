@@ -1,33 +1,36 @@
 'use client';
 import React, { useEffect, useState, useCallback } from 'react';
 
-import NewsTable from '@/app/components/admin/news/NewsTable';
+import ArticlesTable from '@/app/components/admin/articles/ArticlesTable';
 import CustomPagination from '@/app/components/admin/Pagination';
 import SearchAndCreate from '@/app/components/admin/SearchAndCreate';
 import AdminLayout from '@/app/layouts/AdminLayouts';
-import { fetchAllNews } from '@/app/utils/api';
+import { fetchAllArticles } from '@/app/utils/api';
 import { useToast } from '@/providers/ToastProvider';
 
-import { AllNewsData } from '@/types';
+import { AllArticlesData } from '@/types';
 
-const NewsDashboardList: React.FC = () => {
-    const [newsData, setNewsData] = useState<AllNewsData | null>(null);
+const ArticlesDashboardList: React.FC = () => {
+    const [articlesData, setArticlesData] = useState<AllArticlesData | null>(
+        null
+    );
     const [currentPage, setCurrentPage] = useState(1);
     const resultsPerPage = 10;
     const { success, error } = useToast();
 
-    const loadNews = useCallback(async () => {
+    const loadArticles = useCallback(async () => {
         try {
-            const data = await fetchAllNews({
+            const data = await fetchAllArticles({
                 sortBy: 'desc',
                 limit: resultsPerPage,
                 page: currentPage,
+                sortField: 'updatedAt',
             });
-            setNewsData(data);
+            setArticlesData(data);
         } catch (err) {
             if (err instanceof Error) {
-                console.error('Error fetching news:', err.message);
-                error('Error fetching news');
+                console.error('Error fetching articles:', err.message);
+                error('Error fetching articles');
             } else {
                 console.error('Unexpected error:', err);
             }
@@ -39,7 +42,7 @@ const NewsDashboardList: React.FC = () => {
     };
 
     const handleCreate = () => {
-        console.log('Create news clicked');
+        console.log('Create articles clicked');
     };
 
     const handlePageChange = (page: number) => {
@@ -47,13 +50,13 @@ const NewsDashboardList: React.FC = () => {
     };
 
     const handleDeleteSuccess = () => {
-        loadNews();
-        success('News has been successfully deleted', 3000);
+        loadArticles();
+        success('Articles has been successfully deleted', 3000);
     };
 
     useEffect(() => {
-        loadNews();
-    }, [loadNews]);
+        loadArticles();
+    }, [loadArticles]);
 
     return (
         <AdminLayout>
@@ -61,38 +64,39 @@ const NewsDashboardList: React.FC = () => {
                 <div className='pb-8 bg-white'>
                     <div className='p-5'>
                         <h2 className='text-3xl font-semibold text-gray-900'>
-                            News
+                            Articles
                         </h2>
                         <p className='mt-1 text-sm font-normal text-gray-500'>
-                            Manage the list of news articles shown to the user
-                            here.
+                            Manage the list of articles articles shown to the
+                            user here.
                         </p>
 
                         <SearchAndCreate
                             onSearch={handleSearch}
                             onCreate={handleCreate}
-                            createLabel='Create News'
-                            placeholder='Search for news'
-                            href='/admin/news/create'
+                            createLabel='Create Articles'
+                            placeholder='Search for articles'
+                            href='/admin/articles/create'
                         />
-                        {newsData ? (
+                        {articlesData ? (
                             <>
-                                <NewsTable
-                                    news={newsData.news}
+                                <ArticlesTable
+                                    articles={articlesData.articles}
                                     currentPage={currentPage}
                                     resultsPerPage={resultsPerPage}
                                     onDeleteSuccess={handleDeleteSuccess}
                                 />
                                 <CustomPagination
                                     currentPage={currentPage}
-                                    totalPages={newsData.totalPages}
-                                    totalResults={newsData.totalResults}
+                                    resultsPerPage={articlesData.limit}
+                                    totalPages={articlesData.totalPages}
+                                    totalResults={articlesData.totalResults}
                                     onPageChange={handlePageChange}
                                 />
                             </>
                         ) : (
                             <p className='text-center text-gray-500'>
-                                Loading news...
+                                Loading articles...
                             </p>
                         )}
                     </div>
@@ -102,4 +106,4 @@ const NewsDashboardList: React.FC = () => {
     );
 };
 
-export default NewsDashboardList;
+export default ArticlesDashboardList;
