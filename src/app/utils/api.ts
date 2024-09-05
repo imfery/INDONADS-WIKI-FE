@@ -24,11 +24,11 @@ export async function loginUser({
         credentials: 'include',
     });
 
-    if (!response.ok) {
-        throw new Error('Login failed');
-    }
-
     const data = await response.json();
+
+    if (!response.ok) {
+        throw new Error(data.message || 'Login failed');
+    }
 
     const { access, refresh } = data.tokens;
 
