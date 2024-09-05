@@ -14,7 +14,7 @@ export function middleware(req: NextRequest) {
 
     if (accessToken) {
         if (!isJwtToken(accessToken) || isInvalidOrExpired(accessToken)) {
-            if (pathname !== '/admin/login' && pathname !== '/admin/forgot-password') {
+            if (pathname !== '/admin/login' && pathname !== '/admin/forgot-password' && pathname !== '/admin/reset-password') {
                 return NextResponse.redirect(new URL('/admin/login', req.url));
             }
         } else {
@@ -29,7 +29,7 @@ export function middleware(req: NextRequest) {
     if (
         !accessToken &&
         pathname.startsWith('/admin') &&
-        !['/admin/login', '/admin/register', '/admin/forgot-password'].includes(
+        !['/admin/login', '/admin/register', '/admin/forgot-password', '/admin/reset-password'].includes(
             pathname
         )
     ) {

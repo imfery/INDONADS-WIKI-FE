@@ -1,11 +1,13 @@
 'use client';
 import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 
 import LoginForm from '@/app/components/admin/auth/LoginForm';
 import { loginUser } from '@/app/utils/api';
 
 const LoginPage: React.FC = () => {
     const router = useRouter();
+    const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
     const handleLogin = async (credentials: {
         email: string;
@@ -16,12 +18,13 @@ const LoginPage: React.FC = () => {
             if (user) {
                 router.push('/admin');
             }
-        } catch (error) {
+        } catch (error: any) {
             console.error('Login failed:', error);
+            setErrorMessage(error.message);
         }
     };
 
-    return <LoginForm onLogin={handleLogin} />;
+    return <LoginForm onLogin={handleLogin} errorMessage={errorMessage} />;
 };
 
 export default LoginPage;

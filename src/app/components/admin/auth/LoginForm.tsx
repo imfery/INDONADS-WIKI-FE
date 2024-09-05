@@ -3,21 +3,22 @@ import Link from 'next/link';
 import React, { FormEvent, useState } from 'react';
 
 import Button from '@/app/components/admin/auth/Button';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 
 import InputField from './InputField';
 
 interface LoginFormProps {
     onLogin: (credentials: { email: string; password: string }) => void;
+    errorMessage: string | null;
 }
 
-const LoginForm: React.FC<LoginFormProps> = ({ onLogin }) => {
+const LoginForm: React.FC<LoginFormProps> = ({ onLogin, errorMessage }) => {
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
 
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
         try {
-            e.preventDefault();
             onLogin({ email, password });
         } catch (error) {
             console.error('Login error:', error);
@@ -30,6 +31,12 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLogin }) => {
                 <h2 className='mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900'>
                     Sign in to your account
                 </h2>
+                {errorMessage && (
+                    <Alert variant='destructive' className='mt-4'>
+                        <AlertTitle>Error</AlertTitle>
+                        <AlertDescription>{errorMessage}</AlertDescription>
+                    </Alert>
+                )}
             </div>
 
             <div className='mt-10 sm:mx-auto sm:w-full sm:max-w-sm'>
@@ -79,16 +86,6 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLogin }) => {
                         <Button type='submit'>Sign in</Button>
                     </div>
                 </form>
-
-                {/* <p className='mt-10 text-center text-sm text-gray-500'>
-                    Not a member?{' '}
-                    <Link
-                        href='/admin/register'
-                        className='font-semibold leading-6 text-indigo-600 hover:text-indigo-500'
-                    >
-                        Register here
-                    </Link>
-                </p> */}
             </div>
         </div>
     );
