@@ -1,6 +1,6 @@
 export const JWT_COOKIE_CONFIG = {
     path: '/',
-    domain: 'http://localhost:3000',
+    domain: 'http://monadpedia.xyz',
     httpOnly: true,
     maxAge: 1000 * 60 * 60 * 24 * 30,
     sameSite: 'lax',

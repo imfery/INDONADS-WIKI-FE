@@ -14,7 +14,7 @@ export async function loginUser({
     Cookies.remove('accessToken', { path: '/' });
     Cookies.remove('accessToken', { path: '/admin' });
 
-    const response = await fetch('http://localhost:3000/api/v1/auth/login', {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/auth/login`, {
         method: 'POST',
         headers: {
             Accept: 'application/json',
@@ -60,7 +60,7 @@ export async function registerUser({
 }) {
     const accessToken = Cookies.get('accessToken');
 
-    const response = await fetch('http://localhost:3000/api/v1/auth/register', {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/auth/register`, {
         method: 'POST',
         headers: {
             Accept: 'application/json',
@@ -84,7 +84,7 @@ export async function logoutUser() {
         throw new Error('No refresh token found');
     }
 
-    const response = await fetch('http://localhost:3000/api/v1/auth/logout', {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/auth/logout`, {
         method: 'POST',
         headers: {
             Accept: 'application/json',
@@ -104,7 +104,7 @@ export async function logoutUser() {
 }
 
 export async function requestPasswordReset(email: string): Promise<void> {
-    const response = await fetch('http://localhost:3000/api/v1/auth/forgot-password', {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/auth/forgot-password`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -120,7 +120,7 @@ export async function requestPasswordReset(email: string): Promise<void> {
 }
 
 export async function resetPassword(token: string, password: string): Promise<void> {
-    const response = await fetch(`http://localhost:3000/api/v1/auth/reset-password?token=${token}`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/auth/reset-password?token=${token}`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -170,7 +170,7 @@ export async function fetchWithAuth(
 export const validateToken = async () => {
     try {
         const response = await fetchWithAuth(
-            'http://localhost:3000/api/v1/auth/validate',
+            `${process.env.NEXT_PUBLIC_API_URL}/api/v1/auth/validate`,
             {
                 method: 'POST',
             }
@@ -194,7 +194,7 @@ export async function fetchAllEvents({
     page?: number;
 }): Promise<AllEventsData> {
     const response = await fetch(
-        `http://localhost:3000/api/v1/events?sortField=${sortField}&sortBy=${sortBy}&limit=${limit}&page=${page}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/api/v1/events?sortField=${sortField}&sortBy=${sortBy}&limit=${limit}&page=${page}`,
         {
             method: 'GET',
             headers: {
@@ -221,7 +221,7 @@ export async function fetchAllEvents({
 
 export async function fetchEventsSummary(): Promise<EventsData> {
     const response = await fetch(
-        'http://localhost:3000/api/v1/events/summary',
+        `${process.env.NEXT_PUBLIC_API_URL}/api/v1/events/summary`,
         {
             method: 'GET',
             headers: {
@@ -255,7 +255,7 @@ export async function createEvent(data: {
         throw new Error('No access token found');
     }
 
-    const response = await fetch('http://localhost:3000/api/v1/events', {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/events`, {
         method: 'POST',
         headers: {
             Accept: 'application/json',
@@ -285,7 +285,7 @@ export async function getEventById(eventId: string) {
     }
 
     const response = await fetch(
-        `http://localhost:3000/api/v1/events/detail/${eventId}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/api/v1/events/detail/${eventId}`,
         {
             method: 'GET',
             headers: {
@@ -306,7 +306,7 @@ export async function getEventById(eventId: string) {
 export async function updateEvent(eventId: string, data: object) {
     const token = Cookies.get('accessToken');
     const response = await fetch(
-        `http://localhost:3000/api/v1/events/detail/${eventId}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/api/v1/events/detail/${eventId}`,
         {
             method: 'PATCH',
             headers: {
@@ -331,7 +331,7 @@ export async function updateEvent(eventId: string, data: object) {
 export async function deleteEventById(eventId: string) {
     const token = Cookies.get('accessToken');
     const response = await fetch(
-        `http://localhost:3000/api/v1/events/detail/${eventId}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/api/v1/events/detail/${eventId}`,
         {
             method: 'DELETE',
             headers: {
@@ -369,7 +369,7 @@ export async function uploadImage(
     const formData = new FormData();
     formData.append('file', file);
 
-    const response = await fetch('http://localhost:3000/api/v1/upload', {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/upload`, {
         method: 'POST',
         headers: {
             Authorization: `Bearer ${token}`,
@@ -410,7 +410,7 @@ export async function createArticles(articlesData: {
     };
 
     try {
-        const response = await fetch('http://localhost:3000/api/v1/articles', {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/articles`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -444,7 +444,7 @@ export async function fetchAllArticles({
     sortField?: string;
 }): Promise<AllArticlesData> {
     const response = await fetch(
-        `http://localhost:3000/api/v1/articles?sortField=${sortField}&sortBy=${sortBy}&limit=${limit}&page=${page}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/api/v1/articles?sortField=${sortField}&sortBy=${sortBy}&limit=${limit}&page=${page}`,
         {
             method: 'GET',
             headers: {
@@ -469,7 +469,7 @@ export async function fetchAllArticles({
 }
 
 export async function fetchArticlesById(id: string): Promise<ArticlesData> {
-    const response = await fetch(`http://localhost:3000/api/v1/articles/${id}`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/articles/${id}`, {
         method: 'GET',
         headers: {
             Accept: 'application/json',
@@ -488,7 +488,7 @@ export async function deleteArticlesById(id: string): Promise<void> {
     const token = Cookies.get('accessToken');
     if (!token) throw new Error('No access token found');
 
-    const response = await fetch(`http://localhost:3000/api/v1/articles/${id}`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/articles/${id}`, {
         method: 'DELETE',
         headers: {
             Accept: 'application/json',
@@ -508,7 +508,7 @@ export async function updateArticles(
     const token = Cookies.get('accessToken');
     if (!token) throw new Error('No access token found');
 
-    const response = await fetch(`http://localhost:3000/api/v1/articles/${id}`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/articles/${id}`, {
         method: 'PATCH',
         headers: {
             'Content-Type': 'application/json',
@@ -544,7 +544,7 @@ export async function fetchActiveArticles({
 }): Promise<AllArticlesData> {
     try {
         const response = await fetch(
-            `http://localhost:3000/api/v1/articles/fetchActiveArticles?sortField=${sortField}&sortBy=${sortBy}&limit=${limit}&page=${page}`,
+            `${process.env.NEXT_PUBLIC_API_URL}/api/v1/articles/fetchActiveArticles?sortField=${sortField}&sortBy=${sortBy}&limit=${limit}&page=${page}`,
             {
                 method: 'GET',
                 headers: {
