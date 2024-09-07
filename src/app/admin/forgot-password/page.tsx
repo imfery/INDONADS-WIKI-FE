@@ -1,5 +1,10 @@
+'use client';
+
+import React from 'react';
+import ForgotPasswordForm from '@/app/components/admin/auth/ForgotPassword';
+
 const ForgotPasswordPage: React.FC = () => {
-  return <h4 className='text-center text-4xl'> Work In Progress </h4>;
+    return <ForgotPasswordForm />;
 };
 
 export default ForgotPasswordPage;

@@ -1,28 +1,34 @@
 import Cookies from 'js-cookie';
 
 import { EventsData } from '@/types';
-import { NewsData } from '@/types';
-import { AllEventsData } from '@/types';
+import { ArticlesData } from '@/types';
+import { AllEventsData, AllArticlesData } from '@/types';
 
-export async function loginUser({ email, password }: { email: string; password: string }) {
+export async function loginUser({
+    email,
+    password,
+}: {
+    email: string;
+    password: string;
+}) {
     Cookies.remove('accessToken', { path: '/' });
     Cookies.remove('accessToken', { path: '/admin' });
 
-    const response = await fetch('http://localhost:3000/api/v1/auth/login', {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/auth/login`, {
         method: 'POST',
         headers: {
-            'Accept': 'application/json',
+            Accept: 'application/json',
             'Content-Type': 'application/json',
         },
         body: JSON.stringify({ email, password }),
         credentials: 'include',
     });
 
-    if (!response.ok) {
-        throw new Error('Login failed');
-    }
-
     const data = await response.json();
+
+    if (!response.ok) {
+        throw new Error(data.message || 'Login failed');
+    }
 
     const { access, refresh } = data.tokens;
 
@@ -43,13 +49,23 @@ export async function loginUser({ email, password }: { email: string; password: 
     return data;
 }
 
+export async function registerUser({
+    name,
+    email,
+    password,
+}: {
+    name: string;
+    email: string;
+    password: string;
+}) {
+    const accessToken = Cookies.get('accessToken');
 
-export async function registerUser({ name, email, password }: { name: string; email: string; password: string }) {
-    const response = await fetch('http://localhost:3000/api/v1/auth/register', {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/auth/register`, {
         method: 'POST',
         headers: {
-            'Accept': 'application/json',
+            Accept: 'application/json',
             'Content-Type': 'application/json',
+            Authorization: `Bearer ${accessToken}`,
         },
         body: JSON.stringify({ name, email, password }),
         credentials: 'include',
@@ -68,10 +84,10 @@ export async function logoutUser() {
         throw new Error('No refresh token found');
     }
 
-    const response = await fetch('http://localhost:3000/api/v1/auth/logout', {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/auth/logout`, {
         method: 'POST',
         headers: {
-            'Accept': 'application/json',
+            Accept: 'application/json',
             'Content-Type': 'application/json',
         },
         body: JSON.stringify({ refreshToken }),
@@ -87,28 +103,56 @@ export async function logoutUser() {
     return response;
 }
 
+export async function requestPasswordReset(email: string): Promise<void> {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/auth/forgot-password`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            Accept: '*/*',
+        },
+        body: JSON.stringify({ email }),
+    });
+
+    if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Failed to send password reset email');
+    }
+}
+
+export async function resetPassword(token: string, password: string): Promise<void> {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/auth/reset-password?token=${token}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            Accept: '*/*',
+        },
+        body: JSON.stringify({ password }),
+    });
+
+    if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Failed to reset password');
+    }
+}
+
+
 export async function fetchWithAuth(
     url: string,
     options: RequestInit = {},
     onUnauthorized?: () => void
 ) {
     try {
-        console.log('Fetching access token from cookies');
         const accessToken = Cookies.get('accessToken');
-        console.log('Access token:', accessToken);
 
         options.headers = {
             ...options.headers,
-            'Authorization': `Bearer ${accessToken}`,
+            Authorization: `Bearer ${accessToken}`,
         };
-
-        console.log('Sending request to:', url, 'with options:', options);
 
         const response = await fetch(url, options);
 
         if (response.status === 401) {
             const data = await response.json();
-            console.log('Unauthorized response:', data);
             if (data.message === 'Invalid or expired access token') {
                 if (onUnauthorized) {
                     onUnauthorized();
@@ -123,6 +167,21 @@ export async function fetchWithAuth(
     }
 }
 
+export const validateToken = async () => {
+    try {
+        const response = await fetchWithAuth(
+            `${process.env.NEXT_PUBLIC_API_URL}/api/v1/auth/validate`,
+            {
+                method: 'POST',
+            }
+        );
+        return response;
+    } catch (error) {
+        console.error('Error validating token:', error);
+        throw error;
+    }
+};
+
 export async function fetchAllEvents({
     sortField = 'createdAt',
     sortBy = 'desc',
@@ -135,7 +194,7 @@ export async function fetchAllEvents({
     page?: number;
 }): Promise<AllEventsData> {
     const response = await fetch(
-        `http://localhost:3000/api/v1/events?sortField=${sortField}&sortBy=${sortBy}&limit=${limit}&page=${page}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/api/v1/events?sortField=${sortField}&sortBy=${sortBy}&limit=${limit}&page=${page}`,
         {
             method: 'GET',
             headers: {
@@ -153,19 +212,23 @@ export async function fetchAllEvents({
 
     return {
         events: data.data.events,
+        limit: limit,
         totalPages: data.data.totalPages,
         currentPage: data.data.page,
-        totalResults: data.data.totalResults, // Extracting totalResults correctly
+        totalResults: data.data.totalResults,
     };
 }
 
 export async function fetchEventsSummary(): Promise<EventsData> {
-    const response = await fetch('http://localhost:3000/api/v1/events/summary', {
-        method: 'GET',
-        headers: {
-            'Accept': 'application/json',
-        },
-    });
+    const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/v1/events/summary`,
+        {
+            method: 'GET',
+            headers: {
+                Accept: 'application/json',
+            },
+        }
+    );
 
     if (!response.ok) {
         throw new Error('Failed to fetch events');
@@ -176,25 +239,6 @@ export async function fetchEventsSummary(): Promise<EventsData> {
     return {
         upcomingEvents: data.data.upcomingEvents,
         concludedEvents: data.data.concludedEvents,
-    };
-}
-
-export async function fetchLatestNews(): Promise<NewsData> {
-    const response = await fetch('http://localhost:3000/api/v1/news/latest', {
-        method: 'GET',
-        headers: {
-            'Accept': 'application/json',
-        }
-    });
-
-    if (!response.ok) {
-        throw new Error('Failed to fetch latest news');
-    }
-
-    const data = await response.json();
-
-    return {
-        latestNews: data.data.latestNews,
     };
 }
 
@@ -211,10 +255,10 @@ export async function createEvent(data: {
         throw new Error('No access token found');
     }
 
-    const response = await fetch('http://localhost:5000/v1/events', {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/events`, {
         method: 'POST',
         headers: {
-            'Accept': 'application/json',
+            Accept: 'application/json',
             'Content-Type': 'application/json',
             Authorization: `Bearer ${token}`,
         },
@@ -233,13 +277,23 @@ export async function createEvent(data: {
 }
 
 export async function getEventById(eventId: string) {
-    const response = await fetch(`http://localhost:5000/v1/events/detail/${eventId}`, {
-        method: 'GET',
-        headers: {
-            'Accept': 'application/json',
-            'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
-        },
-    });
+
+    const token = Cookies.get('accessToken');
+
+    if (!token) {
+        throw new Error('No access token found');
+    }
+
+    const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/v1/events/detail/${eventId}`,
+        {
+            method: 'GET',
+            headers: {
+                Accept: 'application/json',
+                Authorization: `Bearer ${token}`,
+            },
+        }
+    );
 
     if (!response.ok) {
         throw new Error('Failed to fetch event details');
@@ -249,16 +303,19 @@ export async function getEventById(eventId: string) {
     return result.data;
 }
 
-export async function updateEvent(eventId: string, data: any) {
+export async function updateEvent(eventId: string, data: object) {
     const token = Cookies.get('accessToken');
-    const response = await fetch(`http://localhost:5000/v1/events/detail/${eventId}`, {
-        method: 'PATCH',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`,
-        },
-        body: JSON.stringify(data),
-    });
+    const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/v1/events/detail/${eventId}`,
+        {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify(data),
+        }
+    );
 
     if (!response.ok) {
         const errorData = await response.json();
@@ -273,13 +330,16 @@ export async function updateEvent(eventId: string, data: any) {
 
 export async function deleteEventById(eventId: string) {
     const token = Cookies.get('accessToken');
-    const response = await fetch(`http://localhost:5000/v1/events/detail/${eventId}`, {
-        method: 'DELETE',
-        headers: {
-            'Accept': 'application/json',
-            'Authorization': `Bearer ${token}`,
-        },
-    });
+    const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/v1/events/detail/${eventId}`,
+        {
+            method: 'DELETE',
+            headers: {
+                Accept: 'application/json',
+                Authorization: `Bearer ${token}`,
+            },
+        }
+    );
 
     if (!response.ok) {
         throw new Error('Failed to delete event');
@@ -290,4 +350,230 @@ export async function deleteEventById(eventId: string) {
     }
 
     return response.json();
+}
+
+/**
+ * Upload an image to the server
+ * @param {File} file - The image file to upload
+ * @returns {Promise<{ success: number, file: { url: string } }>} - The response from the server
+ */
+export async function uploadImage(
+    file: File
+): Promise<{ success: number; file: { url: string } }> {
+    const token = Cookies.get('accessToken');
+
+    if (!token) {
+        throw new Error('No access token found');
+    }
+
+    const formData = new FormData();
+    formData.append('file', file);
+
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/upload`, {
+        method: 'POST',
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+        body: formData,
+    });
+
+    if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Failed to upload image');
+    }
+
+    return response.json();
+}
+
+/**
+ * Create a articles item.
+ * @param {Object} articlesData - The articles data including title, summary, category, and editor content blocks.
+ * @returns {Promise<any>} The server response.
+ */
+export async function createArticles(articlesData: {
+    title: string;
+    summary: string;
+    category: string;
+    content: string;
+}) {
+    const token = Cookies.get('accessToken');
+
+    if (!token) {
+        throw new Error('No access token found');
+    }
+
+    const contentString = articlesData.content;
+
+    const articlesDataWithContent = {
+        ...articlesData,
+        content: contentString,
+    };
+
+    try {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/articles`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify(articlesDataWithContent),
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.message || 'Failed to create articles');
+        }
+
+        const result = await response.json();
+        return result;
+    } catch (error) {
+        console.error('Error creating articles:', error);
+        throw error;
+    }
+}
+
+export async function fetchAllArticles({
+    sortBy = 'desc',
+    limit = 10,
+    page = 1,
+    sortField = 'createdAt',
+}: {
+    sortBy?: string;
+    limit?: number;
+    page?: number;
+    sortField?: string;
+}): Promise<AllArticlesData> {
+    const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/v1/articles?sortField=${sortField}&sortBy=${sortBy}&limit=${limit}&page=${page}`,
+        {
+            method: 'GET',
+            headers: {
+                Accept: 'application/json',
+            },
+        }
+    );
+
+    if (!response.ok) {
+        throw new Error('Failed to fetch articles');
+    }
+
+    const data = await response.json();
+
+    return {
+        articles: data.data.articles,
+        limit: limit,
+        totalPages: data.data.totalPages,
+        currentPage: data.data.page,
+        totalResults: data.data.totalResults,
+    };
+}
+
+export async function fetchArticlesById(id: string): Promise<ArticlesData> {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/articles/${id}`, {
+        method: 'GET',
+        headers: {
+            Accept: 'application/json',
+        },
+    });
+
+    if (!response.ok) {
+        throw new Error('Failed to fetch articles');
+    }
+
+    const result = await response.json();
+    return result.data;
+}
+
+export async function deleteArticlesById(id: string): Promise<void> {
+    const token = Cookies.get('accessToken');
+    if (!token) throw new Error('No access token found');
+
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/articles/${id}`, {
+        method: 'DELETE',
+        headers: {
+            Accept: 'application/json',
+            Authorization: `Bearer ${token}`,
+        },
+    });
+
+    if (!response.ok) {
+        throw new Error('Failed to delete articles');
+    }
+}
+
+export async function updateArticles(
+    id: string,
+    data: Partial<ArticlesData>
+): Promise<void> {
+    const token = Cookies.get('accessToken');
+    if (!token) throw new Error('No access token found');
+
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/articles/${id}`, {
+        method: 'PATCH',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(data),
+    });
+
+    if (!response.ok) {
+        throw new Error('Failed to update articles');
+    }
+}
+
+/**
+ * Fetch active articles with pagination and sorting.
+ * @param {Object} params - The query parameters.
+ * @param {string} params.sortField - Field to sort by (default is 'createdAt').
+ * @param {string} params.sortBy - Sort order (either 'asc' or 'desc', default is 'desc').
+ * @param {number} params.limit - Maximum number of results per page (default is 5).
+ * @param {number} params.page - Current page number (default is 1).
+ * @returns {Promise<AllArticlesData>} - The fetched articles data.
+ */
+export async function fetchActiveArticles({
+    sortField = 'createdAt',
+    sortBy = 'desc',
+    limit = 5,
+    page = 1,
+}: {
+    sortField?: string;
+    sortBy?: string;
+    limit?: number;
+    page?: number;
+}): Promise<AllArticlesData> {
+    try {
+        const response = await fetch(
+            `${process.env.NEXT_PUBLIC_API_URL}/api/v1/articles/fetchActiveArticles?sortField=${sortField}&sortBy=${sortBy}&limit=${limit}&page=${page}`,
+            {
+                method: 'GET',
+                headers: {
+                    Accept: 'application/json',
+                },
+            }
+        );
+
+        if (!response.ok) {
+            throw new Error('Failed to fetch active articles');
+        }
+
+        const data = await response.json();
+
+        return {
+            articles: data.data.articles || [],
+            limit: limit,
+            totalPages: data.data.totalPages || 0,
+            currentPage: data.data.currentPage || 1,
+            totalResults: data.data.totalResults || 0,
+        };
+    } catch (error) {
+        console.error('Error fetching articles:', error);
+        return {
+            articles: [],
+            limit: limit,
+            totalPages: 0,
+            currentPage: 1,
+            totalResults: 0,
+        };
+    }
 }
