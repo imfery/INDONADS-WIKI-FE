@@ -32,8 +32,8 @@ const Header: FC = () => {
                         />
                     </Link>
                     <Link href='/' className='text-white font-bold text-lg'>
-                        MonadPedia
-                        <p className='text-xs md:text-sm'>by Indonads</p>
+                        Monadpedia
+                        <p className='text-xs md:text-sm'>for Indonads</p>
                     </Link>
                 </div>
 

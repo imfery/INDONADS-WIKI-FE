@@ -27,6 +27,9 @@ import AdminLayout from '@/app/layouts/AdminLayouts';
 import { createArticles } from '@/app/utils/api';
 import { useToast } from '@/providers/ToastProvider';
 
+import { Loader2 } from 'lucide-react';
+import { ARTICLES_CATEGORIES } from '@/constant/enum';
+
 const ArticlesDashboardForm: React.FC = () => {
     const methods = useForm({
         defaultValues: {
@@ -44,6 +47,7 @@ const ArticlesDashboardForm: React.FC = () => {
     const [EditorComponent, setEditorComponent] =
         useState<React.ComponentType<any> | null>(null);
     const [isEditorLoaded, setIsEditorLoaded] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
         import('@/app/components/admin/editor/Editor')
@@ -59,6 +63,7 @@ const ArticlesDashboardForm: React.FC = () => {
     const onSubmit = async (data: any) => {
         setShowAlert(false);
         setErrorMessage(undefined);
+        setIsLoading(true);
 
         try {
             const editorContent =
@@ -94,6 +99,8 @@ const ArticlesDashboardForm: React.FC = () => {
             console.error('Error saving editor content:', error);
             setErrorMessage('An unexpected error occurred.');
             setShowAlert(true);
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -196,15 +203,16 @@ const ArticlesDashboardForm: React.FC = () => {
                                                         <SelectValue placeholder='Select a category' />
                                                     </SelectTrigger>
                                                     <SelectContent>
-                                                        <SelectItem value='Articles'>
-                                                            Articles
-                                                        </SelectItem>
-                                                        <SelectItem value='Technology'>
-                                                            Technology
-                                                        </SelectItem>
-                                                        <SelectItem value='Health'>
-                                                            Health
-                                                        </SelectItem>
+                                                        {Object.values(
+                                                            ARTICLES_CATEGORIES
+                                                        ).map((category) => (
+                                                            <SelectItem
+                                                                key={category}
+                                                                value={category}
+                                                            >
+                                                                {category}
+                                                            </SelectItem>
+                                                        ))}
                                                     </SelectContent>
                                                 </Select>
                                             </FormControl>
@@ -222,9 +230,13 @@ const ArticlesDashboardForm: React.FC = () => {
                         <Button
                             className='mt-4'
                             onClick={handleSaveButtonClick}
-                            disabled={!isEditorLoaded}
+                            disabled={!isEditorLoaded || isLoading}
                         >
-                            Save Articles
+                            {isLoading ? (
+                                <Loader2 className='animate-spin' />
+                            ) : (
+                                'Save Articles'
+                            )}
                         </Button>
                     </div>
                 </div>

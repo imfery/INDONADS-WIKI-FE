@@ -5,11 +5,43 @@ import { FC } from 'react';
 
 const DesktopNav: FC = () => {
     return (
-        <nav className='hidden md:flex items-center space-x-12'>
-            <Link href='/about' className='text-white hover:text-neutral-300'>
-                About
-            </Link>
-        </nav>
+        <>
+            <nav className='hidden md:flex items-center space-x-12'>
+                <Link
+                    href='/spaces'
+                    className='text-white hover:text-neutral-300'
+                >
+                    Spaces
+                </Link>
+            </nav>
+            <nav className='hidden md:flex items-center space-x-12'>
+                <Link
+                    href='/motw'
+                    className='cursor-not-allowed text-gray-400'
+                    onClick={(e) => {
+                        e.preventDefault();
+                    }}
+                >
+                    Memes of The Week
+                </Link>
+            </nav>
+            <nav className='hidden md:flex items-center space-x-12'>
+                <Link
+                    href='https://forms.gle/x1mtTjLvKQf2sk9d6'
+                    className='text-white hover:text-neutral-300'
+                >
+                    Feedback/Feature Request
+                </Link>
+            </nav>
+            <nav className='hidden md:flex items-center space-x-12'>
+                <Link
+                    href='/about'
+                    className='text-white hover:text-neutral-300'
+                >
+                    About
+                </Link>
+            </nav>
+        </>
     );
 };
 

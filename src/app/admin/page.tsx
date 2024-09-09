@@ -37,7 +37,7 @@ const AdminPage: React.FC = () => {
                 <div className='pb-8 bg-white'>
                     <div className='p-5'>
                         <h2 className='text-3xl font-semibold text-gray-900'>
-                            Dashboard Homeppage
+                            Dashboard Homepage
                         </h2>
                         <p className='mt-1 text-sm font-normal text-gray-500'>
                             This is the homepage

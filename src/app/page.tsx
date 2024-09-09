@@ -1,18 +1,16 @@
 'use client';
 
 import * as React from 'react';
-
-import ConcludedEvents from '@/app/ConcludedEvents';
-import Footer from '@/app/Footers';
-import Header from '@/app/Headers';
-import UpcomingEvents from '@/app/UpcomingEvents';
+import ConcludedEvents from '@/components/ConcludedEvents';
+import Footer from '@/components/Footers';
+import Header from '@/components/Headers';
+import UpcomingEvents from '@/components/UpcomingEvents';
 import { fetchEventsSummary, fetchActiveArticles } from '@/app/utils/api';
 import { ToastProvider } from '@/providers/ToastProvider';
 import { Separator } from '@/components/ui/separator';
 import { Skeleton } from '@/components/ui/skeleton';
-import ActiveArticlesList from './ActiveArticlesList';
+import ActiveArticlesList from '@/components/ActiveArticlesList';
 import CustomPagination from '@/app/components/admin/Pagination';
-
 import { EventsData, AllArticlesData } from '@/types';
 
 export default function HomePage() {
@@ -76,11 +74,11 @@ export default function HomePage() {
                     <div className='container mx-auto px-4'>
                         <div className='mb-8 text-left'>
                             <h1 className='text-3xl font-bold text-gray-900'>
-                                Welcome to MonadPedia
+                                Welcome to Monadpedia
                             </h1>
                             <p className='mt-2 text-lg text-gray-600'>
                                 Your go-to resource for all things related to
-                                MonadPedia.
+                                Monadpedia.
                             </p>
                         </div>
                         <div className='flex flex-col md:flex-row'>

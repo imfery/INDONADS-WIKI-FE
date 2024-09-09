@@ -6,6 +6,7 @@ import { FormProvider, useForm } from 'react-hook-form';
 
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
+import { Loader2 } from 'lucide-react';
 import {
     FormControl,
     FormField,
@@ -27,6 +28,7 @@ import AdminLayout from '@/app/layouts/AdminLayouts';
 import { fetchArticlesById, updateArticles } from '@/app/utils/api';
 import { useToast } from '@/providers/ToastProvider';
 import SearchParamsLoader from '@/app/components/admin/SearchParamsLoader';
+import { ARTICLES_CATEGORIES } from '@/constant/enum';
 
 const EditArticlesForm: React.FC = () => {
     const methods = useForm({
@@ -48,6 +50,7 @@ const EditArticlesForm: React.FC = () => {
     const [errorMessage, setErrorMessage] = useState<string | undefined>();
     const [initialData, setInitialData] = useState<any>(null);
     const [isEditorLoaded, setIsEditorLoaded] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
         import('@/app/components/admin/editor/Editor')
@@ -85,6 +88,7 @@ const EditArticlesForm: React.FC = () => {
     const onSubmit = async (data: any) => {
         setShowAlert(false);
         setErrorMessage(undefined);
+        setIsLoading(true);
 
         try {
             const editorContent =
@@ -112,6 +116,8 @@ const EditArticlesForm: React.FC = () => {
                 setErrorMessage(err.message);
             }
             setShowAlert(true);
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -222,15 +228,16 @@ const EditArticlesForm: React.FC = () => {
                                                         <SelectValue placeholder='Select a category' />
                                                     </SelectTrigger>
                                                     <SelectContent>
-                                                        <SelectItem value='Articles'>
-                                                            Articles
-                                                        </SelectItem>
-                                                        <SelectItem value='Technology'>
-                                                            Technology
-                                                        </SelectItem>
-                                                        <SelectItem value='Health'>
-                                                            Health
-                                                        </SelectItem>
+                                                        {Object.values(
+                                                            ARTICLES_CATEGORIES
+                                                        ).map((category) => (
+                                                            <SelectItem
+                                                                key={category}
+                                                                value={category}
+                                                            >
+                                                                {category}
+                                                            </SelectItem>
+                                                        ))}
                                                     </SelectContent>
                                                 </Select>
                                             </FormControl>
@@ -251,9 +258,13 @@ const EditArticlesForm: React.FC = () => {
                         <Button
                             className='mt-4'
                             onClick={methods.handleSubmit(onSubmit, onError)}
-                            disabled={!isEditorLoaded}
+                            disabled={!isEditorLoaded || isLoading}
                         >
-                            Update Articles
+                            {isLoading ? (
+                                <Loader2 className='animate-spin' />
+                            ) : (
+                                'Update Articles'
+                            )}
                         </Button>
                     </div>
                 </div>
