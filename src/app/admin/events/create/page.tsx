@@ -6,6 +6,8 @@ import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 
+import { Loader2 } from 'lucide-react';
+
 import { cn } from '@/lib/utils';
 
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
@@ -38,12 +40,15 @@ import AdminLayout from '@/app/layouts/AdminLayouts';
 import { createEvent } from '@/app/utils/api';
 import { useToast } from '@/providers/ToastProvider';
 
+import { EVENTS_CATEGORIES } from '@/constant/enum';
+
 const EventsCreateForm: React.FC = () => {
     const methods = useForm();
     const router = useRouter();
     const { success } = useToast();
     const [selectedDate, setSelectedDate] = useState<Date | undefined>();
     const [selectedTime, setSelectedTime] = useState<string | undefined>();
+    const [isLoading, setIsLoading] = useState(false);
     const [showAlert, setShowAlert] = useState(false);
     const [errorMessage, setErrorMessage] = useState<string | undefined>();
 
@@ -56,6 +61,7 @@ const EventsCreateForm: React.FC = () => {
     const onSubmit = async (data: any) => {
         setShowAlert(false);
         setErrorMessage(undefined);
+        setIsLoading(true);
 
         try {
             const datetime = combineDateAndTime(selectedDate, selectedTime);
@@ -73,6 +79,8 @@ const EventsCreateForm: React.FC = () => {
             setErrorMessage(error.message);
             error('Failed to create event.', 3000);
             setShowAlert(true);
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -310,15 +318,16 @@ const EventsCreateForm: React.FC = () => {
                                                         <SelectValue placeholder='Select a category' />
                                                     </SelectTrigger>
                                                     <SelectContent>
-                                                        <SelectItem value='Podcast'>
-                                                            Podcast
-                                                        </SelectItem>
-                                                        <SelectItem value='Meetup'>
-                                                            Meetup
-                                                        </SelectItem>
-                                                        <SelectItem value='Conference'>
-                                                            Conference
-                                                        </SelectItem>
+                                                        {Object.values(
+                                                            EVENTS_CATEGORIES
+                                                        ).map((category) => (
+                                                            <SelectItem
+                                                                key={category}
+                                                                value={category}
+                                                            >
+                                                                {category}
+                                                            </SelectItem>
+                                                        ))}
                                                     </SelectContent>
                                                 </Select>
                                             </FormControl>
@@ -327,8 +336,16 @@ const EventsCreateForm: React.FC = () => {
                                     )}
                                 />
 
-                                <Button type='submit' className='mt-4'>
-                                    Create Event
+                                <Button
+                                    type='submit'
+                                    className='mt-4'
+                                    disabled={isLoading}
+                                >
+                                    {isLoading ? (
+                                        <Loader2 className='animate-spin' />
+                                    ) : (
+                                        'Create Event'
+                                    )}
                                 </Button>
                             </form>
                         </FormProvider>

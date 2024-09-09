@@ -1,9 +1,12 @@
+import { EVENTS_CATEGORIES } from "@/constant/enum";
+
 export interface Event {
     title: string;
     description: string;
     date: string;
     location: string;
     image: string;
+    category: EVENTS_CATEGORIES;
 }
 
 export interface EventsData {

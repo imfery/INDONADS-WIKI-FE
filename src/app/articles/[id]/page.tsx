@@ -2,8 +2,8 @@
 
 import * as React from 'react';
 import { useRouter, usePathname } from 'next/navigation';
-import Footer from '@/app/Footers';
-import Header from '@/app/Headers';
+import Footer from '@/components/Footers';
+import Header from '@/components/Headers';
 import { fetchArticlesById } from '@/app/utils/api';
 import { ToastProvider } from '@/providers/ToastProvider';
 import EditorComponent from '@/app/components/admin/editor/Editor';

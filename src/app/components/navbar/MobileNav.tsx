@@ -25,6 +25,15 @@ const MobileNav: FC<MobileNavProps> = ({ isOpen, onClose }) => {
                     <XMarkIcon className='h-6 w-6' />
                 </button>
                 <Link
+                    href='/spaces'
+                    className='text-white text-lg py-2'
+                    onClick={onClose}
+                >
+                    Spaces
+                </Link>
+            </nav>
+            <nav className='flex flex-col items-center py-6'>
+                <Link
                     href='/about'
                     className='text-white text-lg py-2'
                     onClick={onClose}

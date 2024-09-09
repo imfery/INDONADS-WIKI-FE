@@ -7,10 +7,10 @@ const Footers: React.FC = () => {
         <div className='bg-violet-950'>
             <div className='max-w-2xl mx-auto text-white py-10'>
                 <div className='text-center'>
-                    <h3 className='text-3xl mb-3'>MonadPedia</h3>
+                    <h3 className='text-3xl mb-3'>Monadpedia</h3>
                     <p className='line-clamp-3 mx-12'>
                         Your go-to resource for all things related to
-                        MonadPedia..
+                        Monadpedia..
                     </p>
                     <div className='flex justify-center my-10'>
                         <div className='flex items-center border w-auto rounded-lg px-4 py-2 mx-2'>
@@ -34,7 +34,7 @@ const Footers: React.FC = () => {
                 </div>
                 <div className='mt-28 flex flex-col md:flex-row md:justify-between items-center text-sm text-gray-400'>
                     <p className='order-2 md:order-1 mt-8 md:mt-0'>
-                        &copy; MonadPedia 2024.
+                        &copy; Monadpedia 2024.
                     </p>
                     <div className='order-1 md:order-2'>
                         <span className='px-2'>About us</span>

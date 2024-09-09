@@ -1,27 +1,34 @@
 'use client';
-import Link from 'next/link';
 import React, { FormEvent, useState } from 'react';
 
 import Button from '@/app/components/admin/auth/Button';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { Loader2 } from 'lucide-react';
 
 import InputField from './InputField';
 
 interface LoginFormProps {
-    onLogin: (credentials: { email: string; password: string }) => void;
+    onLogin: (credentials: {
+        email: string;
+        password: string;
+    }) => Promise<void>;
     errorMessage: string | null;
 }
 
 const LoginForm: React.FC<LoginFormProps> = ({ onLogin, errorMessage }) => {
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
+    const [isLoading, setIsLoading] = useState<boolean>(false);
 
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
+        setIsLoading(true);
         try {
-            onLogin({ email, password });
+            await onLogin({ email, password });
         } catch (error) {
             console.error('Login error:', error);
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -83,7 +90,13 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLogin, errorMessage }) => {
                         </div>
                     </div>
                     <div>
-                        <Button type='submit'>Sign in</Button>
+                        <Button type='submit' disabled={isLoading}>
+                            {isLoading ? (
+                                <Loader2 className='animate-spin' />
+                            ) : (
+                                'Sign in'
+                            )}
+                        </Button>
                     </div>
                 </form>
             </div>

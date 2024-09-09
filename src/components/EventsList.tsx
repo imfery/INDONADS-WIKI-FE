@@ -1,10 +1,10 @@
 import Image from 'next/image';
 import React from 'react';
 
-import image from '../../public/images/MonadPedia.png';
-
 import { Event } from '@/types';
 import { Badge } from '@/components/ui/badge';
+
+import { CATEGORY_IMAGES, EVENTS_CATEGORIES } from '@/constant/enum';
 
 interface EventsListProps {
     event: Event[];
@@ -22,9 +22,13 @@ const EventsList: React.FC<EventsListProps> = ({ event = [] }) => (
                         <div className='flex items-start gap-x-4 sm:items-center'>
                             <Image
                                 alt=''
-                                src={image}
-                                width={50}
-                                height={50}
+                                src={
+                                    CATEGORY_IMAGES[
+                                        e.category as EVENTS_CATEGORIES
+                                    ]
+                                }
+                                width={1080}
+                                height={1080}
                                 className='h-14 w-14 flex-none rounded-full bg-gray-50'
                             />
                             <div className='flex-1 min-w-0'>

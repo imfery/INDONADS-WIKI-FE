@@ -38,6 +38,9 @@ import { getEventById, updateEvent } from '@/app/utils/api';
 import { useToast } from '@/providers/ToastProvider';
 import SearchParamsLoader from '@/app/components/admin/SearchParamsLoader';
 
+import { Loader2 } from 'lucide-react';
+import { EVENTS_CATEGORIES } from '@/constant/enum';
+
 const EditEventForm: React.FC = () => {
     const methods = useForm();
     const router = useRouter();
@@ -47,6 +50,7 @@ const EditEventForm: React.FC = () => {
     const [selectedDate, setSelectedDate] = useState<Date | undefined>();
     const [selectedTime, setSelectedTime] = useState<string | undefined>();
     const [showAlert, setShowAlert] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
     const [errorMessage, setErrorMessage] = useState<string | undefined>();
 
     useEffect(() => {
@@ -89,6 +93,7 @@ const EditEventForm: React.FC = () => {
     const onSubmit = async (data: any) => {
         setShowAlert(false);
         setErrorMessage(undefined);
+        setIsLoading(true);
 
         try {
             const datetime = combineDateAndTime(selectedDate, selectedTime);
@@ -106,6 +111,8 @@ const EditEventForm: React.FC = () => {
             errorToast('Event failed to be edited', 3000);
             setErrorMessage(error.message);
             setShowAlert(true);
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -358,15 +365,16 @@ const EditEventForm: React.FC = () => {
                                                         <SelectValue placeholder='Select a category' />
                                                     </SelectTrigger>
                                                     <SelectContent>
-                                                        <SelectItem value='Podcast'>
-                                                            Podcast
-                                                        </SelectItem>
-                                                        <SelectItem value='Meetup'>
-                                                            Meetup
-                                                        </SelectItem>
-                                                        <SelectItem value='Conference'>
-                                                            Conference
-                                                        </SelectItem>
+                                                        {Object.values(
+                                                            EVENTS_CATEGORIES
+                                                        ).map((category) => (
+                                                            <SelectItem
+                                                                key={category}
+                                                                value={category}
+                                                            >
+                                                                {category}
+                                                            </SelectItem>
+                                                        ))}
                                                     </SelectContent>
                                                 </Select>
                                             </FormControl>
@@ -375,8 +383,16 @@ const EditEventForm: React.FC = () => {
                                     )}
                                 />
 
-                                <Button type='submit' className='mt-4'>
-                                    Update Event
+                                <Button
+                                    type='submit'
+                                    className='mt-4'
+                                    disabled={isLoading}
+                                >
+                                    {isLoading ? (
+                                        <Loader2 className='animate-spin' />
+                                    ) : (
+                                        'Update Event'
+                                    )}
                                 </Button>
                             </form>
                         </FormProvider>

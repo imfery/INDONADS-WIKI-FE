@@ -25,6 +25,10 @@ const CustomPagination: React.FC<PaginationProps> = ({
     resultsPerPage,
     onPageChange,
 }) => {
+    if (totalResults === 0) {
+        return null;
+    }
+
     const start = (currentPage - 1) * resultsPerPage + 1;
     const end = Math.min(currentPage * resultsPerPage, totalResults);
 
@@ -126,7 +130,7 @@ const CustomPagination: React.FC<PaginationProps> = ({
                     onClick={() =>
                         onPageChange(currentPage > 1 ? currentPage - 1 : 1)
                     }
-                    disabled={currentPage === 1}
+                    disabled={currentPage === 1 || totalResults === 0}
                 >
                     Previous
                 </PaginationPrevious>
@@ -141,7 +145,7 @@ const CustomPagination: React.FC<PaginationProps> = ({
                                 : totalPages
                         )
                     }
-                    disabled={currentPage === totalPages}
+                    disabled={currentPage === totalPages || totalResults === 0}
                 >
                     Next
                 </PaginationNext>

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import EventsList from './EventsList';
+import EventsList from '../components/EventsList';
 
 import { Event } from '@/types';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
