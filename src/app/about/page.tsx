@@ -21,7 +21,7 @@ export default function AboutPage() {
                     <div className='container mx-auto px-4'>
                         <div className='mb-8 text-left'>
                             <h1 className='text-3xl font-bold text-gray-900'>
-                                About MonadPedia
+                                About Monadpedia
                             </h1>
                         </div>
 
@@ -37,7 +37,7 @@ export default function AboutPage() {
 
                         <div className='text-lg text-gray-700 mb-8'>
                             <p className='mb-4'>
-                                <strong>MonadPedia</strong> is a community-owned
+                                <strong>Monadpedia</strong> is a community-owned
                                 project from <strong>Indonads</strong>. It is a
                                 collaborative platform aimed at expanding
                                 knowledge, fostering innovation, and providing a
@@ -52,7 +52,7 @@ export default function AboutPage() {
                                 for the growing blockchain ecosystem.
                             </p>
                             <p className='mb-4'>
-                                At MonadPedia, we believe in{' '}
+                                At Monadpedia, we believe in{' '}
                                 <strong>growing the pie</strong>—working
                                 together to increase the value and benefits for
                                 everyone involved. We are continuously evolving
@@ -68,10 +68,10 @@ export default function AboutPage() {
                         <Accordion type='single' collapsible className='w-full'>
                             <AccordionItem value='item-1'>
                                 <AccordionTrigger>
-                                    What is MonadPedia?
+                                    What is Monadpedia?
                                 </AccordionTrigger>
                                 <AccordionContent>
-                                    MonadPedia is a decentralized,
+                                    Monadpedia is a decentralized,
                                     community-driven platform that provides
                                     information and resources about Monad
                                     blockchain.
@@ -92,12 +92,12 @@ export default function AboutPage() {
 
                             <AccordionItem value='item-3'>
                                 <AccordionTrigger>
-                                    How can I contribute to MonadPedia?
+                                    How can I contribute to Monadpedia?
                                 </AccordionTrigger>
                                 <AccordionContent>
                                     You can contribute by providing feedback,
                                     suggesting improvements, or sharing new
-                                    ideas on the MonadPedia platform. We are
+                                    ideas on the Monadpedia platform. We are
                                     open to all forms of collaboration!
                                 </AccordionContent>
                             </AccordionItem>
