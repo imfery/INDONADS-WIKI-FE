@@ -58,17 +58,27 @@ const EditEventForm: React.FC = () => {
             try {
                 if (eventId) {
                     const event = await getEventById(eventId);
+
                     const eventDate = parse(
                         event.date,
-                        'dd MMM yyyy',
+                        'dd MMM yyyy HH:mm',
                         new Date()
                     );
+
                     if (!isValid(eventDate)) {
                         throw new Error('Invalid date format');
                     }
-                    const defaultTime = '00:00';
+
+                    const formattedTime = `${eventDate
+                        .getHours()
+                        .toString()
+                        .padStart(2, '0')}:${eventDate
+                        .getMinutes()
+                        .toString()
+                        .padStart(2, '0')}`;
+
                     setSelectedDate(eventDate);
-                    setSelectedTime(defaultTime);
+                    setSelectedTime(formattedTime);
 
                     methods.reset({
                         title: event.title,
@@ -76,7 +86,7 @@ const EditEventForm: React.FC = () => {
                         location: event.location,
                         category: event.category,
                         date: eventDate.toISOString(),
-                        time: defaultTime,
+                        time: formattedTime,
                     });
                 }
             } catch (error) {
