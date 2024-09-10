@@ -1,8 +1,21 @@
 import Image from 'next/image';
-import React from 'react';
+import React, { useState } from 'react';
 
 import { Event } from '@/types';
-import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import {
+    Dialog,
+    DialogTrigger,
+    DialogContent,
+    DialogClose,
+} from '@/components/ui/dialog';
+import {
+    Card,
+    CardContent,
+    CardHeader,
+    CardTitle,
+    CardDescription,
+} from '@/components/ui/card';
 
 import { CATEGORY_IMAGES, EVENTS_CATEGORIES } from '@/constant/enum';
 
@@ -10,61 +23,103 @@ interface EventsListProps {
     event: Event[];
 }
 
-const EventsList: React.FC<EventsListProps> = ({ event = [] }) => (
-    <div className='p-4 max-w-screen-lg mx-auto'>
-        <ul role='list' className='divide-y divide-gray-200'>
-            {event.length > 0 ? (
-                event.map((e, index) => (
-                    <li
-                        key={index}
-                        className='flex flex-col sm:flex-row justify-between gap-y-4 sm:gap-x-6 py-4'
-                    >
-                        <div className='flex items-start gap-x-4 sm:items-center'>
-                            <Image
-                                alt=''
-                                src={
-                                    CATEGORY_IMAGES[
-                                        e.category as EVENTS_CATEGORIES
-                                    ]
-                                }
-                                width={1080}
-                                height={1080}
-                                className='h-14 w-14 flex-none rounded-full bg-gray-50'
-                            />
-                            <div className='flex-1 min-w-0'>
-                                <p className='text-base sm:text-md font-semibold leading-6 text-gray-900 line-clamp-4'>
-                                    {e.title}
-                                </p>
-                                <p className='mt-1 text-xs sm:text-sm leading-5 text-gray-500 line-clamp-3'>
-                                    {e.description}
-                                </p>
-                            </div>
-                        </div>
-                        <div className='flex flex-col items-start sm:items-end mt-4 sm:mt-0'>
-                            <p className='text-xs sm:text-sm leading-5 text-gray-900 truncate'>
-                                {e.date}
-                            </p>
-                            {e.location ? (
-                                <Badge className='mt-1 text-xs sm:text-sm text-gray-500 line-clamp-3 text-right bg-gray-100 rounded-full px-2 py-1 hover:text-gray-500 hover:bg-gray-100'>
-                                    {e.location}
-                                </Badge>
-                            ) : (
-                                <div className='mt-1 flex items-center gap-x-1.5'>
-                                    <div className='flex-none rounded-full bg-emerald-500/20 p-1'>
-                                        <div className='h-1.5 w-1.5 rounded-full bg-emerald-500' />
-                                    </div>
+const EventsList: React.FC<EventsListProps> = ({ event = [] }) => {
+    const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
+
+    return (
+        <div className='p-4 max-w-screen-lg mx-auto'>
+            <ul role='list' className='divide-y divide-gray-200'>
+                {event.length > 0 ? (
+                    event.map((e, index) => (
+                        <li
+                            key={index}
+                            className='flex flex-col sm:flex-row justify-between gap-y-4 sm:gap-x-6 py-4'
+                        >
+                            <div className='flex items-start gap-x-4 sm:items-center'>
+                                <Image
+                                    alt=''
+                                    src={
+                                        CATEGORY_IMAGES[
+                                            e.category as EVENTS_CATEGORIES
+                                        ]
+                                    }
+                                    width={1080}
+                                    height={1080}
+                                    className='h-14 w-14 flex-none rounded-full bg-gray-50'
+                                />
+                                <div className='flex-1 min-w-0'>
+                                    <p className='text-base sm:text-md font-semibold leading-6 text-gray-900 line-clamp-4'>
+                                        {e.title}
+                                    </p>
+                                    <p className='mt-1 text-xs sm:text-sm leading-5 text-gray-500'>
+                                        {e.date}
+                                    </p>
                                 </div>
-                            )}
-                        </div>
-                    </li>
-                ))
-            ) : (
-                <p className='text-center text-gray-500'>
-                    No events to display.
-                </p>
-            )}
-        </ul>
-    </div>
-);
+                            </div>
+                            <div className='flex flex-col items-start sm:items-end mt-4 sm:mt-0'>
+                                <Dialog>
+                                    <DialogTrigger asChild>
+                                        <Button
+                                            variant='outline'
+                                            className='mt-2'
+                                            onClick={() => setSelectedEvent(e)}
+                                        >
+                                            Details
+                                        </Button>
+                                    </DialogTrigger>
+                                    <DialogContent className='max-w-xl p-6 sm:p-8'>
+                                        <Card>
+                                            <CardHeader className='flex flex-col items-stretch space-y-0 border-b p-0 sm:flex-row'>
+                                                <div className='flex flex-1 flex-col justify-center gap-1 px-6 py-5 sm:py-6'>
+                                                    <CardTitle>
+                                                        {selectedEvent?.title}
+                                                    </CardTitle>
+                                                    <CardDescription>
+                                                        {
+                                                            selectedEvent?.description
+                                                        }
+                                                    </CardDescription>
+                                                </div>
+                                            </CardHeader>
+                                            <CardContent className='px-6 py-4'>
+                                                <div className='grid grid-cols-2 gap-4'>
+                                                    <div className='flex flex-col'>
+                                                        <span className='text-xs font-semibold text-gray-500'>
+                                                            Date
+                                                        </span>
+                                                        <span className='text-lg font-bold'>
+                                                            {
+                                                                selectedEvent?.date
+                                                            }
+                                                        </span>
+                                                    </div>
+                                                    <div className='flex flex-col'>
+                                                        <span className='text-xs font-semibold text-gray-500'>
+                                                            Location
+                                                        </span>
+                                                        <span className='text-lg font-bold'>
+                                                            {
+                                                                selectedEvent?.location
+                                                            }
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </CardContent>
+                                        </Card>
+                                        <DialogClose />
+                                    </DialogContent>
+                                </Dialog>
+                            </div>
+                        </li>
+                    ))
+                ) : (
+                    <p className='text-center text-gray-500'>
+                        No events to display.
+                    </p>
+                )}
+            </ul>
+        </div>
+    );
+};
 
 export default EventsList;
