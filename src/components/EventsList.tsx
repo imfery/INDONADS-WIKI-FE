@@ -91,9 +91,8 @@ const EventsList: React.FC<EventsListProps> = ({ event = [] }) => {
                                                             Date
                                                         </span>
                                                         <span className='text-lg font-bold'>
-                                                            {
-                                                                selectedEvent?.date
-                                                            }
+                                                            {selectedEvent?.date +
+                                                                ' GMT+7'}
                                                         </span>
                                                     </div>
                                                     <div className='flex flex-col'>
