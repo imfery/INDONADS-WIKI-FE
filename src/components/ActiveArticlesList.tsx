@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { ArticlesData } from '@/types';
 import Link from 'next/link';
+import { sanitizeTitle } from '@/lib/helper';
 
 interface ActiveArticlesProps {
     articles: ArticlesData[];
@@ -32,9 +33,9 @@ const ActiveArticlesList: React.FC<ActiveArticlesProps> = ({
                                     </Badge>
                                     <p className='text-xl sm:text-md font-semibold leading-6 text-gray-900 mt-2'>
                                         <Link
-                                            href={`/articles/${article.title
-                                                .replace(/\s+/g, '-')
-                                                .toLowerCase()}-${article.id}`}
+                                            href={`/articles/${sanitizeTitle(
+                                                article.title
+                                            )}-${article.id}`}
                                         >
                                             {article.title}
                                         </Link>
