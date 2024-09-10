@@ -102,6 +102,15 @@ export default function AboutPage() {
                                 </AccordionContent>
                             </AccordionItem>
                         </Accordion>
+                        <p className='mb-4 mt-10'>
+                            <strong>Note:</strong> Monadpedia is still in active
+                            development. So please expect flaws & defects as
+                            incremental changes and updates regarding features
+                            and interfaces will keep rolling out.
+                        </p>
+                        <p className='mb-4 mt-10'>
+                            We are here for the community, gmonad {'<3'}.
+                        </p>
                     </div>
                 </section>
                 <Footer />
