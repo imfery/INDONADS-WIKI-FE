@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import React, { useState } from 'react';
+import { format } from 'date-fns'; // Date formatting helper
 
 import { Event } from '@/types';
 import { Button } from '@/components/ui/button';
@@ -18,6 +19,8 @@ import {
 } from '@/components/ui/card';
 
 import { CATEGORY_IMAGES, EVENTS_CATEGORIES } from '@/constant/enum';
+
+import { generateGoogleCalendarLink } from '@/lib/helper';
 
 interface EventsListProps {
     event: Event[];
@@ -67,7 +70,7 @@ const EventsList: React.FC<EventsListProps> = ({ event = [] }) => {
                                             Details
                                         </Button>
                                     </DialogTrigger>
-                                    <DialogContent className='max-w-xl p-6 sm:p-8'>
+                                    <DialogContent className='max-w-2xl p-6 sm:p-8'>
                                         <Card>
                                             <CardHeader className='flex flex-col items-stretch space-y-0 border-b p-0 sm:flex-row'>
                                                 <div className='flex flex-1 flex-col justify-center gap-1 px-6 py-5 sm:py-6'>
@@ -104,6 +107,22 @@ const EventsList: React.FC<EventsListProps> = ({ event = [] }) => {
                                                         </span>
                                                     </div>
                                                 </div>
+                                                {selectedEvent && (
+                                                    <div className='mt-4'>
+                                                        <a
+                                                            href={generateGoogleCalendarLink(
+                                                                selectedEvent
+                                                            )}
+                                                            target='_blank'
+                                                            rel='noopener noreferrer'
+                                                        >
+                                                            <Button variant='outline'>
+                                                                Add to Google
+                                                                Calendar
+                                                            </Button>
+                                                        </a>
+                                                    </div>
+                                                )}
                                             </CardContent>
                                         </Card>
                                         <DialogClose />
