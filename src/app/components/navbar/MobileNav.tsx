@@ -31,6 +31,13 @@ const MobileNav: FC<MobileNavProps> = ({ isOpen, onClose }) => {
                 >
                     Spaces
                 </Link>
+                <Link
+                    href='https://discord.gg/n5Yg2qe9Zd'
+                    className='text-white text-lg py-2'
+                    onClick={onClose}
+                >
+                    Feedback/Feature Request
+                </Link>
             </nav>
             <nav className='flex flex-col items-center py-6'>
                 <Link

@@ -27,7 +27,7 @@ const DesktopNav: FC = () => {
             </nav>
             <nav className='hidden md:flex items-center space-x-12'>
                 <Link
-                    href='https://forms.gle/x1mtTjLvKQf2sk9d6'
+                    href='https://discord.gg/n5Yg2qe9Zd'
                     className='text-white hover:text-neutral-300'
                 >
                     Feedback/Feature Request
