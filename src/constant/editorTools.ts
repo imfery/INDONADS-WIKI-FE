@@ -30,7 +30,7 @@ export const loadEditorTools = async (): Promise<{
     const Paragraph = (await import('editorjs-paragraph-with-alignment'))
         .default;
     const Warning = (await import('@editorjs/warning')).default;
-    const TextSpoiler = (await import('editorjs-inline-spoiler-tool')).default;
+    // const TextSpoiler = (await import('editorjs-inline-spoiler-tool')).default;
     const TextVariantTune = (await import('@editorjs/text-variant-tune'))
         .default;
 
@@ -112,9 +112,10 @@ export const loadEditorTools = async (): Promise<{
                 titlePlaceholder: 'Enter warning title',
                 messagePlaceholder: 'Enter warning message',
             },
+            inlineToolbar: true,
         },
-        textSpoiler: {
-            class: TextSpoiler as unknown as InlineToolConstructable,
-        },
+        // textSpoiler: {
+        // class: TextSpoiler as unknown as InlineToolConstructable,
+        // },
     };
-};
+}
