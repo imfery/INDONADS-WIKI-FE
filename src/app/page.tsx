@@ -12,6 +12,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import ActiveArticlesList from '@/components/ActiveArticlesList';
 import CustomPagination from '@/app/components/admin/Pagination';
 import { EventsData, AllArticlesData } from '@/types';
+import { Analytics } from '@vercel/analytics/react';
 
 export default function HomePage() {
     const [events, setEvents] = React.useState<EventsData | null>(null);
@@ -69,6 +70,7 @@ export default function HomePage() {
     return (
         <ToastProvider>
             <main>
+                <Analytics />
                 <Header />
                 <section className='bg-white mt-16 mb-64'>
                     <div className='container mx-auto px-4'>

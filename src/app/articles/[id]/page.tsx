@@ -8,7 +8,8 @@ import { fetchArticlesById } from '@/app/utils/api';
 import { ToastProvider } from '@/providers/ToastProvider';
 import EditorComponent from '@/app/components/admin/editor/Editor';
 import { Skeleton } from '@/components/ui/skeleton';
-import { Button } from '@/components/ui/button'; // Import the shadcn UI Button component
+import { Button } from '@/components/ui/button';
+import { Analytics } from '@vercel/analytics/react';
 
 export default function ArticlesDetails() {
     const router = useRouter();
@@ -39,6 +40,7 @@ export default function ArticlesDetails() {
     return (
         <ToastProvider>
             <main>
+                <Analytics />
                 <Header />
                 <section className='bg-white mt-16 mb-64 flex justify-center items-center'>
                     <div className='container mx-auto px-4 flex flex-col justify-center items-center'>

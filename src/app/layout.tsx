@@ -1,6 +1,7 @@
 import { Metadata } from 'next';
 import * as React from 'react';
 import { Toaster } from 'sonner';
+import { SpeedInsights } from '@vercel/speed-insights/next';
 
 import '@/styles/globals.css';
 import '@/styles/colors.css';
@@ -46,6 +47,7 @@ export default function RootLayout({
 }) {
     return (
         <html lang='en'>
+            <SpeedInsights />
             <body>
                 <ToastProvider>
                     {children}
