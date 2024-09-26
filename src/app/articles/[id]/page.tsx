@@ -44,7 +44,13 @@ export default function ArticlesDetails() {
                     <div className='container mx-auto px-4 flex flex-col justify-center items-center'>
                         <div className='w-full mb-4'>
                             <Button
-                                onClick={() => router.back()}
+                                onClick={() => {
+                                    if (window.history.length > 1) {
+                                        router.back();
+                                    } else {
+                                        router.push('/');
+                                    }
+                                }}
                                 variant='secondary'
                             >
                                 Back
