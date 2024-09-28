@@ -17,12 +17,10 @@ export const loadEditorTools = async (): Promise<{
 
     const Header = (await import('@editorjs/header')).default;
     const Quote = (await import('@editorjs/quote')).default;
-    const Delimiter = (await import('@editorjs/delimiter')).default;
     const NestedList = (await import('@editorjs/nested-list')).default;
     const Checklist = (await import('@editorjs/checklist')).default;
     const Image = (await import('@editorjs/image')).default;
     const Table = (await import('@editorjs/table')).default;
-    // const CodeBox = (await import('@bomdi/codebox')).default;
     const Marker = (await import('@editorjs/marker')).default;
     const Underline = (await import('@editorjs/underline')).default;
     const AlignmentTune = (await import('editorjs-text-alignment-blocktune'))
@@ -30,9 +28,10 @@ export const loadEditorTools = async (): Promise<{
     const Paragraph = (await import('editorjs-paragraph-with-alignment'))
         .default;
     const Warning = (await import('@editorjs/warning')).default;
-    // const TextSpoiler = (await import('editorjs-inline-spoiler-tool')).default;
     const TextVariantTune = (await import('@editorjs/text-variant-tune'))
         .default;
+    const Delimiter = (await import('@coolbytes/editorjs-delimiter')).default;
+    const Embed = (await import('@editorjs/embed')).default;
 
     return {
         alignment: AlignmentTune as unknown as BlockTuneConstructable,
@@ -57,14 +56,25 @@ export const loadEditorTools = async (): Promise<{
             shortcut: 'CMD+U',
         },
         quote: {
-            class: Quote as unknown as ToolConstructable,
+            class: Quote as unknown as BlockToolConstructable,
             inlineToolbar: true,
             config: {
                 quotePlaceholder: 'Enter a quote',
                 captionPlaceholder: "Quote's author",
+                enableLineBreaks: true,
             },
         },
-        delimiter: Delimiter as unknown as ToolConstructable,
+        delimiter: {
+            class: Delimiter as unknown as ToolConstructable,
+            config: {
+                styleOptions: ['star', 'dash', 'line'],
+                defaultStyle: 'line',
+                lineWidthOptions: [8, 15, 25, 35, 50, 60, 100],
+                defaultLineWidth: 100,
+                lineThicknessOptions: [1, 2, 3, 4, 5, 6],
+                defaultLineThickness: 1,
+            }
+        },
         nestedList: NestedList as unknown as ToolConstructable,
         checklist: {
             class: Checklist as unknown as ToolConstructable,
@@ -95,13 +105,6 @@ export const loadEditorTools = async (): Promise<{
             },
         },
         table: Table as unknown as ToolConstructable,
-        // codebox: {
-        //     class: CodeBox as unknown as BlockToolConstructable,
-        //     config: {
-        //         placeholder: 'Enter your code here...',
-        //         theme: 'light',
-        //     },
-        // },
         marker: {
             class: Marker as unknown as InlineToolConstructable,
             shortcut: 'CMD+M',
@@ -114,8 +117,8 @@ export const loadEditorTools = async (): Promise<{
             },
             inlineToolbar: true,
         },
-        // textSpoiler: {
-        // class: TextSpoiler as unknown as InlineToolConstructable,
-        // },
+        embed: {
+            class: Embed as unknown as ToolConstructable,
+        }
     };
 }
