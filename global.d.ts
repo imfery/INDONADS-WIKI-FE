@@ -261,3 +261,10 @@ declare module 'editorjs-html' {
 
     export default EditorJSHTML;
 }
+
+declare module '@coolbytes/editorjs-delimiter' {
+    import { ToolConstructable } from '@editorjs/editorjs';
+
+    const Delimiter: ToolConstructable;
+    export default Delimiter;
+}

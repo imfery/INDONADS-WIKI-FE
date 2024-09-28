@@ -60,7 +60,7 @@ h5.ce-header {
 
 /* General input styles for the quote in Editor.js */
 .cdx-input {
-    font-family: 'Georgia', serif; /* Use a serif font similar to Medium */
+    /* font-family: 'Georgia', serif; Use a serif font similar to Medium */
     font-size: 21px; /* Slightly larger font size for readability */
     color: #2e2e2e; /* Dark grey color for text */
     line-height: 1.58; /* Adjust line height for better readability */
@@ -71,22 +71,32 @@ h5.ce-header {
     resize: none; /* Prevent resizing */
     width: 100%; /* Ensure the input takes full width */
     margin: 0; /* Remove margin */
-    text-align: center; /* Center align text */
+    text-align: left; /* Center align text */
+    min-height: 80px;
+}
+
+.image-tool__caption {
+    font-size: 12px;
+    text-align: center;
+    color: #999; /* Light grey color for captions */
+}
+
+.embed-tool__caption {
+    font-size: 12px;
+    text-align: center;
+    color: #999; /* Light grey color for captions */
 }
 
 /* Specific styles for the quote text area */
 .cdx-quote__text {
-    font-style: italic; /* Italicize the quote text */
+    font-style: normal; /* Italicize the quote text */
     margin: 1em 0; /* Margin around the quote */
     padding: 20px; /* Add padding to prevent text from touching the border */
-    border-left: 4px solid #e2e2e2; /* Light grey left border similar to Medium */
+    border-left: 3px solid #e2e2e2; /* Light grey left border similar to Medium */
     color: #2e2e2e; /* Dark grey color for quote text */
-    font-size: 21px; /* Slightly larger font size to mimic Medium quotes */
+    font-size: 16px; /* Slightly larger font size to mimic Medium quotes */
     background-color: transparent; /* Keep background transparent */
     position: relative; /* Position relative for the SVG */
-    display: flex; /* Flex display for centering content */
-    justify-content: center; /* Center content horizontally */
-    align-items: center; /* Center content vertically */
 }
 
 /* Add styles for the quote SVG icon */
@@ -100,7 +110,7 @@ h5.ce-header {
 
 /* Optional: Style for the quote caption area */
 .cdx-quote__caption {
-    font-size: 14px; /* Smaller font size for captions */
+    font-size: 12px; /* Smaller font size for captions */
     color: #999; /* Light grey color for captions */
     margin-top: 5px; /* Spacing above the caption */
     text-align: center; /* Center align caption text */
@@ -148,4 +158,87 @@ h5.ce-header {
 .ce-paragraph a:active {
     color: #c2185b; /* Slightly darker color when active */
     border-bottom-color: #c2185b; /* Darker underline color when active */
+}
+
+.ce-delimiter {
+    line-height: 1.6em;
+    width: 100%;
+    text-align: center;
+    color: black;
+}
+
+/* Delimiter styles */
+.ce-delimiter-star span {
+    font-size: 30px;
+    line-height: 65px;
+    display: inline-block;
+    height: 30px;
+    letter-spacing: 0.2em;
+    font-weight: 900;
+}
+.ce-delimiter-dash span {
+    margin: 10px;
+    display: inline-block;
+    height: 30px;
+    letter-spacing: 0.6em;
+    font-weight: 900;
+}
+.ce-delimiter-line hr {
+    font-size: 48px;
+    border-style: solid;
+    border-color: rgb(229 231 235);
+    border-radius: 3px;
+}
+
+/* Thickness */
+.ce-delimiter-thickness-1 {
+    border-width: 0.5px;
+}
+.ce-delimiter-thickness-2 {
+    border-width: 1px;
+}
+.ce-delimiter-thickness-3 {
+    border-width: 1.5px;
+}
+.ce-delimiter-thickness-4 {
+    border-width: 2px;
+}
+.ce-delimiter-thickness-5 {
+    border-width: 2.5px;
+}
+.ce-delimiter-thickness-6 {
+    border-width: 3px;
+}
+
+/* quote */
+.cdx-quote-icon svg {
+    transform: rotate(180deg);
+}
+
+.cdx-quote {
+    margin: 0;
+}
+
+.cdx-quote [contentEditable='true'][data-placeholder]::before {
+    position: absolute;
+    content: attr(data-placeholder);
+    color: #707684;
+    font-weight: normal;
+    opacity: 0;
+}
+
+.cdx-quote [contentEditable='true'][data-placeholder]:empty::before {
+    opacity: 1;
+}
+
+.cdx-quote [contentEditable='true'][data-placeholder]:empty:focus::before {
+    opacity: 0;
+}
+
+.cdx-quote-settings {
+    display: flex;
+}
+
+.cdx-quote-settings .cdx-settings-button {
+    width: 50%;
 }

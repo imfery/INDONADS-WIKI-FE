@@ -18,10 +18,12 @@
     },
     "dependencies": {
         "@bomdi/codebox": "^2.0.0",
+        "@coolbytes/editorjs-delimiter": "^1.0.3",
         "@editorjs/checklist": "^1.6.0",
         "@editorjs/code": "^2.9.0",
         "@editorjs/delimiter": "^1.4.2",
         "@editorjs/editorjs": "^2.30.5",
+        "@editorjs/embed": "^2.7.4",
         "@editorjs/header": "^2.8.7",
         "@editorjs/image": "^2.9.3",
         "@editorjs/link": "^2.6.2",

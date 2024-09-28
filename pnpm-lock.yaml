@@ -11,6 +11,9 @@ importers:
       '@bomdi/codebox':
         specifier: ^2.0.0
         version: 2.0.0
+      '@coolbytes/editorjs-delimiter':
+        specifier: ^1.0.3
+        version: 1.0.3
       '@editorjs/checklist':
         specifier: ^1.6.0
         version: 1.6.0
@@ -23,6 +26,9 @@ importers:
       '@editorjs/editorjs':
         specifier: ^2.30.5
         version: 2.30.5
+      '@editorjs/embed':
+        specifier: ^2.7.4
+        version: 2.7.4
       '@editorjs/header':
         specifier: ^2.8.7
         version: 2.8.7
@@ -1070,6 +1076,9 @@ packages:
     resolution: {integrity: sha512-7/z7pA7BM0i8XvMSBynO7xsB3mVQPUZbVn6zMIlp/a091XJ3qAXRXc+HwLYhiIdzzS5fuxxNIHZMGHVD4HJxdA==}
     engines: {node: '>=v12'}
 
+  '@coolbytes/editorjs-delimiter@1.0.3':
+    resolution: {integrity: sha512-Ix0z5ujv12Y+JXkUypxtdX36OsDBNyjLo/k8oPxBcq6UxCS1F96dXvE9XRb/tpN6qW8BbWUfViyBbeOLAbGkLw==}
+
   '@corex/deepmerge@2.6.148':
     resolution: {integrity: sha512-6QMz0/2h5C3ua51iAnXMPWFbb1QOU1UvSM4bKBw5mzdT+WtLgjbETBBIQZ+Sh9WvEcGwlAt/DEdRpIC3XlDBMA==}
 
@@ -1091,6 +1100,9 @@ packages:
 
   '@editorjs/editorjs@2.30.5':
     resolution: {integrity: sha512-sE7m/UPbuf+nSGjv9cmWggFsfvtYlgEX7PCby2lZWvOsOLbRxuLT+ZYlwbWshD+8BFJwiAmBj9e+ScZcOjCzeg==}
+
+  '@editorjs/embed@2.7.4':
+    resolution: {integrity: sha512-ByvSZnVuh9FhjLGmvjNlxhk3hnqN0g5K+E/tJY6Whdspgh9mst0iBARoVJQDGeJC+NNL2sSgYGt1ZjvEK5Z+lQ==}
 
   '@editorjs/header@2.8.7':
     resolution: {integrity: sha512-rfxzYFR/Jhaocj3Xxx8XjEjyzfPbBIVkcPZ9Uy3rEz1n3ewhV0V4zwuxCjVfFhLUVgQQExq43BxJnTNlLOzqDQ==}
@@ -6581,6 +6593,8 @@ snapshots:
     dependencies:
       chalk: 4.1.2
 
+  '@coolbytes/editorjs-delimiter@1.0.3': {}
+
   '@corex/deepmerge@2.6.148': {}
 
   '@cspotcode/source-map-support@0.8.1':
@@ -6604,6 +6618,10 @@ snapshots:
       '@editorjs/helpers': 0.0.4
 
   '@editorjs/editorjs@2.30.5': {}
+
+  '@editorjs/embed@2.7.4':
+    dependencies:
+      '@editorjs/editorjs': 2.30.5
 
   '@editorjs/header@2.8.7':
     dependencies:
