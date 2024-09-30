@@ -48,3 +48,21 @@ export interface AllArticlesData {
     currentPage: number;
     totalResults: number;
 }
+
+export interface MonadMadness {
+    id: string;
+    title: string;
+    description: string;
+    image: string;
+    twitter: string;
+    website: string;
+    createdAt: string;
+}
+
+export interface AllMonadMadnessData {
+    participants: MonadMadness[];
+    limit: number;
+    totalPages: number;
+    currentPage: number;
+    totalResults: number;
+}

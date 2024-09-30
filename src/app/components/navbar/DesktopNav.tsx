@@ -16,6 +16,14 @@ const DesktopNav: FC = () => {
             </nav>
             <nav className='hidden md:flex items-center space-x-12'>
                 <Link
+                    href='/monad-madness'
+                    className='text-white hover:text-neutral-300'
+                >
+                    Monad Madness
+                </Link>
+            </nav>
+            <nav className='hidden md:flex items-center space-x-12'>
+                <Link
                     href='/motw'
                     className='cursor-not-allowed text-gray-400'
                     onClick={(e) => {
