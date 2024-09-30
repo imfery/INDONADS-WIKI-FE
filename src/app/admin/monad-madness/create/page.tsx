@@ -150,8 +150,7 @@ const MonadMadnessCreateForm: React.FC = () => {
                                     render={({ field, fieldState }) => (
                                         <FormItem>
                                             <FormLabel>
-                                                Twitter (e.g
-                                                https://x.com/monadpedia)
+                                                Twitter (e.g monadpedia)
                                             </FormLabel>
                                             <FormControl>
                                                 <Input
