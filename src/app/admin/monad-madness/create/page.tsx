@@ -149,7 +149,10 @@ const MonadMadnessCreateForm: React.FC = () => {
                                     }}
                                     render={({ field, fieldState }) => (
                                         <FormItem>
-                                            <FormLabel>Twitter</FormLabel>
+                                            <FormLabel>
+                                                Twitter (e.g
+                                                https://x.com/monadpedia)
+                                            </FormLabel>
                                             <FormControl>
                                                 <Input
                                                     {...field}
@@ -173,7 +176,10 @@ const MonadMadnessCreateForm: React.FC = () => {
                                     }}
                                     render={({ field, fieldState }) => (
                                         <FormItem>
-                                            <FormLabel>Website</FormLabel>
+                                            <FormLabel>
+                                                Website (e.g
+                                                https://monadpedia.xyz)
+                                            </FormLabel>
                                             <FormControl>
                                                 <Input
                                                     {...field}

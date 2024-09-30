@@ -581,8 +581,8 @@ export async function fetchActiveArticles({
 export async function fetchAllMonadMadness(params: {
     sortField: string;
     sortBy: string;
-    limit: number;
-    page: number;
+    limit?: number;
+    page?: number;
 }) {
     const token = Cookies.get('accessToken');
     const queryParams = new URLSearchParams(params as any).toString();

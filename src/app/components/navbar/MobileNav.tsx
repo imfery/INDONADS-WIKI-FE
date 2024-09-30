@@ -32,6 +32,13 @@ const MobileNav: FC<MobileNavProps> = ({ isOpen, onClose }) => {
                     Spaces
                 </Link>
                 <Link
+                    href='/monad-madness'
+                    className='text-white text-lg py-2'
+                    onClick={onClose}
+                >
+                    Monad Madness
+                </Link>
+                <Link
                     href='https://discord.gg/n5Yg2qe9Zd'
                     className='text-white text-lg py-2'
                     onClick={onClose}
