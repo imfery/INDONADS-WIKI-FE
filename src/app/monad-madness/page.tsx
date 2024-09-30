@@ -23,7 +23,7 @@ const MonadMadnessPage = () => {
             try {
                 const response = await fetchAllMonadMadness({
                     sortField: 'title',
-                    sortBy: 'desc',
+                    sortBy: 'asc',
                 });
                 setParticipants(response.data.participants);
             } catch (error) {
