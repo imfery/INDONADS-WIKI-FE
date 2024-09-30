@@ -67,7 +67,8 @@ const MonadMadnessEditForm: React.FC = () => {
                 ...data,
                 image: uploadedImageUrl || '',
             };
-
+            delete requestBody.createdAt;
+            delete requestBody.id;
             await updateMonadMadness(id as string, requestBody);
             success('Monad Madness updated successfully', 3000);
             router.push('/admin/monad-madness');
