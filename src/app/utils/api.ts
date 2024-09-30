@@ -577,3 +577,127 @@ export async function fetchActiveArticles({
         };
     }
 }
+
+export async function fetchAllMonadMadness(params: {
+    sortField: string;
+    sortBy: string;
+    limit: number;
+    page: number;
+}) {
+    const token = Cookies.get('accessToken');
+    const queryParams = new URLSearchParams(params as any).toString();
+
+    const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/v1/monad-madness?${queryParams}`,
+        {
+            method: 'GET',
+            headers: {
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+        }
+    );
+
+    if (!response.ok) {
+        throw new Error('Failed to fetch Monad Madness entries');
+    }
+
+    return response.json();
+}
+
+export async function createMonadMadness(data: {
+    title: string;
+    description: string;
+    image: string;
+    twitter: string;
+    website: string;
+}) {
+    const token = Cookies.get('accessToken');
+
+    const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/v1/monad-madness`,
+        {
+            method: 'POST',
+            headers: {
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+        }
+    );
+
+    if (!response.ok) {
+        throw new Error('Failed to create Monad Madness entry');
+    }
+
+    return response.json();
+}
+
+export async function updateMonadMadness(id: string, data: any) {
+    const token = Cookies.get('accessToken');
+
+    const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/v1/monad-madness/${id}`,
+        {
+            method: 'PATCH',
+            headers: {
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+        }
+    );
+
+    if (!response.ok) {
+        throw new Error('Failed to update Monad Madness entry');
+    }
+
+    return response.json();
+}
+
+export async function deleteMonadMadnessById(id: string) {
+    const token = Cookies.get('accessToken');
+
+    const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/v1/monad-madness/${id}`,
+        {
+            method: 'DELETE',
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        }
+    );
+
+    if (!response.ok) {
+        throw new Error('Failed to delete Monad Madness entry');
+    }
+
+    if (response.status === 204) {
+        return null;
+    }
+
+    return response.json();
+}
+
+export async function getMonadMadnessById(id: string): Promise<any> {
+    const token = Cookies.get('accessToken');
+
+    if (!token) {
+        throw new Error('No access token found');
+    }
+
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/v1/monad-madness/${id}`, {
+        method: 'GET',
+        headers: {
+            'Authorization': `Bearer ${token}`,
+            'Accept': 'application/json',
+        },
+    });
+
+    if (!response.ok) {
+        throw new Error('Failed to fetch Monad Madness entry');
+    }
+
+    const result = await response.json();
+    return result.data;
+}

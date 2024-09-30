@@ -19,31 +19,13 @@ const nextConfig = {
         remotePatterns: [
             {
                 protocol: 'https',
-                hostname: 'play-lh.googleusercontent.com',
-                port: '',
-                pathname: '/**',
-            },
-            {
-                protocol: 'https',
-                hostname: 'cdn-icons-png.flaticon.com',
+                hostname: 'storage.googleapis.com',
                 port: '',
                 pathname: '/**',
             },
             {
                 protocol: 'https',
                 hostname: 'static.vecteezy.com',
-                port: '',
-                pathname: '/**',
-            },
-            {
-                protocol: 'https',
-                hostname: 'tailwindui.com',
-                port: '',
-                pathname: '/**',
-            },
-            {
-                protocol: 'https',
-                hostname: 'img-cdn.pixlr.com',
                 port: '',
                 pathname: '/**',
             },

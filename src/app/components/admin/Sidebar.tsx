@@ -48,6 +48,11 @@ const Sidebar: React.FC = () => {
                         label='Articles'
                         isActive={pathname === '/admin/articles'}
                     />
+                    <SidebarItem
+                        href='/admin/monad-madness'
+                        label='Monad Madness'
+                        isActive={pathname === '/admin/monad-madness'}
+                    />
                 </ul>
                 <div className='mt-auto pt-4'>
                     <SidebarItem onClick={handleLogout} label='Logout' />
