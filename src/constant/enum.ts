@@ -15,6 +15,7 @@ export enum ARTICLES_CATEGORIES {
   COLLABORATION = 'Collaboration',
   ECOSYSTEM = 'Ecosystem',
   RECAP = 'Recap',
+  LEARNING = 'Learning',
   OTHERS = 'Others'
 }
 
