@@ -243,3 +243,10 @@ h5.ce-header {
 .cdx-quote-settings .cdx-settings-button {
     width: 50%;
 }
+
+.image-tool__image-picture {
+    max-width: 100%;
+    vertical-align: bottom;
+    display: block;
+    margin: auto;
+}
