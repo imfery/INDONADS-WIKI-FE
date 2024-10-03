@@ -105,12 +105,12 @@ const MonadMadnessPage = () => {
                                 <div className='col-span-1 sm:col-span-2 lg:col-span-4 flex justify-center'>
                                     <Card className='p-10 text-center'>
                                         <CardHeader>
-                                            <CardTitle>To Be Added</CardTitle>
+                                            <CardTitle>
+                                                Fetching the data...
+                                            </CardTitle>
                                         </CardHeader>
                                         <CardContent>
-                                            <p>
-                                                Participants will be added soon.
-                                            </p>
+                                            <p>Please wait.</p>
                                         </CardContent>
                                     </Card>
                                 </div>
