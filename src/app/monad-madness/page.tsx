@@ -61,9 +61,10 @@ const MonadMadnessPage = () => {
                                             <Image
                                                 src={participant.image}
                                                 alt={participant.title}
-                                                layout='fill'
-                                                objectFit='cover'
-                                                className='w-full h-full'
+                                                fill
+                                                sizes='(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw'
+                                                className='w-full h-full object-cover'
+                                                priority
                                             />
                                         </div>
                                         <CardHeader>
