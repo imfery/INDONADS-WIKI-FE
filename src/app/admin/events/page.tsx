@@ -55,12 +55,12 @@ const EventsDashboardList: React.FC = () => {
     return (
         <AdminLayout>
             <div className='relative overflow-x-auto'>
-                <div className='pb-8 bg-white'>
+                <div className='pb-8 bg-white dark:bg-[#121212]'>
                     <div className='p-5'>
-                        <h2 className='text-3xl font-semibold text-gray-900'>
+                        <h2 className='text-3xl font-semibold text-gray-900 dark:text-gray-200'>
                             Events
                         </h2>
-                        <p className='mt-1 text-sm font-normal text-gray-500'>
+                        <p className='mt-1 text-sm font-normal text-gray-500 dark:text-gray-400'>
                             Manage the list of events shown to the user here.
                         </p>
 
@@ -87,7 +87,7 @@ const EventsDashboardList: React.FC = () => {
                                 />
                             </>
                         ) : (
-                            <p className='text-center text-gray-500'>
+                            <p className='text-center text-gray-500 dark:text-gray-400'>
                                 Loading events...
                             </p>
                         )}

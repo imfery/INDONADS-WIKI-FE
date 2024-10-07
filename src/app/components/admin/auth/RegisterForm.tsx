@@ -1,9 +1,7 @@
 'use client';
 import Link from 'next/link';
 import React, { FormEvent, useState } from 'react';
-
 import Button from '@/app/components/admin/auth/Button';
-
 import InputField from './InputField';
 
 interface RegisterFormProps {
@@ -32,9 +30,9 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onRegister }) => {
     };
 
     return (
-        <div className='flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8'>
+        <div className='flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8 bg-violet-950 dark:bg-gray-900'>
             <div className='sm:mx-auto sm:w-full sm:max-w-sm'>
-                <h2 className='mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900'>
+                <h2 className='mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-100'>
                     Register your account
                 </h2>
             </div>
@@ -93,7 +91,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onRegister }) => {
                     Have registered already?{' '}
                     <Link
                         href='/admin/login'
-                        className='font-semibold leading-6 text-indigo-600 hover:text-indigo-500'
+                        className='font-semibold leading-6 text-indigo-600 hover:text-indigo-500 dark:text-indigo-400 dark:hover:text-indigo-300'
                     >
                         Try signing in
                     </Link>

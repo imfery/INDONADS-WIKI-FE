@@ -90,22 +90,34 @@ export default function ArticlesTable({
         <Table>
             <TableHeader>
                 <TableRow>
-                    <TableHead className='w-[50px]'>No</TableHead>
-                    <TableHead>Articles Title</TableHead>
-                    <TableHead>Created At</TableHead>
-                    <TableHead>Active</TableHead>
-                    <TableHead className='text-right'>Actions</TableHead>
+                    <TableHead className='w-[50px] dark:text-gray-200'>
+                        No
+                    </TableHead>
+                    <TableHead className='dark:text-gray-200'>
+                        Articles Title
+                    </TableHead>
+                    <TableHead className='dark:text-gray-200'>
+                        Created At
+                    </TableHead>
+                    <TableHead className='dark:text-gray-200'>Active</TableHead>
+                    <TableHead className='text-right dark:text-gray-200'>
+                        Actions
+                    </TableHead>
                 </TableRow>
             </TableHeader>
             <TableBody>
                 {articles && articles.length > 0 ? (
                     articles.map((item, index) => (
                         <TableRow key={item.id}>
-                            <TableCell className='font-medium'>
+                            <TableCell className='font-medium dark:text-gray-200'>
                                 {(currentPage - 1) * resultsPerPage + index + 1}
                             </TableCell>
-                            <TableCell>{item.title}</TableCell>
-                            <TableCell>{item.createdAt}</TableCell>
+                            <TableCell className='dark:text-gray-200'>
+                                {item.title}
+                            </TableCell>
+                            <TableCell className='dark:text-gray-200'>
+                                {item.createdAt}
+                            </TableCell>
                             <TableCell>
                                 <Switch
                                     checked={item.isActive}
@@ -119,6 +131,7 @@ export default function ArticlesTable({
                                 <div className='flex justify-end space-x-2'>
                                     <Button
                                         variant='outline'
+                                        className='dark:border-gray-600 dark:text-gray-200'
                                         onClick={() => handleEdit(item.id)}
                                     >
                                         Edit
@@ -128,7 +141,7 @@ export default function ArticlesTable({
                                         <AlertDialogTrigger asChild>
                                             <Button
                                                 variant='outline'
-                                                className='text-red-600 border-red-600 hover:bg-red-50'
+                                                className='border border-red-600 text-red-600 hover:bg-red-50 dark:border-red-500 dark:text-red-500 dark:hover:bg-red-900'
                                                 onClick={() =>
                                                     setDeletingArticlesId(
                                                         item.id
@@ -138,12 +151,12 @@ export default function ArticlesTable({
                                                 Delete
                                             </Button>
                                         </AlertDialogTrigger>
-                                        <AlertDialogContent>
+                                        <AlertDialogContent className='dark:bg-gray-800'>
                                             <AlertDialogHeader>
-                                                <AlertDialogTitle>
+                                                <AlertDialogTitle className='dark:text-white'>
                                                     Are you sure?
                                                 </AlertDialogTitle>
-                                                <AlertDialogDescription>
+                                                <AlertDialogDescription className='dark:text-gray-300'>
                                                     This action cannot be
                                                     undone. This will
                                                     permanently delete the
@@ -152,6 +165,7 @@ export default function ArticlesTable({
                                             </AlertDialogHeader>
                                             <AlertDialogFooter>
                                                 <AlertDialogCancel
+                                                    className='dark:text-gray-200 dark:hover:bg-gray-700 dark:border-gray-600'
                                                     onClick={() =>
                                                         setDeletingArticlesId(
                                                             null
@@ -161,6 +175,7 @@ export default function ArticlesTable({
                                                     Cancel
                                                 </AlertDialogCancel>
                                                 <AlertDialogAction
+                                                    className='border border-red-600 text-red-600 hover:bg-red-50 dark:border-red-500 dark:text-red-500 dark:hover:bg-red-900'
                                                     onClick={handleDelete}
                                                 >
                                                     Delete
@@ -174,7 +189,10 @@ export default function ArticlesTable({
                     ))
                 ) : (
                     <TableRow>
-                        <TableCell colSpan={5} className='text-center'>
+                        <TableCell
+                            colSpan={5}
+                            className='text-center dark:text-gray-200'
+                        >
                             No articles available.
                         </TableCell>
                     </TableRow>

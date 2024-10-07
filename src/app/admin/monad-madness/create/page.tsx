@@ -68,12 +68,12 @@ const MonadMadnessCreateForm: React.FC = () => {
     return (
         <AdminLayout>
             <div className='relative overflow-x-auto'>
-                <div className='pb-8 bg-white'>
+                <div className='pb-8 bg-white dark:bg-[#121212]'>
                     <div className='p-5'>
-                        <h2 className='text-3xl font-semibold text-gray-900'>
+                        <h2 className='text-3xl font-semibold text-gray-900 dark:text-white'>
                             Create Monad Madness
                         </h2>
-                        <p className='mt-1 text-sm font-normal text-gray-500'>
+                        <p className='mt-1 text-sm font-normal text-gray-500 dark:text-gray-300'>
                             Create a new Monad Madness entry.
                         </p>
 
@@ -101,14 +101,16 @@ const MonadMadnessCreateForm: React.FC = () => {
                                     rules={{ required: 'Title is required' }}
                                     render={({ field, fieldState }) => (
                                         <FormItem>
-                                            <FormLabel>Title</FormLabel>
+                                            <FormLabel className='dark:text-gray-300'>
+                                                Title
+                                            </FormLabel>
                                             <FormControl>
                                                 <Input
                                                     {...field}
                                                     className={
                                                         fieldState.invalid
-                                                            ? 'border-red-500'
-                                                            : ''
+                                                            ? 'border-red-500 dark:border-red-500'
+                                                            : 'dark:bg-gray-700 dark:text-white dark:border-gray-600'
                                                     }
                                                 />
                                             </FormControl>
@@ -125,14 +127,16 @@ const MonadMadnessCreateForm: React.FC = () => {
                                     }}
                                     render={({ field, fieldState }) => (
                                         <FormItem>
-                                            <FormLabel>Description</FormLabel>
+                                            <FormLabel className='dark:text-gray-300'>
+                                                Description
+                                            </FormLabel>
                                             <FormControl>
                                                 <Textarea
                                                     {...field}
                                                     className={
                                                         fieldState.invalid
-                                                            ? 'border-red-500'
-                                                            : ''
+                                                            ? 'border-red-500 dark:border-red-500'
+                                                            : 'dark:bg-gray-700 dark:text-white dark:border-gray-600'
                                                     }
                                                 />
                                             </FormControl>
@@ -149,7 +153,7 @@ const MonadMadnessCreateForm: React.FC = () => {
                                     }}
                                     render={({ field, fieldState }) => (
                                         <FormItem>
-                                            <FormLabel>
+                                            <FormLabel className='dark:text-gray-300'>
                                                 Twitter (e.g monadpedia)
                                             </FormLabel>
                                             <FormControl>
@@ -157,8 +161,8 @@ const MonadMadnessCreateForm: React.FC = () => {
                                                     {...field}
                                                     className={
                                                         fieldState.invalid
-                                                            ? 'border-red-500'
-                                                            : ''
+                                                            ? 'border-red-500 dark:border-red-500'
+                                                            : 'dark:bg-gray-700 dark:text-white dark:border-gray-600'
                                                     }
                                                 />
                                             </FormControl>
@@ -175,7 +179,7 @@ const MonadMadnessCreateForm: React.FC = () => {
                                     }}
                                     render={({ field, fieldState }) => (
                                         <FormItem>
-                                            <FormLabel>
+                                            <FormLabel className='dark:text-gray-300'>
                                                 Website (e.g
                                                 https://monadpedia.xyz)
                                             </FormLabel>
@@ -184,8 +188,8 @@ const MonadMadnessCreateForm: React.FC = () => {
                                                     {...field}
                                                     className={
                                                         fieldState.invalid
-                                                            ? 'border-red-500'
-                                                            : ''
+                                                            ? 'border-red-500 dark:border-red-500'
+                                                            : 'dark:bg-gray-700 dark:text-white dark:border-gray-600'
                                                     }
                                                 />
                                             </FormControl>
@@ -195,7 +199,9 @@ const MonadMadnessCreateForm: React.FC = () => {
                                 />
 
                                 <FormItem>
-                                    <FormLabel>Image</FormLabel>
+                                    <FormLabel className='dark:text-gray-300'>
+                                        Image
+                                    </FormLabel>
                                     {uploadedImageUrl ? (
                                         <div className='mb-4'>
                                             <Image
@@ -209,6 +215,7 @@ const MonadMadnessCreateForm: React.FC = () => {
                                                 <Button
                                                     type='button'
                                                     variant='outline'
+                                                    className='dark:border-gray-600 dark:text-white'
                                                     onClick={() =>
                                                         setUploadedImageUrl(
                                                             null
@@ -228,14 +235,14 @@ const MonadMadnessCreateForm: React.FC = () => {
                                                         e.target.files[0]
                                                     );
                                             }}
-                                            className='mt-2'
+                                            className='mt-2 dark:bg-gray-700 dark:text-white dark:border-gray-600'
                                         />
                                     )}
                                 </FormItem>
 
                                 <Button
                                     type='submit'
-                                    className='mt-4'
+                                    className='mt-4 bg-indigo-600 text-white hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-600 dark:text-white'
                                     disabled={isLoading}
                                 >
                                     {isLoading

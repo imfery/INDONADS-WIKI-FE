@@ -131,12 +131,12 @@ const EditArticlesForm: React.FC = () => {
                 <SearchParamsLoader onLoad={setParams} />
             </Suspense>
             <div className='relative overflow-x-auto'>
-                <div className='pb-8 bg-white'>
+                <div className='pb-8 bg-white dark:bg-[#121212]'>
                     <div className='p-5'>
-                        <h2 className='text-3xl font-semibold text-gray-900'>
+                        <h2 className='text-3xl font-semibold text-gray-900 dark:text-white'>
                             Edit Articles
                         </h2>
-                        <p className='mt-1 text-sm font-normal text-gray-500'>
+                        <p className='mt-1 text-sm font-normal text-gray-500 dark:text-gray-300'>
                             Edit the articles article below.
                         </p>
                         {showAlert && (
@@ -162,7 +162,9 @@ const EditArticlesForm: React.FC = () => {
                                     rules={{ required: 'Title is required' }}
                                     render={({ field, fieldState }) => (
                                         <FormItem>
-                                            <FormLabel>Title</FormLabel>
+                                            <FormLabel className='dark:text-gray-300'>
+                                                Title
+                                            </FormLabel>
                                             <FormControl>
                                                 <Input
                                                     placeholder='Enter articles title'
@@ -170,8 +172,8 @@ const EditArticlesForm: React.FC = () => {
                                                     value={field.value || ''}
                                                     className={
                                                         fieldState.invalid
-                                                            ? 'border-red-500'
-                                                            : ''
+                                                            ? 'border-red-500 dark:border-red-500'
+                                                            : 'dark:bg-gray-700 dark:text-white dark:border-gray-600'
                                                     }
                                                 />
                                             </FormControl>
@@ -186,7 +188,9 @@ const EditArticlesForm: React.FC = () => {
                                     rules={{ required: 'Summary is required' }}
                                     render={({ field, fieldState }) => (
                                         <FormItem>
-                                            <FormLabel>Summary</FormLabel>
+                                            <FormLabel className='dark:text-gray-300'>
+                                                Summary
+                                            </FormLabel>
                                             <FormControl>
                                                 <Textarea
                                                     placeholder='Enter articles summary'
@@ -194,8 +198,8 @@ const EditArticlesForm: React.FC = () => {
                                                     value={field.value || ''}
                                                     className={
                                                         fieldState.invalid
-                                                            ? 'border-red-500'
-                                                            : ''
+                                                            ? 'border-red-500 dark:border-red-500'
+                                                            : 'dark:bg-gray-700 dark:text-white dark:border-gray-600'
                                                     }
                                                 />
                                             </FormControl>
@@ -210,7 +214,9 @@ const EditArticlesForm: React.FC = () => {
                                     rules={{ required: 'Category is required' }}
                                     render={({ field, fieldState }) => (
                                         <FormItem>
-                                            <FormLabel>Category</FormLabel>
+                                            <FormLabel className='dark:text-gray-300'>
+                                                Category
+                                            </FormLabel>
                                             <FormControl>
                                                 <Select
                                                     onValueChange={
@@ -221,8 +227,8 @@ const EditArticlesForm: React.FC = () => {
                                                     <SelectTrigger
                                                         className={
                                                             fieldState.invalid
-                                                                ? 'border-red-500'
-                                                                : ''
+                                                                ? 'border-red-500 dark:border-red-500'
+                                                                : 'dark:bg-gray-700 dark:border-gray-600 dark:text-white'
                                                         }
                                                     >
                                                         <SelectValue placeholder='Select a category' />
@@ -256,7 +262,7 @@ const EditArticlesForm: React.FC = () => {
                         )}
 
                         <Button
-                            className='mt-4'
+                            className='mt-4 bg-indigo-600 text-white hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-600 dark:text-white'
                             onClick={methods.handleSubmit(onSubmit, onError)}
                             disabled={!isEditorLoaded || isLoading}
                         >
