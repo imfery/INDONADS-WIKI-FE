@@ -4,7 +4,6 @@ import { Toaster } from 'sonner';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 
 import '@/styles/globals.css';
-import '@/styles/colors.css';
 
 import { siteConfig } from '@/constant/config';
 import { ToastProvider } from '@/providers/ToastProvider';
