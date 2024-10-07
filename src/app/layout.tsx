@@ -44,7 +44,6 @@ export default function RootLayout({
 }: {
     children: React.ReactNode;
 }) {
-    // Script to ensure dark mode is applied before page loads to prevent flickering
     const themeScript = `
         (function() {
             const savedMode = localStorage.getItem('darkMode');
