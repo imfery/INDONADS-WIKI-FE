@@ -15,12 +15,12 @@ import { ToastProvider } from '@/providers/ToastProvider';
 export default function AboutPage() {
     return (
         <ToastProvider>
-            <main>
+            <main className='dark:bg-[#121212] dark:text-white'>
                 <Header />
-                <section className='bg-white mt-16 mb-64'>
+                <section className='bg-white dark:bg-[#121212] mt-16 mb-64'>
                     <div className='container mx-auto px-4'>
                         <div className='mb-8 text-left'>
-                            <h1 className='text-3xl font-bold text-gray-900'>
+                            <h1 className='text-3xl font-bold text-gray-900 dark:text-white'>
                                 About Monadpedia
                             </h1>
                         </div>
@@ -35,7 +35,7 @@ export default function AboutPage() {
                             />
                         </div>
 
-                        <div className='text-lg text-gray-700 mb-8'>
+                        <div className='text-lg text-gray-700 dark:text-gray-300 mb-8'>
                             <p className='mb-4'>
                                 <strong>Monadpedia</strong> is a community-owned
                                 project from <strong>Indonads</strong>. It is a
@@ -67,22 +67,22 @@ export default function AboutPage() {
                         {/* Accordion Section */}
                         <Accordion type='single' collapsible className='w-full'>
                             <AccordionItem value='item-1'>
-                                <AccordionTrigger>
+                                <AccordionTrigger className='dark:text-gray-300'>
                                     What is Monadpedia?
                                 </AccordionTrigger>
-                                <AccordionContent>
+                                <AccordionContent className='dark:text-gray-300'>
                                     Monadpedia is a decentralized,
                                     community-driven platform that provides
-                                    information and resources about Monad
+                                    information and resources about the Monad
                                     blockchain.
                                 </AccordionContent>
                             </AccordionItem>
 
                             <AccordionItem value='item-2'>
-                                <AccordionTrigger>
+                                <AccordionTrigger className='dark:text-gray-300'>
                                     What is the Monad blockchain?
                                 </AccordionTrigger>
-                                <AccordionContent>
+                                <AccordionContent className='dark:text-gray-300'>
                                     The Monad blockchain is a new scalable
                                     blockchain technology designed to support
                                     decentralized applications with high
@@ -91,10 +91,10 @@ export default function AboutPage() {
                             </AccordionItem>
 
                             <AccordionItem value='item-3'>
-                                <AccordionTrigger>
+                                <AccordionTrigger className='dark:text-gray-300'>
                                     How can I contribute to Monadpedia?
                                 </AccordionTrigger>
-                                <AccordionContent>
+                                <AccordionContent className='dark:text-gray-300'>
                                     You can contribute by providing feedback,
                                     suggesting improvements, or sharing new
                                     ideas on the Monadpedia platform. We are
@@ -102,13 +102,13 @@ export default function AboutPage() {
                                 </AccordionContent>
                             </AccordionItem>
                         </Accordion>
-                        <p className='mb-4 mt-10'>
+                        <p className='mb-4 mt-10 dark:text-gray-300'>
                             <strong>Note:</strong> Monadpedia is still in active
                             development. So please expect flaws & defects as
                             incremental changes and updates regarding features
                             and interfaces will keep rolling out.
                         </p>
-                        <p className='mb-4 mt-10'>
+                        <p className='mb-4 mt-10 dark:text-gray-300'>
                             We are here for the community, gmonad {'<3'}.
                         </p>
                     </div>

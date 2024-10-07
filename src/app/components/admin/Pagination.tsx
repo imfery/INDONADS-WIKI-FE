@@ -1,5 +1,4 @@
 import React from 'react';
-
 import {
     Pagination,
     PaginationContent,
@@ -151,7 +150,7 @@ const CustomPagination: React.FC<PaginationProps> = ({
                 </PaginationNext>
             </Pagination>
 
-            <span className='text-sm font-normal text-gray-500'>
+            <span className='text-sm font-normal text-gray-500 dark:text-gray-400'>
                 {`Showing ${start}-${end} of ${totalResults} results`}
             </span>
         </nav>

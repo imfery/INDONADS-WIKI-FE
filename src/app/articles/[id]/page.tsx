@@ -39,10 +39,10 @@ export default function ArticlesDetails() {
 
     return (
         <ToastProvider>
-            <main>
+            <main className='dark:bg-[#121212] dark:text-gray-200'>
                 <Analytics />
                 <Header />
-                <section className='bg-white mt-16 mb-64 flex justify-center items-center'>
+                <section className='bg-white dark:bg-[#121212] mt-16 mb-64 flex justify-center items-center'>
                     <div className='container mx-auto px-4 flex flex-col justify-center items-center'>
                         <div className='w-full mb-4'>
                             <Button
@@ -58,9 +58,9 @@ export default function ArticlesDetails() {
                                 Back
                             </Button>
                         </div>
-                        <div className='p-4 w-full '>
+                        <div className='p-4 w-full'>
                             {loading ? (
-                                <Skeleton className='h-10 w-full bg-gray-200' />
+                                <Skeleton className='h-10 w-full bg-gray-200 dark:bg-gray-700' />
                             ) : (
                                 article?.content && (
                                     <EditorComponent
@@ -74,10 +74,10 @@ export default function ArticlesDetails() {
                         </div>
                         {!loading && article && (
                             <div className='text-center mt-4'>
-                                <p className='text-sm text-gray-500'>
+                                <p className='text-sm text-gray-500 dark:text-gray-400'>
                                     Author: {article.createdBy.split('@')[0]}
                                 </p>
-                                <p className='text-sm text-gray-500'>
+                                <p className='text-sm text-gray-500 dark:text-gray-400'>
                                     Created at: {article.createdAt}
                                 </p>
                             </div>

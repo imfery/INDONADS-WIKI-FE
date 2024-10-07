@@ -16,7 +16,7 @@ const Header: FC = () => {
     const closeMenu = () => setIsOpen(false);
 
     return (
-        <header className='bg-violet-950 shadow-md py-6 px-4 sticky top-0 z-50'>
+        <header className='bg-violet-950 dark:bg-[#18181B] shadow-md py-6 px-4 sticky top-0 z-50'>
             <div className='container mx-auto flex items-center justify-between'>
                 <div className='md:hidden absolute right-4 top-4'>
                     <HamburgerMenu isOpen={isOpen} onClick={toggleMenu} />
@@ -31,7 +31,10 @@ const Header: FC = () => {
                             height={50}
                         />
                     </Link>
-                    <Link href='/' className='text-white font-bold text-lg'>
+                    <Link
+                        href='/'
+                        className='text-white dark:text-gray-200 font-bold text-lg'
+                    >
                         Monadpedia
                         <p className='text-xs md:text-sm'>for Indonads</p>
                     </Link>

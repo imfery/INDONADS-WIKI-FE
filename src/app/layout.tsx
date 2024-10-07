@@ -47,7 +47,7 @@ export default function RootLayout({
     return (
         <html lang='en'>
             <SpeedInsights />
-            <body>
+            <body className='dark:bg-[#121212] dark:text-white'>
                 <ToastProvider>
                     {children}
                     <Toaster position='top-right' duration={5000} />{' '}

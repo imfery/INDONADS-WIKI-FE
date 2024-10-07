@@ -36,15 +36,15 @@ const MonadMadnessPage = () => {
 
     return (
         <ToastProvider>
-            <main>
+            <main className='dark:bg-[#121212] dark:text-white'>
                 <Header />
-                <section className='bg-white mt-16 mb-64'>
+                <section className='bg-white dark:bg-[#121212] mt-16 mb-64'>
                     <div className='container mx-auto px-4'>
                         <div className='mb-8 text-left'>
-                            <h1 className='text-3xl font-bold text-gray-900'>
+                            <h1 className='text-3xl font-bold text-gray-900 dark:text-white'>
                                 Monad Madness @Manhattan, NYC
                             </h1>
-                            <p className='line-clamp-3 mb-8'>
+                            <p className='line-clamp-3 mb-8 dark:text-gray-300'>
                                 Lists of participants!
                             </p>
                         </div>
@@ -55,7 +55,7 @@ const MonadMadnessPage = () => {
                                 participants.map((participant) => (
                                     <Card
                                         key={participant.id}
-                                        className='overflow-hidden'
+                                        className='overflow-hidden dark:bg-[#18181B] dark:text-white'
                                     >
                                         <div className='relative w-full h-56'>
                                             <Image
@@ -75,7 +75,6 @@ const MonadMadnessPage = () => {
                                             </CardDescription>
                                         </CardHeader>
                                         <CardContent>
-                                            {/* Social Links */}
                                             <div className='flex items-center space-x-4'>
                                                 <a
                                                     href={`https://x.com/${participant.twitter}`}
@@ -95,7 +94,7 @@ const MonadMadnessPage = () => {
                                                     target='_blank'
                                                     rel='noopener noreferrer'
                                                 >
-                                                    <Globe className='w-5 h-5 text-gray-500' />
+                                                    <Globe className='w-5 h-5 text-gray-500 dark:text-gray-300' />
                                                 </a>
                                             </div>
                                         </CardContent>
@@ -103,7 +102,7 @@ const MonadMadnessPage = () => {
                                 ))
                             ) : (
                                 <div className='col-span-1 sm:col-span-2 lg:col-span-4 flex justify-center'>
-                                    <Card className='p-10 text-center'>
+                                    <Card className='p-10 text-center dark:bg-gray-800 dark:text-white'>
                                         <CardHeader>
                                             <CardTitle>
                                                 Fetching the data...
