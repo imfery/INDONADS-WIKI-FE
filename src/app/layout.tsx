@@ -44,13 +44,29 @@ export default function RootLayout({
 }: {
     children: React.ReactNode;
 }) {
+    // Script to ensure dark mode is applied before page loads to prevent flickering
+    const themeScript = `
+        (function() {
+            const savedMode = localStorage.getItem('darkMode');
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            if (savedMode === 'enabled' || (!savedMode && prefersDark)) {
+                document.body.classList.add('dark');
+            } else {
+                document.body.classList.remove('dark');
+            }
+        })();
+    `;
+
     return (
         <html lang='en'>
-            <SpeedInsights />
+            <head>
+                <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+                <SpeedInsights />
+            </head>
             <body className='dark:bg-[#121212] dark:text-white'>
                 <ToastProvider>
                     {children}
-                    <Toaster position='top-right' duration={5000} />{' '}
+                    <Toaster position='top-right' duration={5000} />
                 </ToastProvider>
             </body>
         </html>

@@ -3,19 +3,26 @@ import { Switch } from '@/components/ui/switch';
 import { LightbulbIcon, MoonStarsIcon } from '@/components/icons/DarkModeIcons';
 
 const ToggleDarkMode: FC = () => {
-    const [isDarkMode, setIsDarkMode] = useState(false);
+    const [isDarkMode, setIsDarkMode] = useState<boolean>(() => {
+        return document.body.classList.contains('dark');
+    });
 
     useEffect(() => {
         const savedMode = localStorage.getItem('darkMode');
         if (savedMode === 'enabled') {
             setIsDarkMode(true);
             document.body.classList.add('dark');
+        } else {
+            setIsDarkMode(false);
+            document.body.classList.remove('dark');
         }
     }, []);
 
     const toggleMode = () => {
-        setIsDarkMode(!isDarkMode);
-        if (!isDarkMode) {
+        const newMode = !isDarkMode;
+        setIsDarkMode(newMode);
+
+        if (newMode) {
             document.body.classList.add('dark');
             localStorage.setItem('darkMode', 'enabled');
         } else {
