@@ -1,7 +1,5 @@
 import Image from 'next/image';
 import React, { useState } from 'react';
-import { format } from 'date-fns'; // Date formatting helper
-
 import { Event } from '@/types';
 import { Button } from '@/components/ui/button';
 import {
@@ -17,9 +15,7 @@ import {
     CardTitle,
     CardDescription,
 } from '@/components/ui/card';
-
 import { CATEGORY_IMAGES, EVENTS_CATEGORIES } from '@/constant/enum';
-
 import { generateGoogleCalendarLink } from '@/lib/helper';
 
 interface EventsListProps {
@@ -31,7 +27,10 @@ const EventsList: React.FC<EventsListProps> = ({ event = [] }) => {
 
     return (
         <div className='p-4 max-w-screen-lg mx-auto'>
-            <ul role='list' className='divide-y divide-gray-200'>
+            <ul
+                role='list'
+                className='divide-y divide-gray-200 dark:divide-gray-600'
+            >
                 {event.length > 0 ? (
                     event.map((e, index) => (
                         <li
@@ -48,13 +47,13 @@ const EventsList: React.FC<EventsListProps> = ({ event = [] }) => {
                                     }
                                     width={1080}
                                     height={1080}
-                                    className='h-14 w-14 flex-none rounded-full bg-gray-50'
+                                    className='h-14 w-14 flex-none rounded-full bg-gray-50 dark:bg-gray-800'
                                 />
                                 <div className='flex-1 min-w-0'>
-                                    <p className='text-base sm:text-md font-semibold leading-6 text-gray-900 line-clamp-4'>
+                                    <p className='text-base sm:text-md font-semibold leading-6 text-gray-900 dark:text-white'>
                                         {e.title}
                                     </p>
-                                    <p className='mt-1 text-xs sm:text-sm leading-5 text-gray-500'>
+                                    <p className='mt-1 text-xs sm:text-sm leading-5 text-gray-500 dark:text-gray-400'>
                                         {e.date}
                                     </p>
                                 </div>
@@ -64,20 +63,20 @@ const EventsList: React.FC<EventsListProps> = ({ event = [] }) => {
                                     <DialogTrigger asChild>
                                         <Button
                                             variant='outline'
-                                            className='mt-2'
+                                            className='mt-2 text-gray-900 dark:text-white border-gray-900 dark:border-white'
                                             onClick={() => setSelectedEvent(e)}
                                         >
                                             Details
                                         </Button>
                                     </DialogTrigger>
-                                    <DialogContent className='max-w-2xl p-6 sm:p-8'>
+                                    <DialogContent className='max-w-2xl p-6 sm:p-8 dark:bg-[#18181B]'>
                                         <Card>
-                                            <CardHeader className='flex flex-col items-stretch space-y-0 border-b p-0 sm:flex-row'>
+                                            <CardHeader className='flex flex-col items-stretch space-y-0 border-b p-0 sm:flex-row dark:border-gray-600'>
                                                 <div className='flex flex-1 flex-col justify-center gap-1 px-6 py-5 sm:py-6'>
-                                                    <CardTitle>
+                                                    <CardTitle className='dark:text-white'>
                                                         {selectedEvent?.title}
                                                     </CardTitle>
-                                                    <CardDescription>
+                                                    <CardDescription className='dark:text-gray-400'>
                                                         {
                                                             selectedEvent?.description
                                                         }
@@ -87,19 +86,19 @@ const EventsList: React.FC<EventsListProps> = ({ event = [] }) => {
                                             <CardContent className='px-6 py-4'>
                                                 <div className='grid grid-cols-2 gap-4'>
                                                     <div className='flex flex-col'>
-                                                        <span className='text-xs font-semibold text-gray-500'>
+                                                        <span className='text-xs font-semibold text-gray-500 dark:text-gray-400'>
                                                             Date
                                                         </span>
-                                                        <span className='text-lg font-bold'>
+                                                        <span className='text-lg font-bold text-gray-900 dark:text-white'>
                                                             {selectedEvent?.date +
                                                                 ' GMT+7'}
                                                         </span>
                                                     </div>
                                                     <div className='flex flex-col'>
-                                                        <span className='text-xs font-semibold text-gray-500'>
+                                                        <span className='text-xs font-semibold text-gray-500 dark:text-gray-400'>
                                                             Location
                                                         </span>
-                                                        <span className='text-lg font-bold'>
+                                                        <span className='text-lg font-bold text-gray-900 dark:text-white'>
                                                             {
                                                                 selectedEvent?.location
                                                             }
@@ -115,7 +114,10 @@ const EventsList: React.FC<EventsListProps> = ({ event = [] }) => {
                                                             target='_blank'
                                                             rel='noopener noreferrer'
                                                         >
-                                                            <Button variant='outline'>
+                                                            <Button
+                                                                variant='outline'
+                                                                className='text-gray-900 dark:text-white border-gray-900 dark:border-white'
+                                                            >
                                                                 Add to Google
                                                                 Calendar
                                                             </Button>
@@ -131,7 +133,7 @@ const EventsList: React.FC<EventsListProps> = ({ event = [] }) => {
                         </li>
                     ))
                 ) : (
-                    <p className='text-center text-gray-500'>
+                    <p className='text-center text-gray-500 dark:text-gray-400'>
                         No events to display.
                     </p>
                 )}

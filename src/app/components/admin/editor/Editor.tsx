@@ -110,6 +110,7 @@ const Editor = forwardRef<EditorRef, EditorProps>(
                         border: readOnly ? 'none' : '1px solid #ddd',
                         cursor: readOnly ? 'default' : 'text',
                         padding: '10px',
+                        color: readOnly ? 'inherit' : 'black',
                     }}
                 ></div>
             </div>

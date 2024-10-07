@@ -2,10 +2,9 @@
 
 import { usePathname, useRouter } from 'next/navigation';
 import React from 'react';
-
 import { logoutUser } from '@/app/utils/api';
-
 import SidebarItem from './SidebarItem';
+import ToggleDarkMode from '@/components/ToggleDarkMode';
 
 const Sidebar: React.FC = () => {
     const router = useRouter();
@@ -23,7 +22,7 @@ const Sidebar: React.FC = () => {
     return (
         <aside
             id='default-sidebar'
-            className='fixed top-0 left-0 z-40 w-64 h-screen bg-white shadow-lg border-r border-gray-200'
+            className='fixed top-0 left-0 z-40 w-64 h-screen bg-violet-950 shadow-lg border-r border-gray-200 dark:bg-[#18181B] dark:border-gray-700'
             aria-label='Sidebar'
         >
             <div className='h-full flex flex-col justify-between px-4 py-6'>
@@ -38,11 +37,6 @@ const Sidebar: React.FC = () => {
                         label='Events'
                         isActive={pathname === '/admin/events'}
                     />
-                    {/* <SidebarItem
-                        href='/admin/team'
-                        label='Team'
-                        isActive={pathname === '/admin/team'}
-                    /> */}
                     <SidebarItem
                         href='/admin/articles'
                         label='Articles'
@@ -54,7 +48,9 @@ const Sidebar: React.FC = () => {
                         isActive={pathname === '/admin/monad-madness'}
                     />
                 </ul>
+
                 <div className='mt-auto pt-4'>
+                    <ToggleDarkMode />
                     <SidebarItem onClick={handleLogout} label='Logout' />
                 </div>
             </div>

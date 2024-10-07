@@ -151,12 +151,12 @@ const EditEventForm: React.FC = () => {
                 <SearchParamsLoader onLoad={setParams} />
             </Suspense>
             <div className='relative overflow-x-auto'>
-                <div className='pb-8 bg-white'>
+                <div className='pb-8 bg-white dark:bg-[#121212]'>
                     <div className='p-5'>
-                        <h2 className='text-3xl font-semibold text-gray-900'>
+                        <h2 className='text-3xl font-semibold text-gray-900 dark:text-white'>
                             Edit Event
                         </h2>
-                        <p className='mt-1 text-sm font-normal text-gray-500'>
+                        <p className='mt-1 text-sm font-normal text-gray-500 dark:text-gray-300'>
                             Edit the event by updating the form below.
                         </p>
                         {showAlert && (
@@ -184,7 +184,9 @@ const EditEventForm: React.FC = () => {
                                     }}
                                     render={({ field, fieldState }) => (
                                         <FormItem>
-                                            <FormLabel>Title</FormLabel>
+                                            <FormLabel className='dark:text-gray-300'>
+                                                Title
+                                            </FormLabel>
                                             <FormControl>
                                                 <Input
                                                     placeholder='Enter event title'
@@ -192,7 +194,7 @@ const EditEventForm: React.FC = () => {
                                                     className={cn(
                                                         fieldState.invalid
                                                             ? 'border-red-500'
-                                                            : ''
+                                                            : 'dark:bg-gray-700 dark:text-white dark:border-gray-600'
                                                     )}
                                                 />
                                             </FormControl>
@@ -209,7 +211,9 @@ const EditEventForm: React.FC = () => {
                                     }}
                                     render={({ field, fieldState }) => (
                                         <FormItem>
-                                            <FormLabel>Description</FormLabel>
+                                            <FormLabel className='dark:text-gray-300'>
+                                                Description
+                                            </FormLabel>
                                             <FormControl>
                                                 <Textarea
                                                     placeholder='Enter event description'
@@ -217,7 +221,7 @@ const EditEventForm: React.FC = () => {
                                                     className={cn(
                                                         fieldState.invalid
                                                             ? 'border-red-500'
-                                                            : ''
+                                                            : 'dark:bg-gray-700 dark:text-white dark:border-gray-600'
                                                     )}
                                                 />
                                             </FormControl>
@@ -235,19 +239,21 @@ const EditEventForm: React.FC = () => {
                                         }}
                                         render={({ field, fieldState }) => (
                                             <FormItem className='flex-1'>
-                                                <FormLabel>Date</FormLabel>
+                                                <FormLabel className='dark:text-gray-300'>
+                                                    Date
+                                                </FormLabel>
                                                 <FormControl>
                                                     <Popover>
                                                         <PopoverTrigger asChild>
                                                             <Button
                                                                 variant='outline'
                                                                 className={cn(
-                                                                    'w-full justify-start text-left font-normal',
+                                                                    'w-full justify-start text-left font-normal dark:text-white',
                                                                     !selectedDate &&
-                                                                        'text-muted-foreground',
+                                                                        'text-muted-foreground dark:text-gray-400',
                                                                     fieldState.invalid
                                                                         ? 'border-red-500'
-                                                                        : ''
+                                                                        : 'dark:bg-gray-700 dark:border-gray-600'
                                                                 )}
                                                             >
                                                                 <CalendarIcon className='mr-2 h-4 w-4' />
@@ -298,7 +304,9 @@ const EditEventForm: React.FC = () => {
                                         }}
                                         render={({ field, fieldState }) => (
                                             <FormItem className='flex-1'>
-                                                <FormLabel>Time</FormLabel>
+                                                <FormLabel className='dark:text-gray-300'>
+                                                    Time
+                                                </FormLabel>
                                                 <FormControl>
                                                     <TimePicker
                                                         value={selectedTime}
@@ -313,7 +321,7 @@ const EditEventForm: React.FC = () => {
                                                         className={cn(
                                                             fieldState.invalid
                                                                 ? 'border-red-500'
-                                                                : ''
+                                                                : 'dark:bg-gray-700 dark:text-white dark:border-gray-600'
                                                         )}
                                                     />
                                                 </FormControl>
@@ -331,7 +339,9 @@ const EditEventForm: React.FC = () => {
                                     }}
                                     render={({ field, fieldState }) => (
                                         <FormItem>
-                                            <FormLabel>Location</FormLabel>
+                                            <FormLabel className='dark:text-gray-300'>
+                                                Location
+                                            </FormLabel>
                                             <FormControl>
                                                 <Input
                                                     placeholder='Enter event location'
@@ -339,7 +349,7 @@ const EditEventForm: React.FC = () => {
                                                     className={cn(
                                                         fieldState.invalid
                                                             ? 'border-red-500'
-                                                            : ''
+                                                            : 'dark:bg-gray-700 dark:text-white dark:border-gray-600'
                                                     )}
                                                 />
                                             </FormControl>
@@ -356,7 +366,9 @@ const EditEventForm: React.FC = () => {
                                     }}
                                     render={({ field, fieldState }) => (
                                         <FormItem>
-                                            <FormLabel>Category</FormLabel>
+                                            <FormLabel className='dark:text-gray-300'>
+                                                Category
+                                            </FormLabel>
                                             <FormControl>
                                                 <Select
                                                     onValueChange={(value) =>
@@ -366,7 +378,7 @@ const EditEventForm: React.FC = () => {
                                                 >
                                                     <SelectTrigger
                                                         className={cn(
-                                                            'w-[180px]',
+                                                            'w-[180px] dark:bg-gray-700 dark:border-gray-600 dark:text-white',
                                                             fieldState.invalid
                                                                 ? 'border-red-500'
                                                                 : ''
@@ -395,7 +407,7 @@ const EditEventForm: React.FC = () => {
 
                                 <Button
                                     type='submit'
-                                    className='mt-4'
+                                    className='mt-4 bg-indigo-600 text-white hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-600 dark:text-white'
                                     disabled={isLoading}
                                 >
                                     {isLoading ? (

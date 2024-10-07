@@ -26,11 +26,13 @@ const SearchAndCreate: React.FC<SearchAndCreateProps> = ({
                     type='text'
                     placeholder={placeholder}
                     onChange={(e) => onSearch(e.target.value)}
-                    className='max-w-xs'
+                    className='max-w-xs dark:bg-gray-800 dark:text-white'
                 />
             </div>
             <Link href={href}>
-                <Button className='ml-4'>{createLabel}</Button>
+                <Button className='ml-4 bg-indigo-600 text-white hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-600 dark:text-white'>
+                    {createLabel}
+                </Button>
             </Link>
         </div>
     );

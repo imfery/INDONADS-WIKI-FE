@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 
 import {
     AlertDialog,
-    AlertDialogAction,
     AlertDialogCancel,
     AlertDialogContent,
     AlertDialogDescription,
@@ -65,26 +64,41 @@ export default function EventTable({
         <Table>
             <TableHeader>
                 <TableRow>
-                    <TableHead className='w-[50px]'>No</TableHead>
-                    <TableHead>Event Title</TableHead>
-                    <TableHead>Date</TableHead>
-                    <TableHead>Created At</TableHead>
-                    <TableHead className='text-right'>Actions</TableHead>
+                    <TableHead className='w-[50px] dark:text-gray-200'>
+                        No
+                    </TableHead>
+                    <TableHead className='dark:text-gray-200'>
+                        Event Title
+                    </TableHead>
+                    <TableHead className='dark:text-gray-200'>Date</TableHead>
+                    <TableHead className='dark:text-gray-200'>
+                        Created At
+                    </TableHead>
+                    <TableHead className='text-right dark:text-gray-200'>
+                        Actions
+                    </TableHead>
                 </TableRow>
             </TableHeader>
             <TableBody>
                 {events.map((event, index) => (
                     <TableRow key={event.id}>
-                        <TableCell className='font-medium'>
+                        <TableCell className='font-medium dark:text-gray-200'>
                             {(currentPage - 1) * resultsPerPage + index + 1}
                         </TableCell>
-                        <TableCell>{event.title}</TableCell>
-                        <TableCell>{event.date}</TableCell>
-                        <TableCell>{event.createdAt}</TableCell>
+                        <TableCell className='dark:text-gray-200'>
+                            {event.title}
+                        </TableCell>
+                        <TableCell className='dark:text-gray-200'>
+                            {event.date}
+                        </TableCell>
+                        <TableCell className='dark:text-gray-200'>
+                            {event.createdAt}
+                        </TableCell>
                         <TableCell className='text-right'>
                             <div className='flex justify-end space-x-2'>
                                 <Button
                                     variant='outline'
+                                    className='dark:border-gray-600 dark:text-gray-200'
                                     onClick={() =>
                                         handleEdit(event.id.toString())
                                     }
@@ -96,7 +110,7 @@ export default function EventTable({
                                     <AlertDialogTrigger asChild>
                                         <Button
                                             variant='outline'
-                                            className='text-red-600 border-red-600 hover:bg-red-50'
+                                            className='text-red-600 border-red-600 hover:bg-red-50 dark:text-red-500 dark:border-red-500 dark:hover:bg-red-900'
                                             onClick={() =>
                                                 setDeletingEventId(event.id)
                                             }
@@ -104,12 +118,12 @@ export default function EventTable({
                                             Delete
                                         </Button>
                                     </AlertDialogTrigger>
-                                    <AlertDialogContent>
+                                    <AlertDialogContent className='dark:bg-gray-800 dark:border-gray-700'>
                                         <AlertDialogHeader>
-                                            <AlertDialogTitle>
+                                            <AlertDialogTitle className='dark:text-white'>
                                                 Are you sure?
                                             </AlertDialogTitle>
-                                            <AlertDialogDescription>
+                                            <AlertDialogDescription className='dark:text-gray-300'>
                                                 This action cannot be undone.
                                                 This will permanently delete the
                                                 event.
@@ -117,17 +131,22 @@ export default function EventTable({
                                         </AlertDialogHeader>
                                         <AlertDialogFooter>
                                             <AlertDialogCancel
+                                                className='dark:text-gray-200 dark:hover:bg-gray-700 dark:border-gray-600'
                                                 onClick={() =>
                                                     setDeletingEventId(null)
                                                 }
                                             >
                                                 Cancel
                                             </AlertDialogCancel>
-                                            <AlertDialogAction
-                                                onClick={handleDelete}
-                                            >
-                                                Delete
-                                            </AlertDialogAction>
+                                            <AlertDialogTrigger asChild>
+                                                <Button
+                                                    variant='outline'
+                                                    className='border border-red-600 text-red-600 hover:bg-red-50 dark:border-red-500 dark:text-red-500 dark:hover:bg-red-900'
+                                                    onClick={handleDelete}
+                                                >
+                                                    Delete
+                                                </Button>
+                                            </AlertDialogTrigger>
                                         </AlertDialogFooter>
                                     </AlertDialogContent>
                                 </AlertDialog>

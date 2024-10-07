@@ -4,6 +4,7 @@ import { useState } from 'react';
 
 import LoginForm from '@/app/components/admin/auth/LoginForm';
 import { loginUser } from '@/app/utils/api';
+import ToggleDarkMode from '@/components/ToggleDarkMode';
 
 const LoginPage: React.FC = () => {
     const router = useRouter();
@@ -24,7 +25,14 @@ const LoginPage: React.FC = () => {
         }
     };
 
-    return <LoginForm onLogin={handleLogin} errorMessage={errorMessage} />;
+    return (
+        <div className='relative min-h-screen bg-violet-950 dark:bg-gray-900'>
+            <LoginForm onLogin={handleLogin} errorMessage={errorMessage} />
+            <div className='absolute bottom-0 left-0 p-4'>
+                <ToggleDarkMode />
+            </div>
+        </div>
+    );
 };
 
 export default LoginPage;

@@ -69,16 +69,16 @@ export default function HomePage() {
 
     return (
         <ToastProvider>
-            <main>
+            <main className='dark:bg-[#121212] dark:text-white'>
                 <Analytics />
                 <Header />
-                <section className='bg-white mt-16 mb-64'>
+                <section className='bg-white dark:bg-[#121212] mt-16 mb-64'>
                     <div className='container mx-auto px-4'>
                         <div className='mb-8 text-left'>
-                            <h1 className='text-3xl font-bold text-gray-900'>
+                            <h1 className='text-3xl font-bold text-gray-900 dark:text-white'>
                                 Welcome to Monadpedia
                             </h1>
-                            <p className='mt-2 text-lg text-gray-600'>
+                            <p className='mt-2 text-lg text-gray-600 dark:text-gray-400'>
                                 Your go-to resource for all things related to
                                 Monadpedia.
                             </p>
@@ -86,7 +86,7 @@ export default function HomePage() {
                         <div className='flex flex-col md:flex-row'>
                             <div className='md:w-4/6 p-4 mb-4 md:mb-0'>
                                 {loadingArticles ? (
-                                    <Skeleton className='h-10 w-full bg-gray-200' />
+                                    <Skeleton className='h-10 w-full bg-gray-200 dark:bg-gray-700' />
                                 ) : articles ? (
                                     <>
                                         <ActiveArticlesList
@@ -109,21 +109,21 @@ export default function HomePage() {
                             <div className='md:w-2/6 p-4'>
                                 {loadingEvents ? (
                                     <div className='space-y-4'>
-                                        <Skeleton className='h-10 w-full bg-gray-200' />
-                                        <Skeleton className='h-10 w-full bg-gray-200' />
+                                        <Skeleton className='h-10 w-full bg-gray-200 dark:bg-gray-700' />
+                                        <Skeleton className='h-10 w-full bg-gray-200 dark:bg-gray-700' />
                                     </div>
                                 ) : events ? (
                                     <>
                                         <UpcomingEvents
                                             events={events.upcomingEvents}
                                         />
-                                        <Separator className='my-8 border-t border-gray-300' />
+                                        <Separator className='my-8 border-t border-gray-300 dark:border-gray-600' />
                                         <ConcludedEvents
                                             events={events.concludedEvents}
                                         />
                                     </>
                                 ) : (
-                                    <p className='text-center text-gray-500'>
+                                    <p className='text-center text-gray-500 dark:text-gray-400'>
                                         No events to display.
                                     </p>
                                 )}

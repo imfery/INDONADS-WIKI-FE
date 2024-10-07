@@ -1,8 +1,6 @@
 'use client';
-
 import React, { FormEvent, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
-
 import Button from '@/app/components/admin/auth/Button';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import InputField from './InputField';
@@ -34,9 +32,9 @@ const ResetPasswordForm: React.FC = () => {
     };
 
     return (
-        <div className='flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8'>
+        <div className='flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8 bg-violet-950 dark:bg-gray-900'>
             <div className='sm:mx-auto sm:w-full sm:max-w-sm'>
-                <h2 className='mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900'>
+                <h2 className='mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-100'>
                     Reset your password
                 </h2>
                 {errorMessage && (
@@ -76,7 +74,7 @@ const ResetPasswordForm: React.FC = () => {
                     <div className='text-sm'>
                         <a
                             href='/admin/login'
-                            className='font-semibold text-indigo-600 hover:text-indigo-500'
+                            className='font-semibold text-indigo-600 hover:text-indigo-500 dark:text-indigo-400 dark:hover:text-indigo-300'
                         >
                             Back to login page
                         </a>
