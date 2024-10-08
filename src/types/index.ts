@@ -5,7 +5,6 @@ export interface Event {
     description: string;
     date: string;
     location: string;
-    image: string;
     category: EVENTS_CATEGORIES;
 }
 
@@ -21,6 +20,8 @@ export interface AllEvents {
     date: string;
     createdAt: string;
     updatedAt: string;
+    location: string;
+    category: EVENTS_CATEGORIES;
 }
 
 export interface AllEventsData {
