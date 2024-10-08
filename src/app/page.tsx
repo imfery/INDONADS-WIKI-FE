@@ -1,6 +1,6 @@
 'use client';
 
-import * as React from 'react';
+import { useState, useEffect } from 'react';
 import ConcludedEvents from '@/components/ConcludedEvents';
 import Footer from '@/components/Footers';
 import Header from '@/components/Headers';
@@ -13,18 +13,19 @@ import ActiveArticlesList from '@/components/ActiveArticlesList';
 import CustomPagination from '@/app/components/admin/Pagination';
 import { EventsData, AllArticlesData } from '@/types';
 import { Analytics } from '@vercel/analytics/react';
+import { Button } from '@/components/ui/button';
+import { useRouter } from 'next/navigation';
 
 export default function HomePage() {
-    const [events, setEvents] = React.useState<EventsData | null>(null);
-    const [articles, setArticles] = React.useState<AllArticlesData | null>(
-        null
-    );
-    const [loadingEvents, setLoadingEvents] = React.useState(true);
-    const [loadingArticles, setLoadingArticles] = React.useState(true);
-    const [error, setError] = React.useState<string | null>(null);
-    const [currentPage, setCurrentPage] = React.useState(1);
+    const [events, setEvents] = useState<EventsData | null>(null);
+    const [articles, setArticles] = useState<AllArticlesData | null>(null);
+    const [loadingEvents, setLoadingEvents] = useState(true);
+    const [loadingArticles, setLoadingArticles] = useState(true);
+    const [error, setError] = useState<string | null>(null);
+    const [currentPage, setCurrentPage] = useState(1);
+    const router = useRouter();
 
-    React.useEffect(() => {
+    useEffect(() => {
         let isMounted = true;
 
         async function loadEvents() {
@@ -65,6 +66,10 @@ export default function HomePage() {
 
     const handlePageChange = (page: number) => {
         setCurrentPage(page);
+    };
+
+    const handleSeeAllEvents = () => {
+        router.push('/events');
     };
 
     return (
@@ -121,6 +126,12 @@ export default function HomePage() {
                                         <ConcludedEvents
                                             events={events.concludedEvents}
                                         />
+                                        <Button
+                                            className='w-full mb-4 bg-indigo-600 text-white hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-600'
+                                            onClick={handleSeeAllEvents}
+                                        >
+                                            See All Events
+                                        </Button>
                                     </>
                                 ) : (
                                     <p className='text-center text-gray-500 dark:text-gray-400'>
