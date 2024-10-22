@@ -17,6 +17,8 @@ import { Globe } from 'lucide-react';
 
 const MonadMadnessPage = () => {
     const [participants, setParticipants] = useState<any[]>([]);
+    const [locations, setLocations] = useState<string[]>([]);
+    const [selectedLocation, setSelectedLocation] = useState<string>('All');
 
     useEffect(() => {
         const fetchParticipants = async () => {
@@ -25,7 +27,21 @@ const MonadMadnessPage = () => {
                     sortField: 'title',
                     sortBy: 'asc',
                 });
-                setParticipants(response.data.participants);
+                const fetchedParticipants = response.data.participants;
+                setParticipants(fetchedParticipants);
+
+                const uniqueLocations = [
+                    'All',
+                    ...(Array.from(
+                        new Set(
+                            fetchedParticipants.map(
+                                (p: { location?: string }) =>
+                                    p.location || 'Unknown'
+                            )
+                        )
+                    ) as string[]),
+                ];
+                setLocations(uniqueLocations);
             } catch (error) {
                 console.error('Error fetching participants:', error);
             }
@@ -33,6 +49,13 @@ const MonadMadnessPage = () => {
 
         fetchParticipants();
     }, []);
+
+    const filteredParticipants =
+        selectedLocation === 'All'
+            ? participants
+            : participants.filter(
+                  (participant) => participant.location === selectedLocation
+              );
 
     return (
         <ToastProvider>
@@ -42,17 +65,37 @@ const MonadMadnessPage = () => {
                     <div className='container mx-auto px-4'>
                         <div className='mb-8 text-left'>
                             <h1 className='text-3xl font-bold text-gray-900 dark:text-white'>
-                                Monad Madness @Manhattan, NYC
+                                Monad Madness
+                                {selectedLocation !== 'All' && (
+                                    <> @ {selectedLocation}</>
+                                )}
                             </h1>
                             <p className='line-clamp-3 mb-8 dark:text-gray-300'>
                                 Lists of participants!
                             </p>
                         </div>
 
-                        {/* Cards Grid */}
+                        <div className='mb-8 flex space-x-4 overflow-auto'>
+                            {locations.map((location) => (
+                                <button
+                                    key={location}
+                                    className={`px-4 py-2 border ${
+                                        selectedLocation === location
+                                            ? 'border-indigo-600 bg-indigo-600 text-white'
+                                            : 'border-gray-300 text-gray-700 dark:border-gray-600 dark:text-gray-300'
+                                    } rounded-lg hover:bg-indigo-500 hover:text-white transition`}
+                                    onClick={() =>
+                                        setSelectedLocation(location)
+                                    }
+                                >
+                                    {location}
+                                </button>
+                            ))}
+                        </div>
+
                         <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6'>
-                            {participants.length > 0 ? (
-                                participants.map((participant) => (
+                            {filteredParticipants.length > 0 ? (
+                                filteredParticipants.map((participant) => (
                                     <Card
                                         key={participant.id}
                                         className='overflow-hidden dark:bg-[#18181B] dark:text-white'

@@ -18,12 +18,21 @@ import {
 import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
 import { useToast } from '@/providers/ToastProvider';
 
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from '@/components/ui/select';
+
 import AdminLayout from '@/app/layouts/AdminLayouts';
 import {
     getMonadMadnessById,
     updateMonadMadness,
     uploadImage,
 } from '@/app/utils/api';
+import { MONAD_MADNESS_LOCATIONS } from '@/constant/enum';
 import SearchParamsLoader from '@/app/components/admin/SearchParamsLoader';
 
 const MonadMadnessEditForm: React.FC = () => {
@@ -177,7 +186,7 @@ const MonadMadnessEditForm: React.FC = () => {
                                     render={({ field, fieldState }) => (
                                         <FormItem>
                                             <FormLabel className='dark:text-gray-300'>
-                                                Twitter (e.g monadpedia)
+                                                Twitter (e.g., monadpedia)
                                             </FormLabel>
                                             <FormControl>
                                                 <Input
@@ -203,7 +212,7 @@ const MonadMadnessEditForm: React.FC = () => {
                                     render={({ field, fieldState }) => (
                                         <FormItem>
                                             <FormLabel className='dark:text-gray-300'>
-                                                Website (e.g
+                                                Website (e.g.,
                                                 https://monadpedia.xyz)
                                             </FormLabel>
                                             <FormControl>
@@ -215,6 +224,50 @@ const MonadMadnessEditForm: React.FC = () => {
                                                             : 'dark:bg-gray-700 dark:text-white dark:border-gray-600'
                                                     }
                                                 />
+                                            </FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+
+                                <FormField
+                                    name='location'
+                                    control={methods.control}
+                                    rules={{ required: 'Location is required' }}
+                                    render={({ field, fieldState }) => (
+                                        <FormItem>
+                                            <FormLabel className='dark:text-gray-300'>
+                                                Location
+                                            </FormLabel>
+                                            <FormControl>
+                                                <Select
+                                                    onValueChange={
+                                                        field.onChange
+                                                    }
+                                                    value={field.value || ''}
+                                                >
+                                                    <SelectTrigger
+                                                        className={
+                                                            fieldState.invalid
+                                                                ? 'border-red-500 dark:border-red-500'
+                                                                : 'dark:bg-gray-700 dark:border-gray-600 dark:text-white'
+                                                        }
+                                                    >
+                                                        <SelectValue placeholder='Select a location' />
+                                                    </SelectTrigger>
+                                                    <SelectContent>
+                                                        {Object.values(
+                                                            MONAD_MADNESS_LOCATIONS
+                                                        ).map((location) => (
+                                                            <SelectItem
+                                                                key={location}
+                                                                value={location}
+                                                            >
+                                                                {location}
+                                                            </SelectItem>
+                                                        ))}
+                                                    </SelectContent>
+                                                </Select>
                                             </FormControl>
                                             <FormMessage />
                                         </FormItem>

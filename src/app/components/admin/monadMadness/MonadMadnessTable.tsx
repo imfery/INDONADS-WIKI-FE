@@ -1,3 +1,4 @@
+'use client';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 
@@ -29,6 +30,7 @@ interface MonadMadnessTableProps {
         id: string;
         title: string;
         createdAt: string;
+        location: string;
     }>;
     currentPage: number;
     resultsPerPage: number;
@@ -73,6 +75,9 @@ export default function MonadMadnessTable({
                     </TableHead>
                     <TableHead className='dark:text-gray-200'>Title</TableHead>
                     <TableHead className='dark:text-gray-200'>
+                        Location
+                    </TableHead>
+                    <TableHead className='dark:text-gray-200'>
                         Created At
                     </TableHead>
                     <TableHead className='text-right dark:text-gray-200'>
@@ -89,6 +94,9 @@ export default function MonadMadnessTable({
                             </TableCell>
                             <TableCell className='dark:text-gray-200'>
                                 {item.title}
+                            </TableCell>
+                            <TableCell className='dark:text-gray-200'>
+                                {item.location || 'N/A'}
                             </TableCell>
                             <TableCell className='dark:text-gray-200'>
                                 {item.createdAt}
@@ -152,7 +160,7 @@ export default function MonadMadnessTable({
                 ) : (
                     <TableRow>
                         <TableCell
-                            colSpan={4}
+                            colSpan={5}
                             className='text-center dark:text-gray-200'
                         >
                             No entries available.
