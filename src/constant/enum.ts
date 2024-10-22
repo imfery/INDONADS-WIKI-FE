@@ -19,6 +19,12 @@ export enum ARTICLES_CATEGORIES {
   OTHERS = 'Others'
 }
 
+export enum MONAD_MADNESS_LOCATIONS {
+  MANHATTAN = 'Manhattan, NYC',
+  BANGKOK = 'Bangkok',
+  UNKNOWN = 'Unknown',
+};
+
 export const CATEGORY_IMAGES: Record<EVENTS_CATEGORIES, string> = {
   [EVENTS_CATEGORIES.GAMES]: '/eventcategories/Games.png',
   [EVENTS_CATEGORIES.MUSIC]: '/eventcategories/Music.png',

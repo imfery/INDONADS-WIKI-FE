@@ -58,6 +58,7 @@ export interface MonadMadness {
     twitter: string;
     website: string;
     createdAt: string;
+    location: string;
 }
 
 export interface AllMonadMadnessData {
