@@ -47,6 +47,11 @@ const Sidebar: React.FC = () => {
                         label='Monad Madness'
                         isActive={pathname === '/admin/monad-madness'}
                     />
+                    <SidebarItem
+                        href='/admin/spaces'
+                        label='Spaces'
+                        isActive={pathname === '/admin/spaces'}
+                    />
                 </ul>
 
                 <div className='mt-auto pt-4'>

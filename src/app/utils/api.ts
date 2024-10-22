@@ -701,3 +701,139 @@ export async function getMonadMadnessById(id: string): Promise<any> {
     const result = await response.json();
     return result.data;
 }
+
+export async function fetchAllSpaces(params: {
+    sortField: string;
+    sortBy: string;
+}) {
+    const token = Cookies.get('accessToken');
+    const queryParams = new URLSearchParams(params as any).toString();
+
+    const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/v1/spaces?${queryParams}`,
+        {
+            method: 'GET',
+            headers: {
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+        }
+    );
+
+    if (!response.ok) {
+        throw new Error('Failed to fetch spaces entries');
+    }
+
+    return response.json();
+}
+
+export async function createSpace(data: {
+    category: string;
+    items: { title: string; url: string }[];
+}) {
+    const token = Cookies.get('accessToken');
+
+    const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/v1/spaces`,
+        {
+            method: 'POST',
+            headers: {
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+        }
+    );
+
+    if (!response.ok) {
+        throw new Error('Failed to create space entry');
+    }
+
+    return response.json();
+}
+
+/**
+ * Fetch a single space entry by its ID.
+ * @param {string} id - The ID of the space entry.
+ * @returns {Promise<any>} - The space data.
+ */
+export async function getSpaceById(id: string) {
+    const token = Cookies.get('accessToken');
+
+    const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/v1/spaces/${id}`,
+        {
+            method: 'GET',
+            headers: {
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+        }
+    );
+
+    if (!response.ok) {
+        throw new Error('Failed to fetch space entry');
+    }
+
+    return response.json();
+}
+
+/**
+ * Update a space entry by its ID.
+ * @param {string} id - The ID of the space entry to update.
+ * @param {Object} data - The updated space data.
+ * @returns {Promise<any>} - The updated space entry.
+ */
+export async function updateSpace(id: string, data: { 
+    category: string;
+    items: { title: string; url: string }[];
+}) {
+    const token = Cookies.get('accessToken');
+
+    const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/v1/spaces/${id}`,
+        {
+            method: 'PATCH',
+            headers: {
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+        }
+    );
+
+    if (!response.ok) {
+        throw new Error('Failed to update space entry');
+    }
+
+    return response.json();
+}
+
+/**
+ * Delete a space entry by its ID.
+ * @param {string} id - The ID of the space entry to delete.
+ * @returns {Promise<any>} - The response from the server.
+ */
+export async function deleteSpaceById(id: string) {
+    const token = Cookies.get('accessToken');
+
+    const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/v1/spaces/${id}`,
+        {
+            method: 'DELETE',
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        }
+    );
+
+    if (!response.ok) {
+        throw new Error('Failed to delete space entry');
+    }
+
+    if (response.status === 204) {
+        return null;
+    }
+
+    return response.json();
+}

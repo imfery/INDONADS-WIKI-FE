@@ -67,3 +67,20 @@ export interface AllMonadMadnessData {
     currentPage: number;
     totalResults: number;
 }
+
+export interface SpaceItem {
+    title: string;
+    url: string;
+}
+
+export interface Space {
+    id: string;
+    category: string;
+    items: SpaceItem[];
+    createdAt: string;
+    updatedAt: string;
+}
+
+export interface AllSpacesData {
+    data: Space[];
+}
