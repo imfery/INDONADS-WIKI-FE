@@ -16,6 +16,13 @@ import {
     FormControl,
 } from '@/components/ui/form';
 import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
+import {
+    Dialog,
+    DialogContent,
+    DialogTrigger,
+    DialogTitle,
+    DialogDescription,
+} from '@/components/ui/dialog';
 import { useToast } from '@/providers/ToastProvider';
 
 import AdminLayout from '@/app/layouts/AdminLayouts';
@@ -36,6 +43,7 @@ const MonadMadnessEditForm: React.FC = () => {
     );
     const [showAlert, setShowAlert] = useState(false);
     const [params, setParams] = useState<URLSearchParams | null>(null);
+    const [isDialogOpen, setIsDialogOpen] = useState(false);
     const id = params?.get('id');
 
     useEffect(() => {
@@ -225,41 +233,42 @@ const MonadMadnessEditForm: React.FC = () => {
                                     <FormLabel className='dark:text-gray-300'>
                                         Image
                                     </FormLabel>
-                                    {uploadedImageUrl ? (
-                                        <div className='mb-4'>
-                                            <Image
-                                                src={uploadedImageUrl}
-                                                alt='Uploaded Image'
-                                                width={400}
-                                                height={300}
-                                                className='w-full h-auto'
-                                            />
-                                            <div className='mt-2'>
+                                    <Input
+                                        type='file'
+                                        onChange={(e) => {
+                                            if (e.target.files?.[0]) {
+                                                handleImageUpload(
+                                                    e.target.files[0]
+                                                );
+                                            }
+                                        }}
+                                        className='mt-2 dark:bg-gray-700 dark:text-white dark:border-gray-600'
+                                    />
+                                    {uploadedImageUrl && (
+                                        <Dialog
+                                            open={isDialogOpen}
+                                            onOpenChange={setIsDialogOpen}
+                                        >
+                                            <DialogTrigger asChild>
                                                 <Button
                                                     type='button'
-                                                    variant='outline'
-                                                    className='dark:border-gray-600 dark:text-white'
-                                                    onClick={() =>
-                                                        setUploadedImageUrl(
-                                                            null
-                                                        )
-                                                    }
+                                                    className='mt-2 bg-indigo-600 text-white hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-600'
                                                 >
-                                                    Replace Image
+                                                    Preview Image
                                                 </Button>
-                                            </div>
-                                        </div>
-                                    ) : (
-                                        <Input
-                                            type='file'
-                                            onChange={(e) => {
-                                                if (e.target.files)
-                                                    handleImageUpload(
-                                                        e.target.files[0]
-                                                    );
-                                            }}
-                                            className='mt-2 dark:bg-gray-700 dark:text-white dark:border-gray-600'
-                                        />
+                                            </DialogTrigger>
+                                            <DialogContent>
+                                                <DialogTitle></DialogTitle>
+                                                <DialogDescription></DialogDescription>
+                                                <Image
+                                                    src={uploadedImageUrl}
+                                                    alt='Uploaded Image'
+                                                    width={800}
+                                                    height={450}
+                                                    className='w-full h-auto'
+                                                />
+                                            </DialogContent>
+                                        </Dialog>
                                     )}
                                 </FormItem>
 

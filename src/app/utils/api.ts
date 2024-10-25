@@ -394,6 +394,7 @@ export async function createArticles(articlesData: {
     title: string;
     summary: string;
     category: string;
+    banner: string;
     content: string;
 }) {
     const token = Cookies.get('accessToken');
