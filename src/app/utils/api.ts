@@ -469,13 +469,20 @@ export async function fetchAllArticles({
     };
 }
 
-export async function fetchArticlesById(id: string): Promise<ArticlesData> {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/v1/articles/${id}`, {
-        method: 'GET',
-        headers: {
-            Accept: 'application/json',
-        },
-    });
+export async function fetchArticlesById(
+    id: string, 
+    options: RequestInit = {}
+): Promise<ArticlesData> {
+    const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/v1/articles/${id}`,
+        {
+            method: 'GET',
+            headers: {
+                Accept: 'application/json',
+            },
+            ...options,
+        }
+    );
 
     if (!response.ok) {
         throw new Error('Failed to fetch articles');

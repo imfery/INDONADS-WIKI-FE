@@ -1,6 +1,6 @@
 'use client';
 
-import * as React from 'react';
+import { useEffect } from 'react';
 import { RiAlarmWarningFill } from 'react-icons/ri';
 
 import TextButton from '@/components/buttons/TextButton';
@@ -12,7 +12,7 @@ export default function Error({
     error: Error & { digest?: string };
     reset: () => void;
 }) {
-    React.useEffect(() => {
+    useEffect(() => {
         console.error(error);
     }, [error]);
 

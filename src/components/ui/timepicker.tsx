@@ -1,6 +1,6 @@
 'use client';
 
-import * as React from 'react';
+import { useState, useEffect } from 'react';
 
 import { cn } from '@/lib/utils';
 
@@ -19,9 +19,9 @@ type TimePickerProps = {
 };
 
 export function TimePicker({ className, value, onChange }: TimePickerProps) {
-    const [selectedHour, setSelectedHour] = React.useState<string>('12');
-    const [selectedMinute, setSelectedMinute] = React.useState<string>('00');
-    const [isOpen, setIsOpen] = React.useState(false);
+    const [selectedHour, setSelectedHour] = useState<string>('12');
+    const [selectedMinute, setSelectedMinute] = useState<string>('00');
+    const [isOpen, setIsOpen] = useState(false);
 
     const handleTimeSelect = () => {
         const time = `${selectedHour}:${selectedMinute}`;
@@ -29,7 +29,7 @@ export function TimePicker({ className, value, onChange }: TimePickerProps) {
         setIsOpen(false);
     };
 
-    React.useEffect(() => {
+    useEffect(() => {
         if (value) {
             const [hour, minute] = value.split(':');
             setSelectedHour(hour);
