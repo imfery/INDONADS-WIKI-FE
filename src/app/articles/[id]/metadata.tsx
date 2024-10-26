@@ -14,11 +14,12 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
         ? await fetchArticlesById(id, { cache: 'no-store' })
         : null;
 
-    console.log('article response -> ' + JSON.stringify(article));
     return {
+        metadataBase: new URL(`https://monadpedia.xyz/articles/${fullId}`),
         title: article?.title || 'Article Details | Monadpedia',
         description:
             article?.summary || 'Read the latest article on Monadpedia.',
+        robots: { index: true, follow: true },
         openGraph: {
             title: article?.title || 'Article Details',
             description:
