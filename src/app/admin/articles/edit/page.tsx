@@ -3,6 +3,7 @@
 import { useRouter } from 'next/navigation';
 import React, { Suspense, useEffect, useRef, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
+import Image from 'next/image';
 
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
@@ -23,9 +24,20 @@ import {
     SelectValue,
 } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
+import {
+    Dialog,
+    DialogContent,
+    DialogTrigger,
+    DialogTitle,
+    DialogDescription,
+} from '@/components/ui/dialog';
 
 import AdminLayout from '@/app/layouts/AdminLayouts';
-import { fetchArticlesById, updateArticles } from '@/app/utils/api';
+import {
+    fetchArticlesById,
+    updateArticles,
+    uploadImage,
+} from '@/app/utils/api';
 import { useToast } from '@/providers/ToastProvider';
 import SearchParamsLoader from '@/app/components/admin/SearchParamsLoader';
 import { ARTICLES_CATEGORIES } from '@/constant/enum';
@@ -51,6 +63,11 @@ const EditArticlesForm: React.FC = () => {
     const [initialData, setInitialData] = useState<any>(null);
     const [isEditorLoaded, setIsEditorLoaded] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+    const [uploadedBannerUrl, setUploadedBannerUrl] = useState<string | null>(
+        null
+    );
+    const [bannerError, setBannerError] = useState<string | null>(null);
+    const [isDialogOpen, setIsDialogOpen] = useState(false);
 
     useEffect(() => {
         import('@/app/components/admin/editor/Editor')
@@ -66,16 +83,16 @@ const EditArticlesForm: React.FC = () => {
             try {
                 if (articlesId) {
                     const articles = await fetchArticlesById(articlesId);
+                    setUploadedBannerUrl(articles.banner || '');
                     methods.reset({
                         title: articles.title,
                         summary: articles.summary,
                         category: articles.category,
                     });
-
                     setInitialData(JSON.parse(articles.content));
                 }
             } catch (err) {
-                setErrorMessage('Failed to load articles details.');
+                setErrorMessage('Failed to load article details.');
                 setShowAlert(true);
             }
         };
@@ -85,9 +102,56 @@ const EditArticlesForm: React.FC = () => {
         }
     }, [articlesId, methods]);
 
+    const handleBannerUpload = (file: File | null) => {
+        if (!file) return;
+
+        const image = new (window as any).Image() as HTMLImageElement;
+        const objectUrl = URL.createObjectURL(file);
+
+        image.onload = async () => {
+            console.log(`Image dimensions: ${image.width}x${image.height}`);
+            if (image.width >= 1620 && image.height >= 1080) {
+                setBannerError(null);
+                try {
+                    const response = await uploadImage(file);
+                    setUploadedBannerUrl(response.file.url);
+                } catch (error: any) {
+                    console.error('Error uploading banner:', error.message);
+                    setBannerError('Failed to upload the banner image.');
+                }
+            } else {
+                setBannerError(
+                    'Banner image must be at least 1620x1080 pixels.'
+                );
+                setUploadedBannerUrl(null);
+            }
+
+            URL.revokeObjectURL(objectUrl);
+        };
+
+        image.onerror = () => {
+            setBannerError(
+                'Invalid image file. Please select a different file.'
+            );
+            URL.revokeObjectURL(objectUrl);
+        };
+
+        image.src = objectUrl;
+    };
+
+    const handleRemoveImage = () => {
+        setUploadedBannerUrl(null);
+        setIsDialogOpen(false);
+    };
+
     const onSubmit = async (data: any) => {
+        if (bannerError) {
+            setShowAlert(true);
+            setErrorMessage(bannerError);
+            return;
+        }
+
         setShowAlert(false);
-        setErrorMessage(undefined);
         setIsLoading(true);
 
         try {
@@ -97,10 +161,11 @@ const EditArticlesForm: React.FC = () => {
                 const requestBody = {
                     ...data,
                     content: JSON.stringify(editorContent),
+                    banner: uploadedBannerUrl || '',
                 };
 
                 await updateArticles(articlesId as string, requestBody);
-                success('Articles has been successfully edited', 3000);
+                success('Article updated successfully', 3000);
                 router.push('/admin/articles');
             } else {
                 throw new Error('Failed to save editor content.');
@@ -121,8 +186,8 @@ const EditArticlesForm: React.FC = () => {
         }
     };
 
-    const onError = () => {
-        setShowAlert(true);
+    const handleSaveButtonClick = () => {
+        methods.handleSubmit(onSubmit)();
     };
 
     return (
@@ -137,8 +202,9 @@ const EditArticlesForm: React.FC = () => {
                             Edit Articles
                         </h2>
                         <p className='mt-1 text-sm font-normal text-gray-500 dark:text-gray-300'>
-                            Edit the articles article below.
+                            Edit the article details below.
                         </p>
+
                         {showAlert && (
                             <Alert variant='destructive' className='mb-4'>
                                 <AlertTitle>Error</AlertTitle>
@@ -148,14 +214,18 @@ const EditArticlesForm: React.FC = () => {
                                 </AlertDescription>
                             </Alert>
                         )}
+
+                        {bannerError && (
+                            <Alert variant='destructive' className='mb-4'>
+                                <AlertTitle>Banner Error</AlertTitle>
+                                <AlertDescription>
+                                    {bannerError}
+                                </AlertDescription>
+                            </Alert>
+                        )}
+
                         <FormProvider {...methods}>
-                            <form
-                                onSubmit={methods.handleSubmit(
-                                    onSubmit,
-                                    onError
-                                )}
-                                className='space-y-6 w-3/4 mt-10'
-                            >
+                            <form className='space-y-6 w-3/4 mt-10'>
                                 <FormField
                                     name='title'
                                     control={methods.control}
@@ -167,9 +237,8 @@ const EditArticlesForm: React.FC = () => {
                                             </FormLabel>
                                             <FormControl>
                                                 <Input
-                                                    placeholder='Enter articles title'
                                                     {...field}
-                                                    value={field.value || ''}
+                                                    placeholder='Enter article title'
                                                     className={
                                                         fieldState.invalid
                                                             ? 'border-red-500 dark:border-red-500'
@@ -193,9 +262,8 @@ const EditArticlesForm: React.FC = () => {
                                             </FormLabel>
                                             <FormControl>
                                                 <Textarea
-                                                    placeholder='Enter articles summary'
                                                     {...field}
-                                                    value={field.value || ''}
+                                                    placeholder='Enter article summary'
                                                     className={
                                                         fieldState.invalid
                                                             ? 'border-red-500 dark:border-red-500'
@@ -251,6 +319,62 @@ const EditArticlesForm: React.FC = () => {
                                         </FormItem>
                                     )}
                                 />
+
+                                <FormItem>
+                                    <FormLabel className='dark:text-gray-300'>
+                                        Banner Image
+                                    </FormLabel>
+                                    <Input
+                                        type='file'
+                                        onChange={(e) => {
+                                            if (e.target.files?.[0]) {
+                                                handleBannerUpload(
+                                                    e.target.files[0]
+                                                );
+                                            }
+                                        }}
+                                        className='mt-2 dark:bg-gray-700 dark:text-white dark:border-gray-600'
+                                    />
+                                    {uploadedBannerUrl && (
+                                        <div className='mt-2'>
+                                            <Dialog
+                                                open={isDialogOpen}
+                                                onOpenChange={setIsDialogOpen}
+                                            >
+                                                <DialogTrigger asChild>
+                                                    <Button
+                                                        type='button'
+                                                        variant='outline'
+                                                        className='bg-blue-500 hover:bg-blue-600 text-white'
+                                                    >
+                                                        Preview Image
+                                                    </Button>
+                                                </DialogTrigger>
+                                                <DialogContent className='p-4'>
+                                                    <DialogTitle></DialogTitle>
+                                                    <DialogDescription></DialogDescription>
+                                                    <Image
+                                                        src={uploadedBannerUrl}
+                                                        alt='Preview Banner'
+                                                        width={800}
+                                                        height={450}
+                                                        className='w-full h-auto mb-4'
+                                                    />
+                                                    <Button
+                                                        type='button'
+                                                        variant='destructive'
+                                                        className='bg-red-500 hover:bg-red-600 text-white'
+                                                        onClick={
+                                                            handleRemoveImage
+                                                        }
+                                                    >
+                                                        Remove Image
+                                                    </Button>
+                                                </DialogContent>
+                                            </Dialog>
+                                        </div>
+                                    )}
+                                </FormItem>
                             </form>
                         </FormProvider>
 
@@ -263,7 +387,7 @@ const EditArticlesForm: React.FC = () => {
 
                         <Button
                             className='mt-4 bg-indigo-600 text-white hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-600 dark:text-white'
-                            onClick={methods.handleSubmit(onSubmit, onError)}
+                            onClick={handleSaveButtonClick}
                             disabled={!isEditorLoaded || isLoading}
                         >
                             {isLoading ? (

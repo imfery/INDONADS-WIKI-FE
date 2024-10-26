@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { ArticlesData } from '@/types';
 import Link from 'next/link';
+import Image from 'next/image';
 import { sanitizeTitle } from '@/lib/helper';
 
 interface ActiveArticlesProps {
@@ -34,6 +35,7 @@ const ActiveArticlesList: React.FC<ActiveArticlesProps> = ({
                                     <Badge className='mt-1 text-xs sm:text-sm text-gray-500 dark:text-gray-300 bg-gray-100 dark:bg-gray-800 rounded-full px-2 py-1'>
                                         {article.category}
                                     </Badge>
+
                                     <p className='text-xl sm:text-md font-semibold leading-6 text-gray-900 dark:text-gray-200 mt-2'>
                                         <Link
                                             href={`/articles/${sanitizeTitle(
@@ -43,6 +45,22 @@ const ActiveArticlesList: React.FC<ActiveArticlesProps> = ({
                                             {article.title}
                                         </Link>
                                     </p>
+
+                                    {article.banner && (
+                                        <div className='mt-4 relative w-9/12 h-0 pb-[33.33%] overflow-hidden rounded-md'>
+                                            <Image
+                                                src={article.banner}
+                                                alt={`Banner for ${article.title}`}
+                                                fill
+                                                priority={true}
+                                                style={{
+                                                    objectFit: 'cover',
+                                                }}
+                                                sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
+                                                className='rounded-md'
+                                            />
+                                        </div>
+                                    )}
 
                                     <p className='mt-2 text-xs sm:text-sm leading-5 text-gray-500 dark:text-gray-400 line-clamp-3'>
                                         {article.summary}

@@ -37,6 +37,7 @@ export interface ArticlesData {
     title: string;
     summary: string;
     content: string;
+    banner: string;
     category: string;
     isActive: boolean;
     createdAt: string;
