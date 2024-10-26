@@ -29,7 +29,7 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
                 ? [{ url: article.banner, width: 1200, height: 630 }]
                 : [],
             url: `https://monadpedia.xyz/articles/${fullId}`,
-            siteName: article?.title || 'Article Details',
+            siteName: 'Monadpedia',
             type: 'website',
             locale: 'en_US',
         },
