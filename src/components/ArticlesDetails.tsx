@@ -1,15 +1,20 @@
 'use client';
 
+import dynamic from 'next/dynamic';
 import { useState, useEffect } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import Footer from '@/components/Footers';
 import Header from '@/components/Headers';
 import { fetchArticlesById } from '@/app/utils/api';
 import { ToastProvider } from '@/providers/ToastProvider';
-import EditorComponent from '@/app/components/admin/editor/Editor';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Button } from '@/components/ui/button';
 import { Analytics } from '@vercel/analytics/react';
+
+const EditorComponent = dynamic(
+    () => import('@/app/components/admin/editor/Editor'),
+    { ssr: false }
+);
 
 export default function ArticlesDetails() {
     const router = useRouter();
