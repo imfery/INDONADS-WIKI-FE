@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import Image from 'next/image';
 import { fetchAllMonadMadness } from '@/app/utils/api';
 import {
@@ -17,8 +17,15 @@ import { Globe } from 'lucide-react';
 
 const MonadMadnessPage = () => {
     const [participants, setParticipants] = useState<any[]>([]);
-    const [locations, setLocations] = useState<string[]>([]);
     const [selectedLocation, setSelectedLocation] = useState<string>('All');
+    const locations = useMemo(() => {
+        return [
+            'All',
+            ...Array.from(
+                new Set(participants.map((p) => p.location || 'Unknown'))
+            ),
+        ];
+    }, [participants]);
 
     useEffect(() => {
         const fetchParticipants = async () => {
@@ -27,35 +34,23 @@ const MonadMadnessPage = () => {
                     sortField: 'title',
                     sortBy: 'asc',
                 });
-                const fetchedParticipants = response.data.participants;
-                setParticipants(fetchedParticipants);
-
-                const uniqueLocations = [
-                    'All',
-                    ...(Array.from(
-                        new Set(
-                            fetchedParticipants.map(
-                                (p: { location?: string }) =>
-                                    p.location || 'Unknown'
-                            )
-                        )
-                    ) as string[]),
-                ];
-                setLocations(uniqueLocations);
+                setParticipants(response.data.participants);
             } catch (error) {
                 console.error('Error fetching participants:', error);
             }
         };
-
         fetchParticipants();
     }, []);
 
-    const filteredParticipants =
-        selectedLocation === 'All'
-            ? participants
-            : participants.filter(
-                  (participant) => participant.location === selectedLocation
-              );
+    const filteredParticipants = useMemo(
+        () =>
+            selectedLocation === 'All'
+                ? participants
+                : participants.filter(
+                      (participant) => participant.location === selectedLocation
+                  ),
+        [selectedLocation, participants]
+    );
 
     return (
         <ToastProvider>

@@ -1,70 +1,58 @@
 'use client';
 
-import { useRef, useState, useEffect } from 'react';
+import { useRef, useState } from 'react';
+import dynamic from 'next/dynamic';
+import useSWR from 'swr';
+import { fetchEventsSummary, fetchActiveArticles } from '@/app/utils/api';
 import ConcludedEvents from '@/components/ConcludedEvents';
 import Footer from '@/components/Footers';
 import Header from '@/components/Headers';
 import UpcomingEvents from '@/components/UpcomingEvents';
-import { fetchEventsSummary, fetchActiveArticles } from '@/app/utils/api';
-import { ToastProvider } from '@/providers/ToastProvider';
-import { Separator } from '@/components/ui/separator';
-import { Skeleton } from '@/components/ui/skeleton';
 import ActiveArticlesList from '@/components/ActiveArticlesList';
-import CustomPagination from '@/app/components/admin/Pagination';
-import { EventsData, AllArticlesData } from '@/types';
-import { Analytics } from '@vercel/analytics/react';
+import { Skeleton } from '@/components/ui/skeleton';
+import { ToastProvider } from '@/providers/ToastProvider';
 import { Button } from '@/components/ui/button';
 import { useRouter } from 'next/navigation';
+import { Separator } from '@/components/ui/separator';
+
+const CustomPagination = dynamic(
+    () => import('@/app/components/admin/Pagination'),
+    {
+        ssr: false,
+        loading: () => (
+            <Skeleton className='h-10 w-full bg-gray-200 dark:bg-gray-700' />
+        ),
+    }
+);
+
+const Analytics = dynamic(
+    () =>
+        import('@vercel/analytics/react').then(
+            (mod) => mod.Analytics as React.FC
+        ),
+    {
+        ssr: false,
+    }
+);
 
 export default function HomePage() {
-    const [events, setEvents] = useState<EventsData | null>(null);
-    const [articles, setArticles] = useState<AllArticlesData | null>(null);
-    const [loadingEvents, setLoadingEvents] = useState(true);
-    const [loadingArticles, setLoadingArticles] = useState(true);
-    const [error, setError] = useState<string | null>(null);
+    const articlesRef = useRef<HTMLDivElement>(null);
     const [currentPage, setCurrentPage] = useState(1);
     const router = useRouter();
 
-    const articlesRef = useRef<HTMLDivElement>(null);
+    const { data: events } = useSWR('/api/events-summary', fetchEventsSummary, {
+        revalidateOnFocus: false,
+        dedupingInterval: 60000,
+    });
 
-    useEffect(() => {
-        let isMounted = true;
-
-        async function loadEvents() {
-            try {
-                const data = await fetchEventsSummary();
-                if (isMounted) {
-                    setEvents(data);
-                }
-            } catch (error) {
-                console.error('Failed to fetch events:', error);
-            } finally {
-                setLoadingEvents(false);
-            }
+    const { data: articles } = useSWR(
+        `/api/active-articles?page=${currentPage}`,
+        () => fetchActiveArticles({ page: currentPage }),
+        {
+            revalidateOnFocus: false,
+            dedupingInterval: 60000,
         }
-
-        async function loadArticles(page = 1) {
-            try {
-                setLoadingArticles(true);
-                const data = await fetchActiveArticles({ page });
-                if (isMounted) {
-                    setArticles(data);
-                }
-            } catch (error) {
-                console.error('Failed to fetch articles:', error);
-                setError('Failed to fetch articles');
-            } finally {
-                setLoadingArticles(false);
-            }
-        }
-
-        loadEvents();
-        loadArticles(currentPage);
-
-        return () => {
-            isMounted = false;
-        };
-    }, [currentPage]);
+    );
 
     const handlePageChange = (page: number) => {
         setCurrentPage(page);
@@ -96,9 +84,9 @@ export default function HomePage() {
                                 className='md:w-4/6 p-4 mb-4 md:mb-0'
                                 ref={articlesRef}
                             >
-                                {loadingArticles ? (
+                                {!articles ? (
                                     <Skeleton className='h-10 w-full bg-gray-200 dark:bg-gray-700' />
-                                ) : articles ? (
+                                ) : (
                                     <>
                                         <ActiveArticlesList
                                             articles={articles.articles}
@@ -111,19 +99,15 @@ export default function HomePage() {
                                             onPageChange={handlePageChange}
                                         />
                                     </>
-                                ) : (
-                                    <p className='text-center text-red-500'>
-                                        {error}
-                                    </p>
                                 )}
                             </div>
                             <div className='md:w-2/6 p-4'>
-                                {loadingEvents ? (
+                                {!events ? (
                                     <div className='space-y-4'>
                                         <Skeleton className='h-10 w-full bg-gray-200 dark:bg-gray-700' />
                                         <Skeleton className='h-10 w-full bg-gray-200 dark:bg-gray-700' />
                                     </div>
-                                ) : events ? (
+                                ) : (
                                     <>
                                         <UpcomingEvents
                                             events={events.upcomingEvents}
@@ -139,10 +123,6 @@ export default function HomePage() {
                                             See All Events
                                         </Button>
                                     </>
-                                ) : (
-                                    <p className='text-center text-gray-500 dark:text-gray-400'>
-                                        No events to display.
-                                    </p>
                                 )}
                             </div>
                         </div>
