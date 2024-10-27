@@ -47,18 +47,24 @@ const ActiveArticlesList: React.FC<ActiveArticlesProps> = ({
                                     </p>
 
                                     {article.banner && (
-                                        <div className='mt-4 relative w-9/12 h-0 pb-[33.33%] overflow-hidden rounded-md'>
-                                            <Image
-                                                src={article.banner}
-                                                alt={`Banner for ${article.title}`}
-                                                fill
-                                                priority={true}
-                                                style={{
-                                                    objectFit: 'cover',
-                                                }}
-                                                sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
-                                                className='rounded-md'
-                                            />
+                                        <div className='mt-4 relative w-full h-0 pb-[55%] overflow-hidden rounded-md'>
+                                            <Link
+                                                href={`/articles/${sanitizeTitle(
+                                                    article.title
+                                                )}-${article.id}`}
+                                            >
+                                                <Image
+                                                    src={article.banner}
+                                                    alt={`Banner for ${article.title}`}
+                                                    fill
+                                                    priority
+                                                    style={{
+                                                        objectFit: 'cover',
+                                                    }}
+                                                    sizes='(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 100vw'
+                                                    className='rounded-md'
+                                                />
+                                            </Link>
                                         </div>
                                     )}
 

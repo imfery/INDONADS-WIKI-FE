@@ -70,13 +70,6 @@ const MobileNav: FC<MobileNavProps> = ({ isOpen, onClose }) => {
                 >
                     Monad Madness
                 </Link>
-                <Link
-                    href='/motw'
-                    className='text-white dark:text-white text-lg py-2'
-                    onClick={onClose}
-                >
-                    Memes of The Week
-                </Link>
 
                 <Collapsible open={isMoreOpen} onOpenChange={toggleMoreSection}>
                     <CollapsibleTrigger className='w-full text-center flex justify-center items-center py-2'>
