@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import ConcludedEvents from '@/components/ConcludedEvents';
 import Footer from '@/components/Footers';
 import Header from '@/components/Headers';
@@ -24,6 +24,8 @@ export default function HomePage() {
     const [error, setError] = useState<string | null>(null);
     const [currentPage, setCurrentPage] = useState(1);
     const router = useRouter();
+
+    const articlesRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         let isMounted = true;
@@ -66,6 +68,7 @@ export default function HomePage() {
 
     const handlePageChange = (page: number) => {
         setCurrentPage(page);
+        articlesRef.current?.scrollIntoView({ behavior: 'smooth' });
     };
 
     const handleSeeAllEvents = () => {
@@ -89,7 +92,10 @@ export default function HomePage() {
                             </p>
                         </div>
                         <div className='flex flex-col md:flex-row'>
-                            <div className='md:w-4/6 p-4 mb-4 md:mb-0'>
+                            <div
+                                className='md:w-4/6 p-4 mb-4 md:mb-0'
+                                ref={articlesRef}
+                            >
                                 {loadingArticles ? (
                                     <Skeleton className='h-10 w-full bg-gray-200 dark:bg-gray-700' />
                                 ) : articles ? (
