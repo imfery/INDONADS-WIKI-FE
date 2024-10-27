@@ -8,6 +8,12 @@ export function middleware(req: NextRequest) {
     const accessTokenCookie = req.cookies.get('accessToken');
     const accessToken = accessTokenCookie?.value;
 
+    if (req.nextUrl.hostname === 'www.monadpedia.xyz') {
+        const url = req.nextUrl.clone();
+        url.hostname = 'monadpedia.xyz';
+        return NextResponse.redirect(url);
+    }
+
     if (pathname === '/admin/register') {
         return NextResponse.next();
     }
@@ -29,13 +35,10 @@ export function middleware(req: NextRequest) {
     if (
         !accessToken &&
         pathname.startsWith('/admin') &&
-        !['/admin/login', '/admin/register', '/admin/forgot-password', '/admin/reset-password'].includes(
-            pathname
-        )
+        !['/admin/login', '/admin/register', '/admin/forgot-password', '/admin/reset-password'].includes(pathname)
     ) {
         return NextResponse.redirect(new URL('/admin/login', req.url));
     }
 
-    // Allow access to login, register, and forgot-password routes if no token
     return NextResponse.next();
 }
