@@ -83,7 +83,7 @@ const ArticlesDashboardForm: React.FC = () => {
 
         image.onload = async () => {
             console.log(`Image dimensions: ${image.width}x${image.height}`);
-            if (image.width >= 1620 && image.height >= 1080) {
+            if (image.width >= 1600 && image.height >= 836) {
                 setBannerError(null);
                 try {
                     const response = await uploadImage(file);
@@ -94,7 +94,7 @@ const ArticlesDashboardForm: React.FC = () => {
                 }
             } else {
                 setBannerError(
-                    'Banner image must be at least 1620x1080 pixels.'
+                    'Banner image must be at least 1600x836 pixels.'
                 );
                 setUploadedBannerUrl(null);
             }
