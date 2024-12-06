@@ -14,6 +14,7 @@ import { ToastProvider } from '@/providers/ToastProvider';
 import { Button } from '@/components/ui/button';
 import { useRouter } from 'next/navigation';
 import { Separator } from '@/components/ui/separator';
+import Mixtape from '@/components/Mixtape';
 
 const CustomPagination = dynamic(
     () => import('@/app/components/admin/Pagination'),
@@ -102,6 +103,7 @@ export default function HomePage() {
                                 )}
                             </div>
                             <div className='md:w-2/6 p-4'>
+                                <Mixtape />
                                 {!events ? (
                                     <div className='space-y-4'>
                                         <Skeleton className='h-10 w-full bg-gray-200 dark:bg-gray-700' />
