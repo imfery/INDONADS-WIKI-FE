@@ -36,7 +36,6 @@ const Header: FC = () => {
                         className='text-white dark:text-gray-200 font-bold text-lg'
                     >
                         Monadpedia
-                        <p className='text-xs md:text-sm'>for Indonads</p>
                     </Link>
                 </div>
 
