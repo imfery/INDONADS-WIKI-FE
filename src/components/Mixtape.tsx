@@ -9,14 +9,18 @@ const Mixtape: React.FC = () => (
             </CardTitle>
         </CardHeader>
         <CardContent className='p-4'>
-            <iframe
-                width='100%'
-                height='120'
-                src='https://player-widget.mixcloud.com/widget/iframe/?hide_cover=1&feed=%2Fbolan999%2Fmonad-mixtape-cny-edition%2F'
-                frameBorder='0'
-                allow='autoplay'
-                className='rounded-md'
-            ></iframe>
+            <div className='flex flex-col md:flex-row items-center md:items-start gap-4'>
+                <div className='w-full'>
+                    <iframe
+                        width='100%'
+                        height='120'
+                        src='https://player-widget.mixcloud.com/widget/iframe/?feed=%2Fbolan999%2Fmonad-mixtape-cny-edition%2F'
+                        frameBorder='0'
+                        allow='autoplay'
+                        className='rounded-md'
+                    ></iframe>
+                </div>
+            </div>
         </CardContent>
     </Card>
 );
