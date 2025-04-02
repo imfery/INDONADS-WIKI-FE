@@ -14,7 +14,7 @@ const Mixtape: React.FC = () => (
                     <iframe
                         width='100%'
                         height='120'
-                        src='https://player-widget.mixcloud.com/widget/iframe/?feed=%2Fbolan999%2Fmonad-mixtape-valentine-edition%2F'
+                        src='https://player-widget.mixcloud.com/widget/iframe/?hide_cover=1&feed=%2Fbolan999%2Fmonad-mixtape-habibi-version%2F'
                         frameBorder='0'
                         allow='autoplay'
                         className='rounded-md'
